@@ -1,4 +1,4 @@
-# Unified Communications
+# RP Unified Communications
 
 **Unified Communications** is an enterprise-grade, full-featured communication hub built with a .NET backend and an Angular frontend. This application streamlines all communication channels into a single, intuitive platform, designed for seamless collaboration and productivity. Featuring a clean, modern, and fully responsive interface, it provides a consistent user experience across all devices.
 
