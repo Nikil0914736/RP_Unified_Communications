@@ -1,0 +1,19 @@
+<app-header [title]="'Follow-ups'"></app-header>
+
+<main class="main-content">
+    <div class="search-bar-container">
+        <i data-feather="search"></i>
+        <input type="text" class="search-input" placeholder="Search by name or keyword..." title="Search by name or keyword">
+    </div>
+    <div class="photo-widget-grid">
+        <div class="photo-widget" *ngFor="let followUp of followUps" [title]="'View follow-up for ' + followUp.name">
+            <img [src]="followUp.photoUrl" [alt]="followUp.name">
+            <div class="widget-info">
+                <strong>{{ followUp.name }}</strong>
+                <small>Last contact: {{ followUp.lastContact }}</small>
+            </div>
+        </div>
+    </div>
+</main>
+
+<app-footer></app-footer>

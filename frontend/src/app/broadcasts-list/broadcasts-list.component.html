@@ -1,0 +1,21 @@
+<app-header [title]="'Broadcasts'"></app-header>
+
+<main class="main-content">
+  <ul class="notification-list-redesigned">
+    <li *ngFor="let broadcast of (broadcasts$ | async)" class="notification-item-redesigned" (click)="showPopover(broadcast)">
+      <div class="notification-icon broadcast">
+        <span>{{ broadcast.initials }}</span>
+      </div>
+      <div class="notification-details">
+        <p>{{ broadcast.subject }}</p>
+        <small>From: {{ broadcast.from }}</small>
+      </div>
+      <div class="notification-time">
+        <span>{{ broadcast.date }}</span>
+        <span>{{ broadcast.time }}</span>
+      </div>
+    </li>
+  </ul>
+</main>
+
+<app-footer></app-footer>

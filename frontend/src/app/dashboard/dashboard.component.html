@@ -1,0 +1,154 @@
+<app-header [title]="'Unified Communications'"></app-header>
+
+<main class="main-content">
+    <div class="card summary-card">
+        <div class="card-header">
+            <h2>Summary</h2>
+        </div>
+        <div class="summary-grid">
+            <a routerLink="/notifications" class="card-link" title="View Notifications">
+                <div class="summary-item">
+                    <span class="summary-count">{{ notificationCount$ | async }}</span>
+                    <span class="summary-label">Notifica...</span>
+                </div>
+            </a>
+            <a routerLink="/reminders" class="card-link" title="View Reminders">
+                <div class="summary-item">
+                    <span class="summary-count">2</span>
+                    <span class="summary-label">Reminders</span>
+                </div>
+            </a>
+            <a routerLink="/notifications" class="card-link" title="View Alerts">
+                <div class="summary-item">
+                    <span class="summary-count">5</span>
+                    <span class="summary-label">Alerts</span>
+                </div>
+            </a>
+            <a routerLink="/follow-ups" class="card-link" title="View Follow-ups">
+                <div class="summary-item">
+                    <span class="summary-count">5</span>
+                    <span class="summary-label">Follow-ups</span>
+                </div>
+            </a>
+            <a *ngIf="isClient" [routerLink]="'/broadcasts'" class="card-link" title="View Broadcasts">
+                <div class="summary-item">
+                    <span class="summary-count">{{ broadcastCount$ | async }}</span>
+                    <span class="summary-label">Broadcasts</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <a routerLink="/inbox" class="card-link" title="Compose New Message">
+            <div class="action-item">
+                <div class="action-icon message">
+                    <i data-feather="message-square"></i>
+                </div>
+                <span>New Message</span>
+            </div>
+        </a>
+        <a class="card-link" title="Start a Call">
+            <div class="action-item">
+                <div class="action-icon call">
+                    <i data-feather="phone"></i>
+                </div>
+                <span>Start Call</span>
+            </div>
+        </a>
+        <a routerLink="/reminders" class="card-link" title="Schedule a Reminder">
+            <div class="action-item">
+                <div class="action-icon schedule">
+                    <i data-feather="calendar"></i>
+                </div>
+                <span>Schedule</span>
+            </div>
+        </a>
+        <a class="card-link" title="More Actions">
+            <div class="action-item">
+                <div class="action-icon more">
+                    <i data-feather="more-horizontal"></i>
+                </div>
+                <span>More</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="card activity-card">
+        <div class="card-header">
+            <h2>Recent Activity</h2>
+        </div>
+        <ul class="activity-list">
+            <li class="activity-item">
+                <a routerLink="/inbox" class="card-link" title="View Message from Lisa Wong">
+                    <div class="activity-icon message">
+                        <i data-feather="message-circle" width="24" height="24"></i>
+                    </div>
+                    <div class="activity-details">
+                        <p>New Message from Lisa Wong</p>
+                        <small>7 no a. m</small>
+                    </div>
+                    <span class="activity-time">10:24 AM</span>
+                </a>
+            </li>
+            <li class="activity-item">
+                <a class="card-link" title="View Meeting Notes">
+                    <div class="activity-icon meeting">
+                        <i data-feather="file-text" width="24" height="24"></i>
+                    </div>
+                    <div class="activity-details">
+                        <p>Meeting notes review completed</p>
+                        <small>9:30 AM</small>
+                    </div>
+                    <span class="activity-time">9:30 AM</span>
+                </a>
+            </li>
+            <li class="activity-item">
+                <a routerLink="/notifications" class="card-link" title="View Alert">
+                    <div class="activity-icon alert">
+                        <i data-feather="alert-triangle" width="24" height="24"></i>
+                    </div>
+                    <div class="activity-details">
+                        <p>Alert ruthoutage alert</p>
+                        <small>9:10 AM</small>
+                    </div>
+                    <span class="activity-time">9:10 AM</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="dashboard-grid">
+        <a routerLink="/reminders" class="card-link" title="View Upcoming Reminders">
+            <div class="card reminders-card">
+                <h3>Upcoming Reminders</h3>
+                <p>Meeting with Product Team</p>
+                <small>Today 1:00 PM</small>
+            </div>
+        </a>
+        <a *ngIf="isClient" [routerLink]="'/broadcasts'" class="card-link" title="View Broadcast Highlights">
+            <div class="card highlights-card">
+                <h3>Broadcast Highlights</h3>
+                <p>Weekly Update</p>
+                <small>was sent yestetay</small>
+
+            </div>
+        </a>
+    </div>
+    <a routerLink="/follow-ups" class="card-link" title="View Follow-up Tracker">
+        <div class="card follow-up-card">
+            <div class="card-body">
+                <h3>Follow-up Tracker</h3>
+                <div class="progress-ring">
+                    <svg width="60" height="60">
+                        <circle class="progress-ring-bg" cx="30" cy="30" r="25"></circle>
+                        <circle class="progress-ring-fg" cx="30" cy="30" r="25"></circle>
+                    </svg>
+                    <span class="progress-text">2/5</span>
+                </div>
+            </div>
+        </div>
+    </a>
+</main>
+
+<app-footer></app-footer>

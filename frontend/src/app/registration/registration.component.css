@@ -1,0 +1,281 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.registration-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 0 20px;
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
+    background-color: #f0f2f5;
+}
+
+:host-context(.dark-mode) .registration-container {
+    background-color: #1c1c1e;
+}
+
+.registration-main {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+.registration-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.registration-header .logo {
+    width: 40px;
+    height: 40px;
+    background-color: #007aff;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin: 0 auto 15px;
+}
+
+.registration-header .logo i {
+    width: 24px;
+    height: 24px;
+}
+
+.registration-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 5px;
+}
+
+.registration-header p {
+    color: #8e8e93;
+    font-size: 16px;
+    margin: 0;
+}
+
+.registration-form {
+    width: 100%;
+    max-width: 320px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e5e5ea;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: #007aff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+.input-group select {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e5e5ea;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%238E8E93%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 10px auto;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: #007aff;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.submit-btn:disabled {
+    background-color: #a9d4ff;
+    cursor: not-allowed;
+}
+
+.back-to-login {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #8e8e93;
+}
+
+.back-link {
+    color: #007aff;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Dark Mode */
+:host-context(.dark-mode) .registration-header p {
+    color: #98989d;
+}
+
+:host-context(.dark-mode) .input-group label {
+    color: #f2f2f7;
+}
+
+:host-context(.dark-mode) .input-group input,
+:host-context(.dark-mode) .input-group select {
+    background-color: #2c2c2e;
+    border-color: #3a3a3c;
+    color: #fff;
+}
+
+:host-context(.dark-mode) .input-group select {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2398989D%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+}
+
+:host-context(.dark-mode) .submit-btn {
+    background-color: #0A84FF;
+}
+
+:host-context(.dark-mode) .submit-btn:disabled {
+    background-color: #0A84FF;
+    opacity: 0.5;
+}
+
+:host-context(.dark-mode) .back-link {
+    color: #0A84FF;
+}
+
+.copyright-footer {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.copyright-footer p {
+    font-size: 12px;
+    color: #8e8e93;
+    margin: 0;
+}
+
+.validation-error {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: .2em;
+    display: inline-block;
+    vertical-align: text-bottom;
+    border: .25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+    margin-right: 5px;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+:host-context(.dark-mode) .copyright-footer p {
+    color: #98989d;
+}
+
+.status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 10px 20px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 10;
+    background-color: #f0f2f5;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.status-bar .feather {
+    width: 14px;
+    height: 14px;
+}
+
+.status-left, .status-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+:host-context(.dark-mode) .status-bar {
+    background-color: rgba(28, 28, 30, 0.75);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}

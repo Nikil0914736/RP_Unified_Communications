@@ -1,0 +1,130 @@
+.popover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+  padding: 20px;
+}
+
+.popover-container {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  width: 100%;
+  max-width: 420px; /* Slightly wider */
+  position: relative;
+  animation: popover-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.popover-header {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  background: linear-gradient(to bottom, #fff, #f7f7f7);
+  border-bottom: 1px solid #e5e5ea;
+}
+
+.popover-header-details {
+    flex-grow: 1;
+    padding-right: 30px;
+}
+
+.popover-header h2 {
+  margin: 0 0 4px 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.popover-meta {
+  font-size: 12px;
+  color: #8e8e93;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.meta-divider {
+    margin: 0 8px;
+}
+
+.popover-content {
+  padding: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.popover-text a {
+    color: #007aff;
+    text-decoration: none;
+}
+
+.popover-text a:hover {
+    text-decoration: underline;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: #aaa;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  line-height: 1;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.close-btn i {
+    width: 22px;
+    height: 22px;
+}
+
+.close-btn:hover {
+  color: #333;
+  background-color: #e5e5ea;
+}
+
+/* Dark Mode */
+:host-context(.dark-mode) .popover-container {
+  background-color: #2c2c2e;
+  color: #fff;
+}
+
+:host-context(.dark-mode) .popover-header {
+  background: linear-gradient(to bottom, #3a3a3c, #2c2c2e);
+  border-bottom-color: #3a3a3c;
+}
+
+:host-context(.dark-mode) .popover-text a {
+    color: #0A84FF;
+}
+
+:host-context(.dark-mode) .close-btn {
+  color: #8e8e93;
+}
+
+:host-context(.dark-mode) .close-btn:hover {
+  color: #fff;
+  background-color: #4a4a4c;
+}
+
+@keyframes popover-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

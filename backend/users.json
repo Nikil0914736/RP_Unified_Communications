@@ -1,0 +1,46 @@
+{
+  "Users": [
+    {
+      "FullName": "Admin User",
+      "Username": "admin@realpage.com",
+      "Password": "password",
+      "Role": "admin"
+    },
+    {
+      "FullName": "Client User",
+      "Username": "client@realpage.com",
+      "Password": "password",
+      "Role": "client"
+    },
+    {
+      "FullName": "Nikil Avula",
+      "Username": "nikil8045@gmail.com",
+      "Password": "password",
+      "Role": "client"
+    },
+    {
+      "FullName": "Nikil Reddy",
+      "Username": "A.NIKILREDDY@GMAIL.COM",
+      "Password": "password",
+      "Role": "admin"
+    },
+    {
+      "FullName": "Nikil Avula",
+      "Username": "nikil.avula@realpage.com",
+      "Password": "password",
+      "Role": "client"
+    },
+    {
+      "FullName": "Daniel Craig",
+      "Username": "daniel.craig@realpage.com",
+      "Password": "password",
+      "Role": "admin"
+    },
+    {
+      "FullName": "Rama Raju",
+      "Username": "rama.raju@realpage.com",
+      "Password": "password",
+      "Role": "client"
+    }
+  ]
+}

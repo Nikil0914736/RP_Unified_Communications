@@ -1,0 +1,36 @@
+<nav class="bottom-nav">
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" title="Go to Home">
+        <i data-feather="home"></i>
+        <span>Home</span>
+    </a>
+    <a routerLink="/notifications" routerLinkActive="active" class="nav-item" title="Go to Notifications">
+        <i data-feather="bell"></i>
+        <span>Notifications</span>
+    </a>
+    <a routerLink="/inbox" routerLinkActive="active" class="nav-item" title="Go to Inbox">
+        <i data-feather="inbox"></i>
+        <span>Inbox</span>
+    </a>
+    <a routerLink="/reminders" routerLinkActive="active" class="nav-item" title="Go to Reminders">
+        <i data-feather="calendar"></i>
+        <span>Reminders</span>
+    </a>
+        <!-- Link for Admins to create broadcasts -->
+    <a *ngIf="isAdmin" routerLink="/broadcast" routerLinkActive="active" class="nav-item" title="Create Broadcast">
+        <i data-feather="message-square"></i>
+        <span>Create Broadcast</span>
+    </a>
+    <!-- Link for Clients to view broadcasts -->
+    <a *ngIf="isClient" routerLink="/broadcasts" routerLinkActive="active" class="nav-item" title="View Broadcasts">
+        <i data-feather="message-square"></i>
+        <span>Broadcasts</span>
+    </a>
+    <a routerLink="/follow-ups" routerLinkActive="active" class="nav-item" title="Go to Follow-ups">
+        <i data-feather="check-square"></i>
+        <span>Follow-ups</span>
+    </a>
+    <a routerLink="/settings" routerLinkActive="active" class="nav-item" title="Go to Settings">
+        <i data-feather="settings"></i>
+        <span>Settings</span>
+    </a>
+</nav>

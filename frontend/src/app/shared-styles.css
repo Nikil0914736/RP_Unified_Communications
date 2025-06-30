@@ -1,0 +1,11 @@
+/* Shared Header Styles for simple pages */
+.header {
+    padding: 20px;
+    text-align: left;
+}
+
+.header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+}

@@ -1,0 +1,45 @@
+/* General Styles */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #1c1c1e;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #f0f2f5; /* Keep original page background */
+    color: #fff;
+}
+
+.mobile-frame {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    background-color: #fff;
+    border-radius: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+body.dark-mode .mobile-frame {
+    background-color: #1c1c1e;
+}
+
+/* Animation for page transitions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

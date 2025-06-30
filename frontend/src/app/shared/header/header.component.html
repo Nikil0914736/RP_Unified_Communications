@@ -1,0 +1,24 @@
+<header class="header">
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="time">{{ currentTime }}</span>
+            <i data-feather="map-pin"></i>
+        </div>
+        <div class="status-right">
+            <i data-feather="signal"></i>
+            <i data-feather="bluetooth"></i>
+            <i data-feather="wifi"></i>
+            <span>100%</span>
+            <i data-feather="battery-charging"></i>
+        </div>
+    </div>
+    <div class="main-header">
+        <h1>{{ title }}</h1>
+        <div class="profile-container">
+            <div class="profile-pic" (click)="toggleProfileMenu()">{{ userInitials }}</div>
+            <div class="profile-menu" *ngIf="isProfileMenuVisible">
+                                <a (click)="logout()">Logout</a>
+            </div>
+        </div>
+    </div>
+</header>

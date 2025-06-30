@@ -1,0 +1,27 @@
+<app-header [title]="'Create Reminder'"></app-header>
+
+<main class="main-content">
+    <div class="card">
+        <form class="form">
+            <div class="form-group">
+                <label for="reminder-title">Title</label>
+                <input type="text" id="reminder-title" placeholder="e.g., Pay Rent" title="Enter the reminder title">
+            </div>
+            <div class="form-group">
+                <label for="reminder-date">Date</label>
+                <input type="date" id="reminder-date" title="Select the reminder date">
+            </div>
+            <div class="form-group">
+                <label for="reminder-time">Time</label>
+                <input type="time" id="reminder-time" title="Select the reminder time">
+            </div>
+            <div class="form-group">
+                <label for="reminder-notes">Notes</label>
+                <textarea id="reminder-notes" rows="3" placeholder="Add a short note..." title="Enter notes for the reminder"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" title="Set the reminder">Set Reminder</button>
+        </form>
+    </div>
+</main>
+
+<app-footer></app-footer>

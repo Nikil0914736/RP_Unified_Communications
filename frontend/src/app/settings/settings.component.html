@@ -1,0 +1,42 @@
+<app-header [title]="'Settings'"></app-header>
+
+<main class="main-content">
+    <div class="card">
+        <div class="card-header">
+            <h2>Notifications</h2>
+        </div>
+        <ul class="settings-list">
+            <li>
+                <span>Push Notifications</span>
+                <label class="switch">
+                    <input type="checkbox" checked title="Enable or disable push notifications">
+                    <span class="slider round"></span>
+                </label>
+            </li>
+            <li>
+                <span>Email Alerts</span>
+                <label class="switch">
+                    <input type="checkbox" title="Enable or disable email alerts">
+                    <span class="slider round"></span>
+                </label>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Appearance</h2>
+        </div>
+        <ul class="settings-list">
+            <li>
+                <span>Dark Mode</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle" title="Enable or disable dark mode">
+                    <span class="slider round"></span>
+                </label>
+            </li>
+        </ul>
+    </div>
+</main>
+
+<app-footer></app-footer>

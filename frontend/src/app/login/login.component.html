@@ -1,0 +1,74 @@
+<div class="login-container">
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="time">{{ currentTime }}</span>
+            <i data-feather="map-pin"></i>
+        </div>
+        <div class="status-right">
+            <i data-feather="signal"></i>
+            <i data-feather="bluetooth"></i>
+            <i data-feather="wifi"></i>
+            <span>100%</span>
+            <i data-feather="battery-charging"></i>
+        </div>
+    </div>
+    <main class="login-main">
+        <div class="login-header">
+            <div class="logo">
+                <i data-feather="message-square"></i>
+            </div>
+            <h2>Unified Communications</h2>
+            <p>Welcome back! Please sign in to your account.</p>
+        </div>
+
+        <form class="login-form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+            <div class="module-selector">
+              <button type="button" class="module-btn" [class.active]="selectedModule === 'client'" (click)="selectModule('client')" title="Select Client Module">Client</button>
+              <button type="button" class="module-btn" [class.active]="selectedModule === 'admin'" (click)="selectModule('admin')" title="Select Admin Module">Admin</button>
+            </div>
+            <div class="input-group">
+                <label for="username">Email Address</label>
+                <input type="email" id="username" name="username" [(ngModel)]="model.username" required email #username="ngModel" title="Enter your email address" placeholder="Enter your email address">
+                <div *ngIf="username.invalid && (username.dirty || username.touched)" class="validation-error">
+                    <div *ngIf="username.errors?.required">
+                      Email address is required.
+                    </div>
+                    <div *ngIf="username.errors?.email">
+                      Please enter a valid email address.
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" [(ngModel)]="model.password" required minlength="8" #password="ngModel" title="Enter your password" placeholder="Enter your password">
+                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="validation-error">
+                    <div *ngIf="password.errors?.required">
+                      Password is required.
+                    </div>
+                    <div *ngIf="password.errors?.minlength">
+                      Password must be at least 8 characters long.
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-extra-options">
+              <a routerLink="/forgot-password" class="forgot-password-link" title="Reset your password">Forgot Password?</a>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+            <button type="submit" class="login-btn" [disabled]="!loginForm.form.valid || loading" title="Login">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+                Sign In
+            </button>
+
+            <div class="sign-up-link">
+              <span>Don't have an account? </span>
+              <a routerLink="/register" title="Create a new account">Sign Up</a>
+            </div>
+        </form>
+    </main>
+    <footer class="copyright-footer">
+        <p>© 2025 RealPage, Inc. All rights reserved.</p>
+    </footer>
+</div>

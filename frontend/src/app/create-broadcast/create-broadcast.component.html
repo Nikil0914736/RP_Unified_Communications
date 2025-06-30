@@ -1,0 +1,39 @@
+<app-header [title]="'Create Broadcast'"></app-header>
+
+<main class="main-content">
+    <div class="card">
+        <form class="form" #broadcastForm="ngForm" (ngSubmit)="onSubmit(broadcastForm)">
+            <div class="form-group">
+                <label for="broadcast-subject">Subject</label>
+                <input type="text" id="broadcast-subject" name="subject" [(ngModel)]="model.subject" required #subject="ngModel" placeholder="e.g., Community BBQ" title="Enter the broadcast subject">
+                <div *ngIf="subject.invalid && (subject.dirty || subject.touched)" class="validation-error">
+                    Subject is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="broadcast-message">Message</label>
+                <textarea id="broadcast-message" name="message" [(ngModel)]="model.message" required minlength="50" maxlength="250" #message="ngModel" rows="5" placeholder="Compose your message..." title="Compose the broadcast message"></textarea>
+                <div *ngIf="message.invalid && (message.dirty || message.touched)" class="validation-error">
+                    <div *ngIf="message.errors?.required">Message is required.</div>
+                    <div *ngIf="message.errors?.minlength">Message must be at least 50 characters.</div>
+                    <div *ngIf="message.errors?.maxlength">Message cannot be more than 250 characters.</div>
+                </div>
+                <small class="char-counter">{{model.message?.length || 0}}/250</small>
+            </div>
+            <div class="form-group">
+                <label>Target Audience</label>
+                <select name="targetAudience" [(ngModel)]="model.targetAudience" required #targetAudience="ngModel" title="Select the target audience">
+                    <option>All Residents</option>
+                    <option>Building A</option>
+                    <option>Building B</option>
+                </select>
+                <div *ngIf="targetAudience.invalid && (targetAudience.dirty || targetAudience.touched)" class="validation-error">
+                    Target audience is required.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!broadcastForm.form.valid || !userLoaded" title="Send the broadcast message">Send Broadcast</button>
+        </form>
+    </div>
+</main>
+
+<app-footer></app-footer>

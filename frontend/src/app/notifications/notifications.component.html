@@ -1,0 +1,39 @@
+<app-header [title]="'Notifications'"></app-header>
+
+<main class="main-content">
+    <div class="search-bar">
+        <i data-feather="search"></i>
+        <input type="text" placeholder="Search" title="Search notifications">
+    </div>
+
+    <div class="filter-tabs">
+        <button class="tab-item" [class.active]="filter === 'all'" (click)="setFilter('all')" title="Filter by All">All</button>
+        <button class="tab-item" [class.active]="filter === 'call'" (click)="setFilter('call')" title="Filter by Alerts">Alerts</button>
+        <button class="tab-item" [class.active]="filter === 'reminder'" (click)="setFilter('reminder')" title="Filter by Reminders">Reminders</button>
+        <button *ngIf="isClient" class="tab-item" [class.active]="filter === 'broadcast'" (click)="setFilter('broadcast')" title="Filter by Broadcasts">Broadcasts</button>
+    </div>
+
+    <ul class="notification-list-redesigned">
+        <li *ngFor="let notification of (filteredNotifications$ | async)" class="notification-item-redesigned" [class.clickable]="notification.type === 'broadcast'" (click)="showPopover(notification)" [title]="notification.title">
+            <div class="notification-icon" [ngClass]="notification.type">
+                <i *ngIf="notification.type !== 'broadcast'" [attr.data-feather]="notification.icon"></i>
+                <span *ngIf="notification.type === 'broadcast'">{{ notification.initials }}</span>
+            </div>
+            <div class="notification-details">
+                <p>{{ notification.title }}</p>
+                <small>{{ notification.subtitle }}</small>
+            </div>
+            <div class="notification-time">
+                <ng-container *ngIf="notification.type === 'broadcast'; else singleLineTime">
+                    <span>{{ notification.date }}</span>
+                    <span>{{ notification.time }}</span>
+                </ng-container>
+                <ng-template #singleLineTime>
+                    <span>{{ notification.time }}</span>
+                </ng-template>
+            </div>
+        </li>
+    </ul>
+</main>
+
+<app-footer></app-footer>

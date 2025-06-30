@@ -1,0 +1,20 @@
+<div *ngIf="popoverData" class="popover-overlay" (click)="close()">
+  <div class="popover-container" (click)="$event.stopPropagation()">
+    <div class="popover-header">
+      <div class="popover-header-details">
+        <h2>{{ popoverData.title }}</h2>
+        <div class="popover-meta">
+          <span>From: <strong>{{ popoverData.from }}</strong></span>
+          <span class="meta-divider">·</span>
+          <span>{{ popoverData.date }} at {{ popoverData.time }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="popover-content">
+            <div class="popover-text" [innerHTML]="formattedContent"></div>
+    </div>
+        <button class="close-btn" (click)="close()" title="Close popover">
+      <i data-feather="x"></i>
+    </button>
+  </div>
+</div>
