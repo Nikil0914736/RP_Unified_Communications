@@ -125,4 +125,43 @@ public class AuthController : ControllerBase
 
         return Ok(user);
     }
+
+    [HttpPost("mark-broadcast-as-read")]
+    public async Task<IActionResult> MarkBroadcastAsRead([FromBody] MarkAsReadDto markAsReadDto)
+    {
+        if (markAsReadDto == null || string.IsNullOrWhiteSpace(markAsReadDto.Username) || string.IsNullOrWhiteSpace(markAsReadDto.BroadcastId))
+        {
+            return BadRequest(new { message = "Invalid data provided." });
+        }
+
+        var userData = new UserData();
+        if (!System.IO.File.Exists(_usersFilePath))
+        {
+            return NotFound(new { message = "User data file not found." });
+        }
+
+        var jsonData = await System.IO.File.ReadAllTextAsync(_usersFilePath);
+        var deserializedData = JsonSerializer.Deserialize<UserData>(jsonData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        if (deserializedData?.Users != null)
+        {
+            userData = deserializedData;
+        }
+
+        var userToUpdate = userData.Users.FirstOrDefault(u => u.Username.Equals(markAsReadDto.Username, StringComparison.OrdinalIgnoreCase));
+
+        if (userToUpdate == null)
+        {
+            return NotFound(new { message = "User not found." });
+        }
+
+        if (!userToUpdate.ReadBroadcastIds.Contains(markAsReadDto.BroadcastId))
+        {
+            userToUpdate.ReadBroadcastIds.Add(markAsReadDto.BroadcastId);
+
+            var newJsonData = JsonSerializer.Serialize(userData, new JsonSerializerOptions { WriteIndented = true });
+            await System.IO.File.WriteAllTextAsync(_usersFilePath, newJsonData);
+        }
+
+        return Ok(new { message = "Broadcast marked as read." });
+    }
 }

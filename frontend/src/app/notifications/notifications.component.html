@@ -13,36 +13,65 @@
         <button *ngIf="isResident" class="tab-item" [class.active]="filter === 'broadcast'" (click)="setFilter('broadcast')" title="Filter by Broadcasts">Broadcasts</button>
     </div>
 
-    <ul class="notification-list-redesigned">
-        <li *ngFor="let notification of (filteredNotifications$ | async)" class="notification-item-redesigned" [class.clickable]="notification.type === 'broadcast'" (click)="showPopover(notification)" [title]="notification.title">
-            <div class="notification-icon" [ngClass]="notification.type">
-                <ng-container [ngSwitch]="notification.type">
-                    <ng-container *ngSwitchCase="'broadcast'">
-                        <span *ngIf="filter === 'broadcast'; else radioIcon">{{ notification.initials }}</span>
-                        <ng-template #radioIcon>
-                            <app-feather-icon [icon]="'radio'"></app-feather-icon>
+    <div *ngIf="(filteredNotifications$ | async) as notifications" class="notification-container">
+        <div *ngIf="notifications.length > 0; else noNotifications">
+            <ul class="notification-list-redesigned">
+                            <li *ngFor="let notification of notifications" class="notification-item-redesigned" [class.clickable]="notification.type === 'broadcast'" [class.unread]="notification.type === 'broadcast' && !notification.isRead" (click)="showPopover(notification)" [title]="notification.title">
+                    <div class="notification-icon" [ngClass]="notification.type" [style.backgroundColor]="filter === 'broadcast' ? notification.color : null">
+                        <ng-container [ngSwitch]="notification.type">
+                            <ng-container *ngSwitchCase="'broadcast'">
+                                <span *ngIf="filter === 'broadcast'; else radioIcon">{{ notification.initials }}</span>
+                                <ng-template #radioIcon>
+                                    <app-feather-icon [icon]="'radio'"></app-feather-icon>
+                                </ng-template>
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                <app-feather-icon [icon]="notification.icon"></app-feather-icon>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="notification-details">
+                        <p>{{ notification.title }}</p>
+                        <small>{{ notification.subtitle }}</small>
+                    </div>
+                    <div class="notification-time">
+                        <ng-container *ngIf="notification.type === 'broadcast'; else singleLineTime">
+                            <span>{{ notification.date }}</span>
+                            <span>{{ notification.time }}</span>
+                        </ng-container>
+                        <ng-template #singleLineTime>
+                            <span>{{ notification.time }}</span>
                         </ng-template>
-                    </ng-container>
-                    <ng-container *ngSwitchDefault>
-                        <app-feather-icon [icon]="notification.icon"></app-feather-icon>
-                    </ng-container>
-                </ng-container>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <ng-template #noNotifications>
+            <div [ngSwitch]="filter" class="empty-state">
+                <div *ngSwitchCase="'all'">
+                    <app-feather-icon icon="bell-off" class="empty-state-icon"></app-feather-icon>
+                    <h2>No New Notifications</h2>
+                    <p>You're all caught up. We'll let you know when there's something new.</p>
+                </div>
+                <div *ngSwitchCase="'call'">
+                    <app-feather-icon icon="alert-triangle" class="empty-state-icon"></app-feather-icon>
+                    <h2>No New Alerts</h2>
+                    <p>There are no alerts to show right now.</p>
+                </div>
+                <div *ngSwitchCase="'reminder'">
+                    <app-feather-icon icon="calendar" class="empty-state-icon"></app-feather-icon>
+                    <h2>No Reminders</h2>
+                    <p>You have no upcoming reminders.</p>
+                </div>
+                <div *ngSwitchCase="'broadcast'">
+                    <app-feather-icon icon="radio" class="empty-state-icon"></app-feather-icon>
+                    <h2>No Broadcasts</h2>
+                    <p>There are no broadcast messages to display.</p>
+                </div>
             </div>
-            <div class="notification-details">
-                <p>{{ notification.title }}</p>
-                <small>{{ notification.subtitle }}</small>
-            </div>
-            <div class="notification-time">
-                <ng-container *ngIf="notification.type === 'broadcast'; else singleLineTime">
-                    <span>{{ notification.date }}</span>
-                    <span>{{ notification.time }}</span>
-                </ng-container>
-                <ng-template #singleLineTime>
-                    <span>{{ notification.time }}</span>
-                </ng-template>
-            </div>
-        </li>
-    </ul>
+        </ng-template>
+    </div>
 </main>
 
 <app-footer></app-footer>

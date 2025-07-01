@@ -36,14 +36,81 @@
 
 .nav-item:not(.active):hover {
     transform: translateY(-2px);
-    color: #007aff;
+    color: #fff;
+    background-color: #007aff; /* Default hover color */
+}
+
+/* Custom Hover Colors */
+a.nav-item[routerLink="/notifications"]:not(.active):hover {
+    background-color: #5656d7;
+}
+
+a.nav-item[routerLink="/reminders"]:not(.active):hover {
+    background-color: #ff9500;
+}
+
+a.nav-item[routerLink="/follow-ups"]:not(.active):hover {
+    background-color: #17a2b8;
+}
+
+a.nav-item[routerLink="/dashboard"]:not(.active):hover {
+    background-color: #5ac8fa;
+}
+
+a.nav-item[routerLink="/inbox"]:not(.active):hover {
+    background-color: #ff3b30;
+}
+
+a.nav-item[routerLink="/settings"]:not(.active):hover {
+    background-color: #8e8e93;
 }
 
 .nav-item.active {
-    background-color: #007aff;
     color: #fff;
     transform: translateY(-5px);
+}
+
+/* Default Active State */
+.nav-item.active {
+    background: linear-gradient(135deg, #007aff, #00a2ff);
     box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+}
+
+/* Custom Active Colors */
+a.nav-item[routerLink="/notifications"].active {
+    background: linear-gradient(135deg, #5656d7, #8a56d7);
+    box-shadow: 0 8px 20px rgba(86, 86, 215, 0.3);
+}
+
+a.nav-item[routerLink="/broadcast"].active,
+a.nav-item[routerLink="/broadcasts"].active {
+    background: linear-gradient(135deg, #007aff, #00a2ff);
+    box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+}
+
+a.nav-item[routerLink="/reminders"].active {
+    background: linear-gradient(135deg, #ff9500, #ffcc00);
+    box-shadow: 0 8px 20px rgba(255, 149, 0, 0.3);
+}
+
+a.nav-item[routerLink="/follow-ups"].active {
+    background: linear-gradient(135deg, #17a2b8, #20c997);
+    box-shadow: 0 8px 20px rgba(23, 162, 184, 0.3);
+}
+
+a.nav-item[routerLink="/dashboard"].active {
+    background: linear-gradient(135deg, #5ac8fa, #34aadc);
+    box-shadow: 0 8px 20px rgba(90, 200, 250, 0.3);
+}
+
+a.nav-item[routerLink="/inbox"].active {
+    background: linear-gradient(135deg, #ff3b30, #ff2d55);
+    box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
+}
+
+a.nav-item[routerLink="/settings"].active {
+    background: linear-gradient(135deg, #8e8e93, #98989d);
+    box-shadow: 0 8px 20px rgba(142, 142, 147, 0.3);
 }
 
 :host-context(.dark-mode) .nav-item {
@@ -51,13 +118,80 @@
 }
 
 :host-context(.dark-mode) .nav-item:not(.active):hover {
-    color: #0A84FF;
+    color: #fff;
+    background-color: #0A84FF; /* Default dark mode hover color */
+}
+
+/* Custom Dark Mode Hover Colors */
+:host-context(.dark-mode) a.nav-item[routerLink="/notifications"]:not(.active):hover {
+    background-color: #8a56d7;
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/reminders"]:not(.active):hover {
+    background-color: #ffcc00;
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/follow-ups"]:not(.active):hover {
+    background-color: #20c997;
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/dashboard"]:not(.active):hover {
+    background-color: #5ac8fa;
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/inbox"]:not(.active):hover {
+    background-color: #ff3b30;
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/settings"]:not(.active):hover {
+    background-color: #8e8e93;
 }
 
 :host-context(.dark-mode) .nav-item.active {
-    background-color: #0A84FF;
     color: #fff;
+}
+
+/* Default Dark Mode Active State */
+:host-context(.dark-mode) .nav-item.active {
+    background: linear-gradient(135deg, #0A84FF, #34aadc);
     box-shadow: 0 8px 20px rgba(10, 132, 255, 0.35);
+}
+
+/* Custom Dark Mode Active Colors */
+:host-context(.dark-mode) a.nav-item[routerLink="/notifications"].active {
+    background: linear-gradient(135deg, #5656d7, #8a56d7);
+    box-shadow: 0 8px 20px rgba(86, 86, 215, 0.35);
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/broadcast"].active,
+:host-context(.dark-mode) a.nav-item[routerLink="/broadcasts"].active {
+    background: linear-gradient(135deg, #0A84FF, #34aadc);
+    box-shadow: 0 8px 20px rgba(10, 132, 255, 0.35);
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/reminders"].active {
+    background: linear-gradient(135deg, #ff9500, #ffcc00);
+    box-shadow: 0 8px 20px rgba(255, 149, 0, 0.35);
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/follow-ups"].active {
+    background: linear-gradient(135deg, #17a2b8, #20c997);
+    box-shadow: 0 8px 20px rgba(23, 162, 184, 0.35);
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/dashboard"].active {
+    background: linear-gradient(135deg, #5ac8fa, #34aadc);
+    box-shadow: 0 8px 20px rgba(90, 200, 250, 0.35);
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/inbox"].active {
+    background: linear-gradient(135deg, #ff3b30, #ff2d55);
+    box-shadow: 0 8px 20px rgba(255, 59, 48, 0.35);
+}
+
+:host-context(.dark-mode) a.nav-item[routerLink="/settings"].active {
+    background: linear-gradient(135deg, #8e8e93, #98989d);
+    box-shadow: 0 8px 20px rgba(142, 142, 147, 0.35);
 }
 
 .nav-item i {

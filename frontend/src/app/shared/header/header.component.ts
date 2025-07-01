@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { TimeService } from '../../services/time.service';
 import { Subscription } from 'rxjs';
+import { generateColor } from '../../utils/color-generator';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,7 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input() title: string;
   userInitials: string;
+  profileColor: string;
   isProfileMenuVisible = false;
   isDarkMode: boolean;
   currentTime: string;
@@ -31,10 +33,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (user) {
         if (user.fullName) {
           this.userInitials = this.getInitials(user.fullName);
+          this.profileColor = generateColor(this.userInitials);
         } else if (user.username) {
           this.userInitials = user.username.charAt(0).toUpperCase();
+          this.profileColor = generateColor(this.userInitials);
         } else {
           this.userInitials = 'U'; // Default for User
+          this.profileColor = generateColor(this.userInitials);
         }
       } else {
         this.userInitials = ''; // Clear initials on logout
@@ -64,6 +69,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (names.length === 0) {
       return 'U';
     }
+
+    if (names.length >= 3) {
+      return (names[0].charAt(0) + names[1].charAt(0) + names[2].charAt(0)).toUpperCase();
+    }
+
     const firstInitial = names[0].charAt(0);
     const lastInitial = names.length > 1 ? names[names.length - 1].charAt(0) : '';
     return (firstInitial + lastInitial).toUpperCase();

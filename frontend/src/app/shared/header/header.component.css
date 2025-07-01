@@ -17,7 +17,7 @@
     align-items: center;
     padding: 4px 4px;
     font-size: 12px;
-    font-weight: 500;
+    position: relative;
 }
 
 .status-bar .feather {
@@ -29,6 +29,18 @@
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.camera-hole {
+    width: 14px;
+    height: 14px;
+    background-color: #000;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: inset 0 0 0 2px #fff; /* White edges inside the hole */
 }
 
 .main-header {
@@ -51,7 +63,6 @@
 .main-header .profile-pic {
     width: 40px;
     height: 40px;
-    background-color: #007aff;
     color: white;
     border-radius: 50%;
     display: flex;

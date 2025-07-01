@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { PopoverService } from '../services/popover.service';
 import { AuthService } from '../services/auth.service';
@@ -20,9 +21,10 @@ export class NotificationsComponent implements OnInit {
 
   constructor(
     private titleService: Title,
+    private notificationService: NotificationService,
     private popoverService: PopoverService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +34,16 @@ export class NotificationsComponent implements OnInit {
       this.isResident = user && user.role.toLowerCase() === 'resident';
     });
 
-    this.setFilter('all');
+    this.route.queryParams.subscribe(params => {
+      const tab = params.tab;
+      if (tab === 'alerts') {
+        // For now, we can map 'alerts' to a specific filter or just default to all
+        // Since there's no 'alert' type yet, we'll use 'call' as a placeholder
+        this.setFilter('call');
+      } else {
+        this.setFilter('all');
+      }
+    });
   }
 
   setFilter(filter: 'all' | 'call' | 'reminder' | 'broadcast'): void {
@@ -48,14 +59,23 @@ export class NotificationsComponent implements OnInit {
   }
 
   showPopover(notification: Notification): void {
-    if (notification.type === 'broadcast' && notification.content) {
-      this.popoverService.show({
-        title: notification.title,
-        content: notification.content,
-        from: notification.from || '',
-        date: notification.date || '',
-        time: notification.time,
-      });
+    if (notification.type === 'broadcast' && !notification.isRead && notification.id) {
+      const currentUser = this.authService.currentUserValue;
+      if (currentUser && currentUser.username) {
+        this.authService.markBroadcastAsRead(currentUser.username, notification.id).subscribe(() => {
+          this.notificationService.markBroadcastAsRead(notification.id);
+        });
+      }
+    }
+
+    if (notification.type === 'broadcast') {
+        this.popoverService.show({
+            title: notification.title,
+            content: notification.content,
+            from: notification.from,
+            date: notification.date,
+            time: notification.time
+        });
     }
   }
 }

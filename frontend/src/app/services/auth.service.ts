@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
+
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private injector: Injector) {
     const currentUserString = localStorage.getItem('currentUser');
     this.currentUserSubject = new BehaviorSubject<any>(currentUserString ? JSON.parse(currentUserString) : null);
     this.currentUser = this.currentUserSubject.asObservable();
@@ -39,7 +41,15 @@ export class AuthService {
         console.log('AuthService: User logged in', user);
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
+        const notificationService = this.injector.get(NotificationService);
+        notificationService.start();
       }),
+      catchError(this.handleError)
+    );
+  }
+
+  markBroadcastAsRead(username: string, broadcastId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/mark-broadcast-as-read`, { username, broadcastId }).pipe(
       catchError(this.handleError)
     );
   }
@@ -47,6 +57,8 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    const notificationService = this.injector.get(NotificationService);
+    notificationService.stop();
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

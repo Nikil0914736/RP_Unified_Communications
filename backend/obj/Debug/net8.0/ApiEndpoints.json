@@ -33,6 +33,22 @@
   },
   {
     "ContainingType": "backend.Controllers.AuthController",
+    "Method": "MarkBroadcastAsRead",
+    "RelativePath": "api/Auth/mark-broadcast-as-read",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "markAsReadDto",
+        "Type": "backend.Models.MarkAsReadDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.AuthController",
     "Method": "Register",
     "RelativePath": "api/Auth/register",
     "HttpMethod": "POST",
@@ -42,22 +58,6 @@
       {
         "Name": "registrationDto",
         "Type": "backend.Models.UserRegistrationDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend.Controllers.BroadcastController",
-    "Method": "Post",
-    "RelativePath": "api/Broadcast",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "message",
-        "Type": "backend.Controllers.Message",
         "IsRequired": true
       }
     ],

@@ -4,13 +4,29 @@
       "FullName": "Resident User",
       "Username": "resident@realpage.com",
       "Password": "password",
-      "Role": "resident"
+      "Role": "resident",
+      "ReadBroadcastIds": []
     },
     {
       "FullName": "Leasing Consultant User",
       "Username": "leasingconsultant@relapge.com",
       "Password": "password",
-      "Role": "leasing consultant"
+      "Role": "leasing consultant",
+      "ReadBroadcastIds": []
+    },
+    {
+      "FullName": "Nikil Avula",
+      "Username": "nikil.avula@realpage.com",
+      "Password": "password",
+      "Role": "resident",
+      "ReadBroadcastIds": []
+    },
+    {
+      "FullName": "Nikil Reddy",
+      "Username": "nikil.reddy@realpage.com",
+      "Password": "password",
+      "Role": "leasing consultant",
+      "ReadBroadcastIds": []
     }
   ]
 }

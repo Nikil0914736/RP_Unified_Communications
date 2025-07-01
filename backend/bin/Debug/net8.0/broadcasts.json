@@ -1,14 +1,30 @@
 [
   {
+    "Id": "f4f2e1b1-4c6e-4a8a-9f44-caf4cefa2d93",
     "Subject": "Important Notice: Renewal Amount Update for FY 2025\u20132026",
     "Content": "Please be informed that the renewal amount will increase by 2.5% for the Financial Year 2025\u20132026. This adjustment ensures we continue to provide you with the highest quality of service and support.",
-    "FullName": "Nikil Reddy",
+    "FullName": "Leasing Consultant User",
     "Timestamp": "2025-06-29T19:27:33.3999981Z"
   },
   {
+    "Id": "a22acf3c-97aa-4d4e-8d4a-8018bfca8542",
+    "Subject": "Community BBQ This Weekend!",
+    "Content": "Get ready for some fun in the sun! We\u0027re hosting a community BBQ this Saturday at the main courtyard. Join us for food, games, and great company.",
+    "FullName": "Leasing Consultant User",
+    "Timestamp": "2025-07-01T10:00:00Z"
+  },
+  {
+    "Id": "64f0749e-2144-4cc3-8bf4-24ad6754d203",
     "Subject": "Renewal Amount Update for FY 2025\u20132026",
-    "Content": "Renewal Amount Update for FY 2025\u20132026 Renewal Amount Update for FY 2025\u20132026",
+    "Content": "Please be informed that the renewal amount will increase by 2.5% for the Financial Year 2025\u20132026. This adjustment ensures we continue to provide you with the highest quality of service and support.",
     "FullName": "Nikil Reddy",
-    "Timestamp": "2025-06-30T05:27:48.272652Z"
+    "Timestamp": "2025-07-01T20:26:30.4447523Z"
+  },
+  {
+    "Id": "ebe7f8a5-1761-46fc-9323-d636ad68b22e",
+    "Subject": "Important Notice: Renewal Amount Update for FY 2025\u20132026",
+    "Content": "Please be informed that the renewal amount will increase by 2.5% for the Financial Year 2025\u20132026. This adjustment ensures we continue to provide you with the highest quality of service and support.",
+    "FullName": "Nikil Reddy",
+    "Timestamp": "2025-07-01T20:43:30.4460379Z"
   }
 ]

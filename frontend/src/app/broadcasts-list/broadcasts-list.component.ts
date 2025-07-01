@@ -2,8 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 import { SignalRService } from '../services/signal-r.service';
+import { AuthService } from '../services/auth.service';
 import { PopoverService } from '../services/popover.service';
+import { BroadcastMessage } from '../services/signal-r.service';
 import { Observable } from 'rxjs';
+import { generateColor } from '../utils/color-generator';
+
+export interface DisplayBroadcast extends BroadcastMessage {
+  initials: string;
+  color: string;
+  displayDate: string;
+  displayTime: string;
+}
 
 @Component({
   selector: 'app-broadcasts-list',
@@ -11,44 +21,63 @@ import { Observable } from 'rxjs';
   styleUrls: ['./broadcasts-list.component.css']
 })
 export class BroadcastsListComponent implements OnInit {
-  broadcasts$: Observable<{ subject: string, content: string, from: string, date: string, time: string, initials: string }[]>;
+  broadcasts$: Observable<DisplayBroadcast[]>;
+
+
 
   constructor(
     private titleService: Title,
     private signalRService: SignalRService,
-    private popoverService: PopoverService
+    private popoverService: PopoverService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.titleService.setTitle('Broadcasts | Unified Communications');
-    this.signalRService.startConnection();
+    const currentUser = this.authService.currentUserValue;
+    if (currentUser) {
+      this.signalRService.startConnection(currentUser.username);
+    }
     this.broadcasts$ = this.signalRService.messages$.pipe(
       map(messages => messages.map(message => {
         const timestamp = new Date(message.timestamp);
         const nameParts = message.fullName.split(' ').filter(n => n);
-        const initials = nameParts.length > 1
-          ? `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`
-          : nameParts[0].charAt(0);
+        let initials = '';
+        if (nameParts.length >= 3) {
+          initials = nameParts.slice(0, 3).map(name => name.charAt(0)).join('');
+        } else if (nameParts.length > 1) {
+          initials = `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`;
+        } else if (nameParts.length === 1) {
+          initials = nameParts[0].charAt(0);
+        }
 
         return {
-          subject: message.subject,
-          content: message.content,
-          from: message.fullName,
+          ...message,
           initials: initials.toUpperCase(),
-          date: timestamp.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          time: timestamp.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+          color: generateColor(initials.toUpperCase()),
+          displayDate: timestamp.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          displayTime: timestamp.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
         };
       }))
     );
   }
 
-        showPopover(broadcast: { subject: string, content: string, from: string, date: string, time: string }): void {
+  showPopover(broadcast: DisplayBroadcast): void {
+    if (!broadcast.isRead) {
+      const currentUser = this.authService.currentUserValue;
+      if (currentUser && currentUser.username) {
+        this.authService.markBroadcastAsRead(currentUser.username, broadcast.id).subscribe(() => {
+          this.signalRService.markMessageAsRead(broadcast.id);
+        });
+      }
+    }
+
     this.popoverService.show({
       title: broadcast.subject,
       content: broadcast.content,
-      from: broadcast.from,
-      date: broadcast.date,
-      time: broadcast.time
+      from: broadcast.fullName,
+      date: broadcast.displayDate,
+      time: broadcast.displayTime
     });
   }
 }

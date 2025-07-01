@@ -98,26 +98,26 @@
         }
       }
     },
-    "/api/Broadcast": {
+    "/api/Auth/mark-broadcast-as-read": {
       "post": {
         "tags": [
-          "Broadcast"
+          "Auth"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Message"
+                "$ref": "#/components/schemas/MarkAsReadDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Message"
+                "$ref": "#/components/schemas/MarkAsReadDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Message"
+                "$ref": "#/components/schemas/MarkAsReadDto"
               }
             }
           }
@@ -168,18 +168,14 @@
         },
         "additionalProperties": false
       },
-      "Message": {
+      "MarkAsReadDto": {
         "type": "object",
         "properties": {
-          "subject": {
+          "username": {
             "type": "string",
             "nullable": true
           },
-          "content": {
-            "type": "string",
-            "nullable": true
-          },
-          "fullName": {
+          "broadcastId": {
             "type": "string",
             "nullable": true
           }

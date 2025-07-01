@@ -5,37 +5,53 @@
         <div class="card-header">
             <h2>Summary</h2>
         </div>
-        <div class="summary-grid">
-            <a routerLink="/notifications" class="card-link" title="View Notifications">
-                <div class="summary-item">
-                    <span class="summary-count">{{ notificationCount$ | async }}</span>
-                    <span class="summary-label">Notifica...</span>
-                </div>
-            </a>
-            <a routerLink="/reminders" class="card-link" title="View Reminders">
-                <div class="summary-item">
-                    <span class="summary-count">2</span>
-                    <span class="summary-label">Reminders</span>
-                </div>
-            </a>
-            <a routerLink="/notifications" class="card-link" title="View Alerts">
-                <div class="summary-item">
-                    <span class="summary-count">5</span>
-                    <span class="summary-label">Alerts</span>
-                </div>
-            </a>
-            <a routerLink="/follow-ups" class="card-link" title="View Follow-ups">
-                <div class="summary-item">
-                    <span class="summary-count">5</span>
-                    <span class="summary-label">Follow-ups</span>
-                </div>
-            </a>
-            <a *ngIf="isResident" [routerLink]="'/broadcasts'" class="card-link" title="View Broadcasts">
-                <div class="summary-item">
-                    <span class="summary-count">{{ broadcastCount$ | async }}</span>
-                    <span class="summary-label">Broadcasts</span>
-                </div>
-            </a>
+        <div class="summary-grid-circle">
+            <div class="stat-circle-item">
+                <a routerLink="/notifications" class="stat-circle notifications" title="View Notifications">
+                    <i data-feather="bell" class="stat-bg-icon"></i>
+                    <span class="stat-count" [class.stat-count-composite]="(totalAllNotificationCount$ | async) > 0">
+                        <ng-container *ngIf="(totalAllNotificationCount$ | async) > 0; else zeroNotifications">
+                            {{ unreadAllNotificationCount$ | async }} / {{ totalAllNotificationCount$ | async }}
+                        </ng-container>
+                        <ng-template #zeroNotifications>0</ng-template>
+                    </span>
+                </a>
+                <span class="stat-label">Notifications</span>
+            </div>
+            <div class="stat-circle-item" *ngIf="isResident">
+                <a routerLink="/broadcasts" class="stat-circle broadcasts" title="Create Broadcast">
+                    <i data-feather="radio" class="stat-bg-icon"></i>
+                    <span class="stat-count" [class.stat-count-composite]="(totalBroadcastCount$ | async) > 0">
+                        <ng-container *ngIf="(totalBroadcastCount$ | async) > 0; else zeroBroadcasts">
+                            {{ unreadBroadcastCount$ | async }} / {{ totalBroadcastCount$ | async }}
+                        </ng-container>
+                        <ng-template #zeroBroadcasts>0</ng-template>
+                    </span>
+                </a>
+                <span class="stat-label">Broadcasts</span>
+            </div>
+            <div class="stat-circle-item">
+                <a [routerLink]="['/notifications']" [queryParams]="{ tab: 'alerts' }" class="stat-circle alerts" title="View Alerts">
+                    <i data-feather="alert-triangle" class="stat-bg-icon"></i>
+                    <span class="stat-count">5</span>
+                </a>
+                <span class="stat-label">Alerts</span>
+            </div>
+            <div class="stat-circle-item">
+                <a routerLink="/reminders" class="stat-circle reminders" title="View Reminders">
+                    <i data-feather="calendar" class="stat-bg-icon"></i>
+                    <span class="stat-count">2</span>
+                </a>
+                <span class="stat-label">Reminders</span>
+            </div>
+             <div class="stat-circle-item">
+                <a routerLink="/follow-ups" class="stat-circle follow-ups" title="View Follow-ups">
+                    <i data-feather="check-square" class="stat-bg-icon"></i>
+                    <span class="stat-count">5</span>
+                </a>
+                <span class="stat-label">Follow-ups</span>
+            </div>
+
         </div>
     </div>
 

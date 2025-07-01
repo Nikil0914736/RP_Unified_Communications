@@ -15,8 +15,10 @@ declare var feather: any;
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   isResident = false;
-  broadcastCount$: Observable<number>;
-  notificationCount$: Observable<number>;
+  unreadAllNotificationCount$!: Observable<number>;
+  totalAllNotificationCount$!: Observable<number>;
+  unreadBroadcastCount$: Observable<number>;
+  totalBroadcastCount$: Observable<number>;
 
   constructor(
     private titleService: Title,
@@ -27,13 +29,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.titleService.setTitle('Dashboard | Unified Communications');
-    this.signalRService.startConnection();
 
-    this.broadcastCount$ = this.signalRService.messages$.pipe(
-      map(messages => messages.length)
-    );
+    this.notificationService.start();
+    this.unreadAllNotificationCount$ = this.notificationService.unreadAllNotificationCount$;
+    this.totalAllNotificationCount$ = this.notificationService.totalAllNotificationCount$;
 
-    this.notificationCount$ = this.notificationService.notificationCount$;
+    this.unreadBroadcastCount$ = this.notificationService.unreadBroadcastCount$;
+    this.totalBroadcastCount$ = this.notificationService.totalBroadcastCount$;
 
     this.authService.currentUser.subscribe(user => {
       this.isResident = user && user.role.toLowerCase() === 'resident';

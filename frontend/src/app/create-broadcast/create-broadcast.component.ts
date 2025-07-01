@@ -32,7 +32,7 @@ export class CreateBroadcastComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.titleService.setTitle('Create Broadcast | Unified Communications');
-    this.signalRService.startConnection();
+    // The SignalR connection is now managed by the NotificationService and started on login.
     this.authService.currentUser.subscribe(user => {
       if (user) {
         this.fullName = user.fullName;

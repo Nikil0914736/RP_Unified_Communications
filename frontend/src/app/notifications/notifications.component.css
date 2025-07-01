@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow: hidden;
 }
 
 
@@ -61,7 +62,7 @@
 
 .notification-list-redesigned {
     list-style: none;
-    padding: 0;
+    padding: 0 0 0 20px;
     margin: 0;
 }
 
@@ -71,6 +72,27 @@
     padding: 15px 0;
     border-bottom: 1px solid #e5e5ea;
     transition: background-color 0.2s ease;
+    position: relative;
+}
+
+.notification-item-redesigned.unread {
+    background-color: #d9e8ff; /* A light blue */
+}
+
+.notification-item-redesigned.unread::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #007aff;
+}
+
+.notification-item-redesigned.unread .notification-details p {
+    font-weight: 600;
 }
 
 .notification-item-redesigned.clickable:hover {
@@ -94,6 +116,7 @@
 .notification-icon.message { background-color: #007aff; }
 .notification-icon.reminder { background-color: #ff9500; }
 .notification-icon.broadcast { background-color: #5856d6; }
+
 
 .notification-icon.broadcast span {
     font-weight: 600;
@@ -128,10 +151,11 @@
     flex-direction: column;
     align-items: flex-end;
     margin-left: auto;
-    padding-left: 10px; /* Add space between details and time */
+    padding-left: 10px;
     font-size: 12px;
     color: #8e8e93;
     flex-shrink: 0;
+    margin-right: 10px; /* Add space from the right edge */
 }
 
 /* Dark Mode */
@@ -166,6 +190,14 @@
     border-bottom-color: #3a3a3c;
 }
 
+:host-context(.dark-mode) .notification-item-redesigned.unread {
+    background-color: rgba(10, 132, 255, 0.2); /* A subtle blue overlay for dark mode */
+}
+
+:host-context(.dark-mode) .notification-item-redesigned.unread::before {
+    background-color: #0A84FF;
+}
+
 :host-context(.dark-mode) .notification-details p {
     color: #fff;
 }
@@ -173,6 +205,42 @@
 :host-context(.dark-mode) .notification-details small,
 :host-context(.dark-mode) .notification-time {
     color: #8e8e93;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #8e8e93;
+}
+
+.empty-state .empty-state-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 20px;
+    color: #c7c7cc;
+}
+
+.empty-state h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 10px;
+}
+
+.empty-state p {
+    font-size: 14px;
+    margin: 0;
+}
+
+:host-context(.dark-mode) .empty-state {
+    color: #8e8e93;
+}
+
+:host-context(.dark-mode) .empty-state .empty-state-icon {
+    color: #636366;
+}
+
+:host-context(.dark-mode) .empty-state h2 {
+    color: #fff;
 }
 
 
