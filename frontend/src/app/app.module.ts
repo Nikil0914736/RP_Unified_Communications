@@ -20,6 +20,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { RegistrationComponent } from './registration/registration.component';
 import { AlertComponent } from './alert/alert.component';
 import { PopoverComponent } from './popover/popover.component';
+import { FeatherIconComponent } from './shared/feather-icon/feather-icon.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { PopoverComponent } from './popover/popover.component';
     RegistrationComponent,
     AlertComponent,
     PopoverComponent,
+    FeatherIconComponent,
 
   ],
   imports: [

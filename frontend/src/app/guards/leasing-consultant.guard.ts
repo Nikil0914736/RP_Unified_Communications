@@ -4,7 +4,7 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { AuthService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
-export class ClientGuard implements CanActivate {
+export class LeasingConsultantGuard implements CanActivate {
     constructor(
         private router: Router,
         private authService: AuthService
@@ -12,12 +12,12 @@ export class ClientGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const currentUser = this.authService.currentUserValue;
-        if (currentUser && currentUser.role.toLowerCase() === 'client') {
-            // Logged in and has client role, so return true
+        if (currentUser && currentUser.role.toLowerCase() === 'leasing consultant') {
+            // Logged in and has leasing consultant role, so return true
             return true;
         }
 
-        // Not a client, so redirect to the dashboard
+        // Not a leasing consultant, so redirect to the dashboard
         this.router.navigate(['/dashboard']);
         return false;
     }

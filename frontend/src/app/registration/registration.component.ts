@@ -19,9 +19,7 @@ export class RegistrationComponent implements OnInit, AfterViewInit, OnDestroy {
   currentTime: string;
   private timeSubscription: Subscription;
 
-  model: any = {
-    role: 'client'
-  };
+  model: any = { role: 'resident' };
   loading = false;
   error = '';
 

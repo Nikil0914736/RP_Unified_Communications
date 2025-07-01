@@ -33,8 +33,8 @@ export class AuthService {
     );
   }
 
-  login(model: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, model).pipe(
+  login(username: string, password: string, role: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, { username, password, role }).pipe(
       tap(user => {
         console.log('AuthService: User logged in', user);
         localStorage.setItem('currentUser', JSON.stringify(user));

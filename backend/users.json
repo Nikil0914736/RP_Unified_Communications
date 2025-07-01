@@ -1,46 +1,16 @@
 {
   "Users": [
     {
-      "FullName": "Admin User",
-      "Username": "admin@realpage.com",
+      "FullName": "Resident User",
+      "Username": "resident@realpage.com",
       "Password": "password",
-      "Role": "admin"
+      "Role": "resident"
     },
     {
-      "FullName": "Client User",
-      "Username": "client@realpage.com",
+      "FullName": "Leasing Consultant User",
+      "Username": "leasingconsultant@relapge.com",
       "Password": "password",
-      "Role": "client"
-    },
-    {
-      "FullName": "Nikil Avula",
-      "Username": "nikil8045@gmail.com",
-      "Password": "password",
-      "Role": "client"
-    },
-    {
-      "FullName": "Nikil Reddy",
-      "Username": "A.NIKILREDDY@GMAIL.COM",
-      "Password": "password",
-      "Role": "admin"
-    },
-    {
-      "FullName": "Nikil Avula",
-      "Username": "nikil.avula@realpage.com",
-      "Password": "password",
-      "Role": "client"
-    },
-    {
-      "FullName": "Daniel Craig",
-      "Username": "daniel.craig@realpage.com",
-      "Password": "password",
-      "Role": "admin"
-    },
-    {
-      "FullName": "Rama Raju",
-      "Username": "rama.raju@realpage.com",
-      "Password": "password",
-      "Role": "client"
+      "Role": "leasing consultant"
     }
   ]
 }

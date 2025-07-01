@@ -10,14 +10,23 @@
         <button class="tab-item" [class.active]="filter === 'all'" (click)="setFilter('all')" title="Filter by All">All</button>
         <button class="tab-item" [class.active]="filter === 'call'" (click)="setFilter('call')" title="Filter by Alerts">Alerts</button>
         <button class="tab-item" [class.active]="filter === 'reminder'" (click)="setFilter('reminder')" title="Filter by Reminders">Reminders</button>
-        <button *ngIf="isClient" class="tab-item" [class.active]="filter === 'broadcast'" (click)="setFilter('broadcast')" title="Filter by Broadcasts">Broadcasts</button>
+        <button *ngIf="isResident" class="tab-item" [class.active]="filter === 'broadcast'" (click)="setFilter('broadcast')" title="Filter by Broadcasts">Broadcasts</button>
     </div>
 
     <ul class="notification-list-redesigned">
         <li *ngFor="let notification of (filteredNotifications$ | async)" class="notification-item-redesigned" [class.clickable]="notification.type === 'broadcast'" (click)="showPopover(notification)" [title]="notification.title">
             <div class="notification-icon" [ngClass]="notification.type">
-                <i *ngIf="notification.type !== 'broadcast'" [attr.data-feather]="notification.icon"></i>
-                <span *ngIf="notification.type === 'broadcast'">{{ notification.initials }}</span>
+                <ng-container [ngSwitch]="notification.type">
+                    <ng-container *ngSwitchCase="'broadcast'">
+                        <span *ngIf="filter === 'broadcast'; else radioIcon">{{ notification.initials }}</span>
+                        <ng-template #radioIcon>
+                            <app-feather-icon [icon]="'radio'"></app-feather-icon>
+                        </ng-template>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        <app-feather-icon [icon]="notification.icon"></app-feather-icon>
+                    </ng-container>
+                </ng-container>
             </div>
             <div class="notification-details">
                 <p>{{ notification.title }}</p>

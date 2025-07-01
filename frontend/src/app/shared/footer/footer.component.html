@@ -15,13 +15,13 @@
         <i data-feather="calendar"></i>
         <span>Reminders</span>
     </a>
-        <!-- Link for Admins to create broadcasts -->
-    <a *ngIf="isAdmin" routerLink="/broadcast" routerLinkActive="active" class="nav-item" title="Create Broadcast">
+        <!-- Link for Leasing Consultants to create broadcasts -->
+    <a *ngIf="isLeasingConsultant" routerLink="/broadcast" routerLinkActive="active" class="nav-item" title="Create Broadcast">
         <i data-feather="message-square"></i>
         <span>Create Broadcast</span>
     </a>
-    <!-- Link for Clients to view broadcasts -->
-    <a *ngIf="isClient" routerLink="/broadcasts" routerLinkActive="active" class="nav-item" title="View Broadcasts">
+    <!-- Link for Residents to view broadcasts -->
+    <a *ngIf="isResident" routerLink="/broadcasts" routerLinkActive="active" class="nav-item" title="View Broadcasts">
         <i data-feather="message-square"></i>
         <span>Broadcasts</span>
     </a>

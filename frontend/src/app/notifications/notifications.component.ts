@@ -4,9 +4,9 @@ import { PopoverService } from '../services/popover.service';
 import { AuthService } from '../services/auth.service';
 import { Notification, NotificationService } from '../services/notification.service';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
-declare var feather: any;
+
 
 @Component({
   selector: 'app-notifications',
@@ -14,7 +14,7 @@ declare var feather: any;
   styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit {
-  isClient = false;
+  isResident = false;
   filter: 'all' | 'call' | 'reminder' | 'broadcast' = 'all';
   filteredNotifications$: Observable<Notification[]>;
 
@@ -29,7 +29,7 @@ export class NotificationsComponent implements OnInit {
     this.titleService.setTitle('Notifications | Unified Communications');
 
     this.authService.currentUser.subscribe(user => {
-      this.isClient = user && user.role.toLowerCase() === 'client';
+      this.isResident = user && user.role.toLowerCase() === 'resident';
     });
 
     this.setFilter('all');
@@ -44,7 +44,6 @@ export class NotificationsComponent implements OnInit {
         }
         return notifications.filter(n => n.type === filter);
       }),
-      tap(() => setTimeout(() => feather.replace(), 0))
     );
   }
 

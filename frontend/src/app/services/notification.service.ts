@@ -30,29 +30,21 @@ export class NotificationService {
   ) {
     this.signalRService.startConnection();
 
-    const staticNotifications: Notification[] = [
-      { type: 'call', icon: 'phone', title: 'Missed call from John Doe', subtitle: 'Unified Communications', time: '2h ago' },
-      { type: 'message', icon: 'message-square', title: 'New message from Alice Smit', subtitle: 'Unified Communications', time: '4h ago' },
-      { type: 'reminder', icon: 'calendar', title: 'Team meeting at 10:00 AM', subtitle: 'Unified Communications', time: 'Yesterday' },
-    ];
-
     const broadcastNotifications$ = this.signalRService.messages$.pipe(
       map(messages => this.mapBroadcastsToNotifications(messages))
     );
 
-    this.allNotifications$ = combineLatest([
-      broadcastNotifications$.pipe(startWith([])),
-    ]).pipe(
-      map(([broadcasts]) => [...staticNotifications, ...broadcasts]),
+    this.allNotifications$ = broadcastNotifications$.pipe(
+      startWith([]),
       shareReplay(1)
     );
 
     this.notifications$ = this.authService.currentUser.pipe(
       switchMap(user => {
-        const isClient = user && user.role.toLowerCase() === 'client';
+        const isResident = user && user.role.toLowerCase() === 'resident';
         return this.allNotifications$.pipe(
           map(notifications => {
-            if (isClient) {
+            if (isResident) {
               return notifications;
             }
             return notifications.filter(n => n.type !== 'broadcast');
@@ -73,6 +65,7 @@ export class NotificationService {
       const initials = nameParts.length > 1
         ? `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`
         : nameParts[0].charAt(0);
+
       return {
         type: 'broadcast' as const,
         icon: 'speaker',

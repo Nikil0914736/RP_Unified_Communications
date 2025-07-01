@@ -9,15 +9,15 @@ declare var feather: any;
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit, AfterViewInit {
-  isAdmin = false;
-  isClient = false;
+  isLeasingConsultant = false;
+  isResident = false;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(user => {
-      this.isAdmin = user && user.role.toLowerCase() === 'admin';
-      this.isClient = user && user.role.toLowerCase() === 'client';
+      this.isLeasingConsultant = user && user.role.toLowerCase() === 'leasing consultant';
+      this.isResident = user && user.role.toLowerCase() === 'resident';
     });
   }
 

@@ -21,11 +21,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   currentTime: string;
   private timeSubscription: Subscription;
 
-  model: any = {
-    username: '',
-    password: ''
-  };
-  selectedModule = 'client';
+  model: any = { username: '', password: '', role: 'resident' };
   loading = false;
   error = '';
 
@@ -46,35 +42,37 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  selectModule(module: string): void {
-    if (this.selectedModule !== module) {
-      this.selectedModule = module;
-      this.error = '';
-      // Reset the form's state and values to clear validation messages
-      if (this.loginForm) {
-        this.loginForm.resetForm();
+  onRoleChange(): void {
+    this.model.username = '';
+    this.model.password = '';
+    this.error = '';
+
+    if (this.loginForm && this.loginForm.controls) {
+      if (this.loginForm.controls.username) {
+        this.loginForm.controls.username.reset('');
+      }
+      if (this.loginForm.controls.password) {
+        this.loginForm.controls.password.reset('');
       }
     }
   }
 
   onSubmit(form: NgForm): void {
     if (form.invalid) {
-        return;
+      return;
     }
 
     this.loading = true;
-    this.error = '';
-    const loginPayload = { ...this.model, role: this.selectedModule };
-
-    this.authService.login(loginPayload)
-        .subscribe(
-            () => {
-                this.router.navigate(['/dashboard']);
-            },
-            error => {
-                this.error = error;
-                this.loading = false;
-            });
+    this.authService.login(this.model.username, this.model.password, this.model.role)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.error = error;
+          this.loading = false;
+        }
+      });
   }
 
   ngOnDestroy(): void {

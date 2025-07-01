@@ -1,0 +1,21 @@
+# Set default behavior to automatically handle line endings.
+* text=auto
+
+# Explicitly declare text files to be normalized.
+*.html text
+*.css text
+*.js text
+*.ts text
+*.json text
+*.md text
+*.scss text
+*.cs text
+*.csproj text
+
+# Files that should always have LF line endings
+*.sh eol=lf
+
+# Binary files that should not be modified
+*.png binary
+*.jpg binary
+*.ico binary

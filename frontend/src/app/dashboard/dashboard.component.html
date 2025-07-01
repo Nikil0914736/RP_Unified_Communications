@@ -30,7 +30,7 @@
                     <span class="summary-label">Follow-ups</span>
                 </div>
             </a>
-            <a *ngIf="isClient" [routerLink]="'/broadcasts'" class="card-link" title="View Broadcasts">
+            <a *ngIf="isResident" [routerLink]="'/broadcasts'" class="card-link" title="View Broadcasts">
                 <div class="summary-item">
                     <span class="summary-count">{{ broadcastCount$ | async }}</span>
                     <span class="summary-label">Broadcasts</span>
@@ -126,7 +126,7 @@
                 <small>Today 1:00 PM</small>
             </div>
         </a>
-        <a *ngIf="isClient" [routerLink]="'/broadcasts'" class="card-link" title="View Broadcast Highlights">
+        <a *ngIf="isResident" [routerLink]="'/broadcasts'" class="card-link" title="View Broadcast Highlights">
             <div class="card highlights-card">
                 <h3>Broadcast Highlights</h3>
                 <p>Weekly Update</p>

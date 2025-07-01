@@ -39,11 +39,16 @@
                 </div>
             </div>
             <div class="input-group">
-                <label for="role">Role</label>
-                <select id="role" name="role" [(ngModel)]="model.role" required #role="ngModel" title="Select a role">
-                    <option value="client">Client</option>
-                    <option value="admin">Admin</option>
+                <label for="role">Select User Type</label>
+                <select id="role" name="role" [(ngModel)]="model.role" required #role="ngModel" title="Select a user type">
+                    <option value="resident">Resident</option>
+                    <option value="leasing consultant">Leasing Consultant</option>
                 </select>
+                <div *ngIf="role.invalid && (role.dirty || role.touched)" class="validation-error">
+                    <div *ngIf="role.errors?.required">
+                      User type is required.
+                    </div>
+                </div>
             </div>
 
             <div class="input-group">

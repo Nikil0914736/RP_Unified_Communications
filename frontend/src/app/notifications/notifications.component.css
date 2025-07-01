@@ -95,6 +95,19 @@
 .notification-icon.reminder { background-color: #ff9500; }
 .notification-icon.broadcast { background-color: #5856d6; }
 
+.notification-icon.broadcast span {
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+}
+
+.notification-icon.broadcast i,
+.notification-icon.broadcast svg {
+    color: #fff;
+    width: 20px;
+    height: 20px;
+}
+
 .notification-details {
     flex-grow: 1;
 }

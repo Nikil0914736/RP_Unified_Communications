@@ -12,15 +12,14 @@
 
 ### Authentication
 -   **Backend User Persistence**: A .NET Web API backend handles all user data, which is persisted in a `users.json` file.
--   **Secure User Login**: A robust login page validates user credentials (email, password, and role) against the backend. Invalid attempts are met with a generic "Invalid credentials" message for security.
--   **User Registration**: A registration form that securely saves new users to the backend, with validation to prevent duplicate email addresses.
+-   **Secure User Login & Registration**: A robust login page validates user credentials (email, password, and role) against the backend. The login and registration pages feature a modern dropdown menu to select the user type (**Resident** or **Leasing Consultant**), with "Resident" as the default.
 -   **Password Change**: A secure page for users to change their password, with validation for password length and a check to prevent using the same password.
--   **Route Protection**: An Angular `AuthGuard` protects all sensitive routes, automatically redirecting unauthenticated users to the login page.
+-   **Route Protection**: Angular Guards (`AuthGuard`, `ResidentGuard`, and `LeasingConsultantGuard`) protect all sensitive routes, automatically redirecting unauthorized users to the login page.
 
 ### Real-time & Notifications
 -   **Real-time Broadcasts with SignalR**: The application uses SignalR to push live broadcast messages to all connected clients, ensuring instant communication.
 -   **Unified Notification Center**: Broadcast messages are seamlessly integrated into the main "Notifications" page, creating a single, unified feed for all alerts and communications.
--   **Role-Based Views**: The notification system is role-aware. **Clients** see all notifications, including broadcasts, while **Admins** see a more focused view that excludes broadcasts.
+-   **Role-Based Views**: The notification system is role-aware. **Residents** see all notifications, including broadcasts, while **Leasing Consultants** have access to broadcast creation tools.
 -   **Live Dashboard Count**: The dashboard summary features a notification count that updates in real-time as new messages arrive, tailored to the logged-in user's role.
 -   **Interactive Message Popover**: A polished, reusable popover component allows users to view the full content of broadcast messages. It features a modern design, smooth animations, and is closable via the Escape key or an overlay click.
 
@@ -30,7 +29,7 @@
 -   **Notifications**: A dedicated page that provides a unified, filterable feed of all alerts, reminders, and broadcast messages.
 -   **Reminders**: A module to create and schedule new reminders.
 -   **Follow-ups**: A section to track and manage follow-up tasks.
--   **Broadcast**: A tool to compose and send broadcast messages.
+-   **Broadcast**: A tool for **Leasing Consultants** to compose and send broadcast messages.
 -   **Settings**: A page to manage application preferences.
 
 ## Project Structure
@@ -57,6 +56,7 @@ Follow these instructions to get the project up and running on your local machin
 -   **Node.js and npm**: [Download & Install Node.js](https://nodejs.org/)
 -   **Angular CLI**: `npm install -g @angular/cli`
 -   **.NET 6 SDK** (or newer): [Download & Install .NET](https://dotnet.microsoft.com/download)
+-   **Git**: [Download & Install Git](https://git-scm.com/downloads)
 
 ### Installation & Setup
 
@@ -93,4 +93,19 @@ You will need to run the backend and frontend servers in two separate terminals.
     ng serve
     ```
     Navigate to `http://localhost:4200/`. The application will be live, and it will automatically reload if you make any changes to the source files.
+
+### Default Users
+
+You can use the following default credentials to log in and test the application:
+
+-   **Role**: Resident
+    -   **Username**: `resident@realpage.com`
+    -   **Password**: `password`
+-   **Role**: Leasing Consultant
+    -   **Username**: `leasingconsultant@realpage.com`
+    -   **Password**: `password`
+
+### Git Configuration Note
+
+This repository includes a `.gitattributes` file to enforce consistent line endings across different operating systems. If you encounter any warnings related to line endings (LF vs. CRLF), they should be resolved automatically by this configuration.
 

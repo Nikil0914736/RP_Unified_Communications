@@ -4,7 +4,7 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { AuthService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
-export class AdminGuard implements CanActivate {
+export class ResidentGuard implements CanActivate {
     constructor(
         private router: Router,
         private authService: AuthService
@@ -12,12 +12,12 @@ export class AdminGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const currentUser = this.authService.currentUserValue;
-        if (currentUser && currentUser.role.toLowerCase() === 'admin') {
-            // logged in and has admin role so return true
+        if (currentUser && currentUser.role.toLowerCase() === 'resident') {
+            // Logged in and has resident role, so return true
             return true;
         }
 
-        // not an admin so redirect to dashboard page
+        // Not a resident, so redirect to the dashboard
         this.router.navigate(['/dashboard']);
         return false;
     }

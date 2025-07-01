@@ -14,7 +14,7 @@ declare var feather: any;
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  isClient = false;
+  isResident = false;
   broadcastCount$: Observable<number>;
   notificationCount$: Observable<number>;
 
@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.notificationCount$ = this.notificationService.notificationCount$;
 
     this.authService.currentUser.subscribe(user => {
-      this.isClient = user && user.role.toLowerCase() === 'client';
+      this.isResident = user && user.role.toLowerCase() === 'resident';
     });
   }
 

@@ -22,9 +22,17 @@
         </div>
 
         <form class="login-form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-            <div class="module-selector">
-              <button type="button" class="module-btn" [class.active]="selectedModule === 'client'" (click)="selectModule('client')" title="Select Client Module">Client</button>
-              <button type="button" class="module-btn" [class.active]="selectedModule === 'admin'" (click)="selectModule('admin')" title="Select Admin Module">Admin</button>
+            <div class="input-group">
+                <label for="role">Select User Type</label>
+                <select id="role" name="role" [(ngModel)]="model.role" required #role="ngModel" title="Select a user type" (change)="onRoleChange()">
+                    <option value="resident">Resident</option>
+                    <option value="leasing consultant">Leasing Consultant</option>
+                </select>
+                <div *ngIf="role.invalid && (role.dirty || role.touched)" class="validation-error">
+                    <div *ngIf="role.errors?.required">
+                      User type is required.
+                    </div>
+                </div>
             </div>
             <div class="input-group">
                 <label for="username">Email Address</label>
