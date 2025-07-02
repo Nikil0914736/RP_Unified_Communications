@@ -53,23 +53,60 @@
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: #ff3b30;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    border: 2px solid #f0f2f5;
+}
+
+:host-context(.dark-mode) .badge {
+    border-color: #1c1c1e;
 }
 
 .tab-item.active {
-    background-color: #007aff;
     color: #fff;
+}
+
+.tab-item.active[title="Filter by All"] {
+    background: linear-gradient(135deg, #5656d7, #8a56d7);
+}
+
+.tab-item.active[title="Filter by Alerts"] {
+    background: linear-gradient(135deg, #ff3b30, #ff8c30);
+}
+
+.tab-item.active[title="Filter by Reminders"] {
+    background: linear-gradient(135deg, #ff9500, #ffcc00);
+}
+
+.tab-item.active[title="Filter by Broadcasts"] {
+    background: linear-gradient(135deg, #007aff, #00a2ff);
 }
 
 .notification-list-redesigned {
     list-style: none;
-    padding: 0 0 0 20px;
+    padding: 0;
     margin: 0;
 }
 
 .notification-item-redesigned {
     display: flex;
     align-items: center;
-    padding: 15px 0;
+    padding: 15px 0 15px 15px;
     border-bottom: 1px solid #e5e5ea;
     transition: background-color 0.2s ease;
     position: relative;
@@ -91,6 +128,18 @@
     background-color: #007aff;
 }
 
+.notification-item-redesigned.unread::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #007aff;
+}
+
 .notification-item-redesigned.unread .notification-details p {
     font-weight: 600;
 }
@@ -98,6 +147,11 @@
 .notification-item-redesigned.clickable:hover {
     background-color: #f7f7f7;
     cursor: pointer;
+}
+
+.notification-item-redesigned.selected {
+    background-color: #e5e5ea;
+    transition: background-color 0.1s ease-in-out;
 }
 
 .notification-icon {
@@ -184,6 +238,10 @@
 
 :host-context(.dark-mode) .notification-item-redesigned.clickable:hover {
     background-color: #3a3a3c;
+}
+
+:host-context(.dark-mode) .notification-item-redesigned.selected {
+    background-color: #48484a;
 }
 
 :host-context(.dark-mode) .notification-item-redesigned {

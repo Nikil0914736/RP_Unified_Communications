@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { PopoverService } from '../services/popover.service';
@@ -18,6 +19,10 @@ export class NotificationsComponent implements OnInit {
   isResident = false;
   filter: 'all' | 'call' | 'reminder' | 'broadcast' = 'all';
   filteredNotifications$: Observable<Notification[]>;
+  unreadAllNotificationCount$: Observable<number>;
+  unreadBroadcastCount$: Observable<number>;
+  selectedNotificationId: string | null = null;
+  private subscriptions = new Subscription();
 
   constructor(
     private titleService: Title,
@@ -29,6 +34,9 @@ export class NotificationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle('Notifications | Unified Communications');
+
+    this.unreadAllNotificationCount$ = this.notificationService.unreadAllNotificationCount$;
+    this.unreadBroadcastCount$ = this.notificationService.unreadBroadcastCount$;
 
     this.authService.currentUser.subscribe(user => {
       this.isResident = user && user.role.toLowerCase() === 'resident';
@@ -59,6 +67,8 @@ export class NotificationsComponent implements OnInit {
   }
 
   showPopover(notification: Notification): void {
+    this.selectedNotificationId = notification.id;
+    setTimeout(() => { this.selectedNotificationId = null; }, 300);
     if (notification.type === 'broadcast' && !notification.isRead && notification.id) {
       const currentUser = this.authService.currentUserValue;
       if (currentUser && currentUser.username) {

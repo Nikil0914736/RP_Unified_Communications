@@ -14,14 +14,14 @@
 
 .notification-list-redesigned {
     list-style: none;
-    padding: 0 0 0 20px;
+    padding: 0;
     margin: 0;
 }
 
 .notification-item-redesigned {
     display: flex;
-    align-items: flex-start; /* Align items to the top */
-    padding: 15px 0;
+    align-items: center;
+    padding: 15px 0 15px 15px;
     border-bottom: 1px solid #e5e5ea;
     cursor: pointer;
     position: relative;
@@ -34,8 +34,9 @@
 .notification-item-redesigned.unread::before {
     content: '';
     position: absolute;
-    left: -15px;
-    top: 22px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -44,6 +45,11 @@
 
 .notification-item-redesigned.unread .notification-details p {
     font-weight: 600;
+}
+
+.notification-item-redesigned.selected {
+    background-color: #e5e5ea;
+    transition: background-color 0.1s ease-in-out;
 }
 
 .notification-icon {
@@ -97,6 +103,10 @@
 
 :host-context(.dark-mode) .notification-item-redesigned.unread {
     background-color: rgba(10, 132, 255, 0.2); /* A subtle blue overlay for dark mode */
+}
+
+:host-context(.dark-mode) .notification-item-redesigned.selected {
+    background-color: #48484a;
 }
 
 :host-context(.dark-mode) .notification-item-redesigned.unread::before {

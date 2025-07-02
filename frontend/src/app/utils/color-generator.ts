@@ -1,6 +1,14 @@
 const COLORS = [
-  '#5856d6', '#ff9500', '#ff2d55', '#5ac8fa', '#ffcc00', '#4cd964', '#007aff', '#ff3b30',
-  '#a2845e', '#63c9a8', '#8e8e93'
+  '#7E57C2', // Deep Purple
+  '#5C6BC0', // Indigo
+  '#42A5F5', // Blue
+  '#26A69A', // Teal
+  '#66BB6A', // Green
+  '#FFA726', // Orange
+  '#FF7043', // Deep Orange
+  '#EC407A', // Pink
+  '#8D6E63', // Brown
+  '#78909C'  // Blue Grey
 ];
 
 export function generateColor(str: string): string {

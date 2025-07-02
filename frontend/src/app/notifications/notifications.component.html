@@ -7,16 +7,18 @@
     </div>
 
     <div class="filter-tabs">
-        <button class="tab-item" [class.active]="filter === 'all'" (click)="setFilter('all')" title="Filter by All">All</button>
+                <button class="tab-item" [class.active]="filter === 'all'" (click)="setFilter('all')" title="Filter by All">All<span class="badge" *ngIf="(unreadAllNotificationCount$ | async) > 0">{{ unreadAllNotificationCount$ | async }}</span></button>
         <button class="tab-item" [class.active]="filter === 'call'" (click)="setFilter('call')" title="Filter by Alerts">Alerts</button>
         <button class="tab-item" [class.active]="filter === 'reminder'" (click)="setFilter('reminder')" title="Filter by Reminders">Reminders</button>
-        <button *ngIf="isResident" class="tab-item" [class.active]="filter === 'broadcast'" (click)="setFilter('broadcast')" title="Filter by Broadcasts">Broadcasts</button>
+                <button *ngIf="isResident" class="tab-item" [class.active]="filter === 'broadcast'" (click)="setFilter('broadcast')" title="Filter by Broadcasts">Broadcasts<span class="badge" *ngIf="(unreadBroadcastCount$ | async) > 0">{{ unreadBroadcastCount$ | async }}</span></button>
     </div>
+
+
 
     <div *ngIf="(filteredNotifications$ | async) as notifications" class="notification-container">
         <div *ngIf="notifications.length > 0; else noNotifications">
             <ul class="notification-list-redesigned">
-                            <li *ngFor="let notification of notifications" class="notification-item-redesigned" [class.clickable]="notification.type === 'broadcast'" [class.unread]="notification.type === 'broadcast' && !notification.isRead" (click)="showPopover(notification)" [title]="notification.title">
+                                                        <li *ngFor="let notification of notifications" class="notification-item-redesigned" [class.clickable]="notification.type === 'broadcast'" [class.unread]="notification.type === 'broadcast' && !notification.isRead" [class.selected]="notification.id === selectedNotificationId" (click)="showPopover(notification)" [title]="notification.title">
                     <div class="notification-icon" [ngClass]="notification.type" [style.backgroundColor]="filter === 'broadcast' ? notification.color : null">
                         <ng-container [ngSwitch]="notification.type">
                             <ng-container *ngSwitchCase="'broadcast'">

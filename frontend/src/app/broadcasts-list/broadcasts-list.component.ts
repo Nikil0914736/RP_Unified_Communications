@@ -22,6 +22,7 @@ export interface DisplayBroadcast extends BroadcastMessage {
 })
 export class BroadcastsListComponent implements OnInit {
   broadcasts$: Observable<DisplayBroadcast[]>;
+  selectedBroadcastId: string | null = null;
 
 
 
@@ -63,6 +64,8 @@ export class BroadcastsListComponent implements OnInit {
   }
 
   showPopover(broadcast: DisplayBroadcast): void {
+    this.selectedBroadcastId = broadcast.id;
+    setTimeout(() => { this.selectedBroadcastId = null; }, 300);
     if (!broadcast.isRead) {
       const currentUser = this.authService.currentUserValue;
       if (currentUser && currentUser.username) {

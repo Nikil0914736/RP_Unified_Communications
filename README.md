@@ -2,6 +2,18 @@
 
 **Unified Communications** is an enterprise-grade, full-featured communication hub built with a .NET backend and an Angular frontend. This application streamlines all communication channels into a single, intuitive platform, designed for seamless collaboration and productivity. Featuring a clean, modern, and fully responsive interface, it provides a consistent user experience across all devices.
 
+## Recent Features & Enhancements
+
+-   **Broadcasts Module**: A complete, end-to-end broadcast system has been implemented, allowing Leasing Consultants to send messages that are received in real-time by all Residents.
+-   **Unread Count Badges**: The footer navigation and the notification filter tabs now display red badges to indicate the number of unread items, ensuring users never miss an update.
+-   **UI & UX Refinements**:
+    -   **Themed Scrollbar**: A custom, dark-themed scrollbar has been added for a more polished and immersive dark mode experience.
+    -   **Header Role Display**: The user's role (e.g., "Resident") is now displayed in the header for better context.
+    -   **Color-Coded Tabs**: The filter tabs on the notifications page are now color-coded to match the summary cards on the dashboard, creating a more cohesive design.
+-   **State Management & Bug Fixes**:
+    -   Resolved a critical bug where notification data was not being cleared on logout.
+    -   Fixed an issue where marking a message as read did not persist correctly.
+
 ## Features
 
 ### Core Application

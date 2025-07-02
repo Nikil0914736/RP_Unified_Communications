@@ -22,7 +22,10 @@
     </a>
     <!-- Link for Residents to view broadcasts -->
     <a *ngIf="isResident" routerLink="/broadcasts" routerLinkActive="active" class="nav-item" title="View Broadcasts">
-        <i data-feather="radio"></i>
+        <div class="icon-wrapper">
+            <i data-feather="radio"></i>
+            <span class="badge" *ngIf="(unreadBroadcastCount$ | async) > 0">{{ unreadBroadcastCount$ | async }}</span>
+        </div>
         <span>Broadcasts</span>
     </a>
     <a routerLink="/follow-ups" routerLinkActive="active" class="nav-item" title="Go to Follow-ups">

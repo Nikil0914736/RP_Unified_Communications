@@ -4,7 +4,7 @@
   <div class="broadcast-container">
     <div *ngIf="(broadcasts$ | async) as broadcasts" class="notification-container">
       <ul *ngIf="broadcasts.length > 0; else noBroadcasts" class="notification-list-redesigned">
-                <li *ngFor="let broadcast of broadcasts" class="notification-item-redesigned" [class.unread]="!broadcast.isRead" (click)="showPopover(broadcast)">
+                                <li *ngFor="let broadcast of broadcasts" class="notification-item-redesigned" [class.unread]="!broadcast.isRead" [class.selected]="broadcast.id === selectedBroadcastId" (click)="showPopover(broadcast)">
           <div class="notification-icon broadcast" [style.backgroundColor]="broadcast.color">
             <span>{{ broadcast.initials }}</span>
           </div>

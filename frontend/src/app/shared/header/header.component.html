@@ -14,11 +14,24 @@
         </div>
     </div>
     <div class="main-header">
-        <h1>{{ title }}</h1>
+        <div class="header-title-container">
+            <h1>{{ title }}</h1>
+            <div class="header-role" *ngIf="userRole">{{ userRole }}</div>
+        </div>
         <div class="profile-container">
             <div class="profile-pic" [style.backgroundColor]="profileColor" (click)="toggleProfileMenu()">{{ userInitials }}</div>
             <div class="profile-menu" *ngIf="isProfileMenuVisible">
-                                <a (click)="logout()">Logout</a>
+                <div class="profile-menu-header">
+                    <div class="profile-info">
+                        <div class="profile-name">{{ userFullName }}</div>
+                        <div class="profile-role">{{ userRole }}</div>
+                    </div>
+                </div>
+                <hr class="menu-divider">
+                <a (click)="logout()" class="logout-link">
+                    <i data-feather="log-out"></i>
+                    <span>Logout</span>
+                </a>
             </div>
         </div>
     </div>

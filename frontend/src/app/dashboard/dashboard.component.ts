@@ -39,10 +39,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.authService.currentUser.subscribe(user => {
       this.isResident = user && user.role.toLowerCase() === 'resident';
+      // Use setTimeout to ensure the view has updated from the *ngIf
+      setTimeout(() => this.replaceIcons(), 0);
     });
   }
 
   ngAfterViewInit(): void {
-    feather.replace({ width: '24px', height: '24px' });
+    this.replaceIcons();
+  }
+
+  private replaceIcons(): void {
+    feather.replace({ width: '16px', height: '16px' });
   }
 }

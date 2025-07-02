@@ -1,10 +1,12 @@
-import { Component, Input, OnInit, OnDestroy, Renderer2, Inject } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Renderer2, Inject, ElementRef, HostListener } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { TimeService } from '../../services/time.service';
 import { Subscription } from 'rxjs';
 import { generateColor } from '../../utils/color-generator';
+
+declare var feather: any;
 
 @Component({
   selector: 'app-header',
@@ -14,23 +16,35 @@ import { generateColor } from '../../utils/color-generator';
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input() title: string;
   userInitials: string;
+  userFullName: string;
+  userRole: string;
   profileColor: string;
   isProfileMenuVisible = false;
   isDarkMode: boolean;
   currentTime: string;
   private timeSubscription: Subscription;
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.isProfileMenuVisible && !this.el.nativeElement.contains(event.target)) {
+      this.isProfileMenuVisible = false;
+    }
+  }
+
   constructor(
     private router: Router,
     private authService: AuthService,
     private timeService: TimeService,
     private renderer: Renderer2,
+    private el: ElementRef,
     @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(user => {
       if (user) {
+        this.userFullName = user.fullName;
+        this.userRole = user.role;
         if (user.fullName) {
           this.userInitials = this.getInitials(user.fullName);
           this.profileColor = generateColor(this.userInitials);
@@ -43,6 +57,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       } else {
         this.userInitials = ''; // Clear initials on logout
+        this.userFullName = '';
+        this.userRole = '';
       }
       console.log('HeaderComponent: Final initials', this.userInitials);
     });
@@ -81,6 +97,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleProfileMenu(): void {
     this.isProfileMenuVisible = !this.isProfileMenuVisible;
+    if (this.isProfileMenuVisible) {
+      // Use setTimeout to allow the DOM to update before replacing icons
+      setTimeout(() => feather.replace({ width: '18px', height: '18px' }), 0);
+    }
   }
 
   private updateBodyClass(): void {
