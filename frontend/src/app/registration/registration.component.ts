@@ -22,6 +22,7 @@ export class RegistrationComponent implements OnInit, AfterViewInit, OnDestroy {
   model: any = { role: 'resident' };
   loading = false;
   error = '';
+  private errorTimeout: any;
 
   constructor(
     private titleService: Title,
@@ -42,6 +43,9 @@ export class RegistrationComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.timeSubscription) {
       this.timeSubscription.unsubscribe();
+    }
+    if (this.errorTimeout) {
+      clearTimeout(this.errorTimeout);
     }
   }
 
@@ -65,6 +69,12 @@ export class RegistrationComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.error = error;
           this.loading = false;
+          if (this.errorTimeout) {
+            clearTimeout(this.errorTimeout);
+          }
+          this.errorTimeout = setTimeout(() => {
+            this.error = '';
+          }, 3000);
         });
   }
 }

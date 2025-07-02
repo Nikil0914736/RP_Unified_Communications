@@ -22,6 +22,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit, OnDestroy
   model: any = {};
   loading = false;
   error = '';
+  private errorTimeout: any;
 
   constructor(
     private authService: AuthService,
@@ -42,6 +43,9 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnDestroy(): void {
     if (this.timeSubscription) {
       this.timeSubscription.unsubscribe();
+    }
+    if (this.errorTimeout) {
+      clearTimeout(this.errorTimeout);
     }
   }
 
@@ -65,6 +69,12 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit, OnDestroy
         error => {
           this.error = error;
           this.loading = false;
+          if (this.errorTimeout) {
+            clearTimeout(this.errorTimeout);
+          }
+          this.errorTimeout = setTimeout(() => {
+            this.error = '';
+          }, 3000);
         });
   }
 }
