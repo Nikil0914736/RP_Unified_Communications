@@ -9,6 +9,12 @@ namespace backend.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly string _usersFilePath = "users.json";
+    private readonly ILogger<AuthController> _logger;
+
+    public AuthController(ILogger<AuthController> logger)
+    {
+        _logger = logger;
+    }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegistrationDto registrationDto)
@@ -36,6 +42,7 @@ public class AuthController : ControllerBase
 
         var newUser = new User
         {
+            Id = Guid.NewGuid(),
             FullName = registrationDto.FullName,
             Username = registrationDto.Email,
             Password = registrationDto.Password, // WARNING: Password should be hashed in a real application
@@ -118,9 +125,22 @@ public class AuthController : ControllerBase
             u.Password == loginDto.Password &&
             u.Role.Equals(loginDto.Role, StringComparison.OrdinalIgnoreCase));
 
-        if (user == null)
+                if (user == null)
         {
             return Unauthorized(new { message = "Invalid credentials" });
+        }
+
+        bool needsSave = false;
+        if (user.Id == Guid.Empty)
+        {
+            user.Id = Guid.NewGuid();
+            needsSave = true;
+        }
+
+        if (needsSave)
+        {
+            var newJsonData = JsonSerializer.Serialize(userData, new JsonSerializerOptions { WriteIndented = true });
+            await System.IO.File.WriteAllTextAsync(_usersFilePath, newJsonData);
         }
 
         return Ok(user);
@@ -163,5 +183,65 @@ public class AuthController : ControllerBase
         }
 
         return Ok(new { message = "Broadcast marked as read." });
+    }
+
+    [HttpPost("mark-reminder-as-read")]
+    public async Task<IActionResult> MarkReminderAsRead([FromBody] MarkReminderAsReadDto markAsReadDto)
+    {
+        _logger.LogInformation("MarkReminderAsRead endpoint called for user: {Username}, reminderId: {ReminderId}", markAsReadDto?.Username, markAsReadDto?.ReminderId);
+
+        if (markAsReadDto == null || string.IsNullOrWhiteSpace(markAsReadDto.Username) || string.IsNullOrWhiteSpace(markAsReadDto.ReminderId))
+        {
+            _logger.LogWarning("MarkReminderAsRead: Invalid data provided.");
+            return BadRequest(new { message = "Invalid data provided." });
+        }
+
+        try
+        {
+            var userData = new UserData();
+            if (!System.IO.File.Exists(_usersFilePath))
+            {
+                _logger.LogError("MarkReminderAsRead: User data file not found at {Path}", _usersFilePath);
+                return NotFound(new { message = "User data file not found." });
+            }
+
+            var jsonData = await System.IO.File.ReadAllTextAsync(_usersFilePath);
+            var deserializedData = JsonSerializer.Deserialize<UserData>(jsonData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            if (deserializedData?.Users != null)
+            {
+                userData = deserializedData;
+            }
+
+            var userToUpdate = userData.Users.FirstOrDefault(u => u.Username.Equals(markAsReadDto.Username, StringComparison.OrdinalIgnoreCase));
+
+            if (userToUpdate == null)
+            {
+                _logger.LogWarning("MarkReminderAsRead: User not found with username {Username}", markAsReadDto.Username);
+                return NotFound(new { message = "User not found." });
+            }
+
+            _logger.LogInformation("MarkReminderAsRead: User {Username} found.", userToUpdate.Username);
+
+            if (!userToUpdate.ReadReminderIds.Contains(markAsReadDto.ReminderId))
+            {
+                _logger.LogInformation("MarkReminderAsRead: ReminderId {ReminderId} not in user's read list. Adding it.", markAsReadDto.ReminderId);
+                userToUpdate.ReadReminderIds.Add(markAsReadDto.ReminderId);
+
+                var newJsonData = JsonSerializer.Serialize(userData, new JsonSerializerOptions { WriteIndented = true });
+                await System.IO.File.WriteAllTextAsync(_usersFilePath, newJsonData);
+                _logger.LogInformation("MarkReminderAsRead: users.json file updated successfully.");
+            }
+            else
+            {
+                _logger.LogInformation("MarkReminderAsRead: ReminderId {ReminderId} already in user's read list. No update needed.", markAsReadDto.ReminderId);
+            }
+
+            return Ok(new { message = "Reminder marked as read." });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "MarkReminderAsRead: An unexpected error occurred.");
+            return StatusCode(500, "An internal server error occurred.");
+        }
     }
 }

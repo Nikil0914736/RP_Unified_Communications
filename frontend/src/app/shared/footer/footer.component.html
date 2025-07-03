@@ -16,7 +16,10 @@
         <span>Create Reminder</span>
     </a>
     <a *ngIf="isResident" routerLink="/reminders-list" routerLinkActive="active" class="nav-item" title="View Reminders">
-        <i data-feather="calendar"></i>
+        <div class="icon-wrapper">
+            <i data-feather="calendar"></i>
+            <span class="badge" *ngIf="(unreadRemindersCount$ | async) > 0">{{ unreadRemindersCount$ | async }}</span>
+        </div>
         <span>Reminders</span>
     </a>
         <!-- Link for Leasing Consultants to create broadcasts -->

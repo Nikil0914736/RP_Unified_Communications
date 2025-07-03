@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { generateColor } from '../utils/color-generator';
 import { AlertService } from '../services/alert.service';
+import { AuthService } from '../services/auth.service';
 
 
 declare var feather: any;
@@ -34,12 +35,13 @@ export class SendFollowUpComponent implements OnInit, AfterViewInit {
   selectedResident: RenewalResult | null = null;
   imageErrorTracker = new Set<string>();
 
-  constructor(
+    constructor(
     private titleService: Title,
     private http: HttpClient,
     private elementRef: ElementRef,
     private cdRef: ChangeDetectorRef,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -186,9 +188,30 @@ export class SendFollowUpComponent implements OnInit, AfterViewInit {
     }
   }
 
-    sendReminder(result: RenewalResult): void {
-    const message = `Sent Remainder to ${result.name} with Remind Count Down of 15 days`;
-    this.alertService.success(message);
+      sendReminder(result: RenewalResult): void {
+    const currentUser = this.authService.currentUserValue;
+    if (!currentUser) {
+      this.alertService.error('You must be logged in to send a reminder.');
+      return;
+    }
+
+    const daysUntilExpiry = this.calculateDaysUntilExpiry(result.leaseEndDate);
+    const reminder = {
+      email: result.email,
+      content: `Sent Reminder with Remind Count Down of ${daysUntilExpiry} days`,
+      sentBy: currentUser.fullName
+    };
+
+    this.http.post('http://localhost:5237/api/Reminder/Send', reminder)
+      .subscribe({
+        next: () => {
+          this.alertService.success('Reminder sent successfully!');
+        },
+        error: (err) => {
+          console.error('Error sending reminder:', err);
+          this.alertService.error('Failed to send reminder. Please try again.');
+        }
+      });
   }
 
   toggleMenu(result: RenewalResult, event: MouseEvent): void {

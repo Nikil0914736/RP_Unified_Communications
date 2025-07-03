@@ -49,6 +49,22 @@
   },
   {
     "ContainingType": "backend.Controllers.AuthController",
+    "Method": "MarkReminderAsRead",
+    "RelativePath": "api/Auth/mark-reminder-as-read",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "markAsReadDto",
+        "Type": "backend.Models.MarkReminderAsReadDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.AuthController",
     "Method": "Register",
     "RelativePath": "api/Auth/register",
     "HttpMethod": "POST",
@@ -58,6 +74,48 @@
       {
         "Name": "registrationDto",
         "Type": "backend.Models.UserRegistrationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.ReminderController",
+    "Method": "GetAllReminders",
+    "RelativePath": "api/Reminder/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.ReminderController",
+    "Method": "GetRemindersByEmail",
+    "RelativePath": "api/Reminder/GetByEmail",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.ReminderController",
+    "Method": "SendReminder",
+    "RelativePath": "api/Reminder/Send",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "backend.Models.ReminderRequest",
         "IsRequired": true
       }
     ],

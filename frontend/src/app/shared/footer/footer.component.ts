@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
+import { ReminderService } from '../../services/reminder.service';
 import { Observable } from 'rxjs';
 
 declare var feather: any;
@@ -14,8 +15,13 @@ export class FooterComponent implements OnInit, AfterViewInit {
   isLeasingConsultant = false;
   isResident = false;
   unreadBroadcastCount$: Observable<number>;
+  unreadRemindersCount$: Observable<number>;
 
-  constructor(private authService: AuthService, private notificationService: NotificationService) { }
+  constructor(
+    private authService: AuthService,
+    private notificationService: NotificationService,
+    private reminderService: ReminderService
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(user => {
@@ -24,6 +30,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
     });
 
     this.unreadBroadcastCount$ = this.notificationService.unreadBroadcastCount$;
+    this.unreadRemindersCount$ = this.reminderService.unreadCount$;
   }
 
   ngAfterViewInit(): void {

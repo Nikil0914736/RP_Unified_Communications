@@ -1,14 +1,17 @@
+using System;
 using System.Text.Json.Serialization;
 
 namespace backend.Models;
 
 public class User
 {
+    public Guid Id { get; set; }
     public string FullName { get; set; } = string.Empty;
     public string Username { get; set; } = string.Empty; // This will be the email
     public string Password { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
     public List<string> ReadBroadcastIds { get; set; } = new List<string>();
+    public List<string> ReadReminderIds { get; set; } = new List<string>();
 }
 
 public class UserRegistrationDto
@@ -54,6 +57,14 @@ public class MarkAsReadDto
     public string Username { get; set; } = string.Empty;
     [JsonPropertyName("broadcastId")]
     public string BroadcastId { get; set; } = string.Empty;
+}
+
+public class MarkReminderAsReadDto
+{
+    [JsonPropertyName("username")]
+    public string Username { get; set; } = string.Empty;
+    [JsonPropertyName("reminderId")]
+    public string ReminderId { get; set; } = string.Empty;
 }
 
 public class BroadcastMessage

@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
+import { ReminderService } from './reminder.service';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,8 @@ export class AuthService {
         this.currentUserSubject.next(user);
         const notificationService = this.injector.get(NotificationService);
         notificationService.start();
+        const reminderService = this.injector.get(ReminderService);
+        reminderService.startConnection();
       }),
       catchError(this.handleError)
     );
@@ -59,6 +62,8 @@ export class AuthService {
     this.currentUserSubject.next(null);
     const notificationService = this.injector.get(NotificationService);
     notificationService.stop();
+    const reminderService = this.injector.get(ReminderService);
+    reminderService.stopConnection();
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

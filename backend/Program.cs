@@ -1,4 +1,6 @@
 using backend.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +20,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
 
 var app = builder.Build();
 
@@ -41,5 +45,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<BroadcastHub>("/broadcast");
+app.MapHub<ReminderHub>("/reminderhub");
 
 app.Run();
