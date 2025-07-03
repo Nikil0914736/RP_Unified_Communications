@@ -20,6 +20,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   unreadBroadcastCount$: Observable<number>;
   totalBroadcastCount$: Observable<number>;
 
+  unreadAlertsCount$: Observable<number>;
+  totalAlertsCount$: Observable<number>;
+  unreadRemindersCount$: Observable<number>;
+  totalRemindersCount$: Observable<number>;
+  unreadFollowUpsCount$: Observable<number>;
+  totalFollowUpsCount$: Observable<number>;
+
   constructor(
     private titleService: Title,
     private authService: AuthService,
@@ -36,6 +43,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.unreadBroadcastCount$ = this.notificationService.unreadBroadcastCount$;
     this.totalBroadcastCount$ = this.notificationService.totalBroadcastCount$;
+
+    this.unreadAlertsCount$ = this.notificationService.unreadAlertsCount$;
+    this.totalAlertsCount$ = this.notificationService.totalAlertsCount$;
+    this.unreadRemindersCount$ = this.notificationService.unreadRemindersCount$;
+    this.totalRemindersCount$ = this.notificationService.totalRemindersCount$;
+    this.unreadFollowUpsCount$ = this.notificationService.unreadFollowUpsCount$;
+    this.totalFollowUpsCount$ = this.notificationService.totalFollowUpsCount$;
 
     this.authService.currentUser.subscribe(user => {
       this.isResident = user && user.role.toLowerCase() === 'resident';

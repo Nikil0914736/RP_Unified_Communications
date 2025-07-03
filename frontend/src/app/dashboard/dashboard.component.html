@@ -52,11 +52,11 @@
                 <div class="summary-body">
                     <div class="summary-counts-wrapper">
                         <div class="summary-count-item">
-                            <span class="summary-count-number unread">5</span>
+                                                        <span class="summary-count-number unread">{{ unreadAlertsCount$ | async }}</span>
                             <span class="summary-count-label">Unread</span>
                         </div>
                         <div class="summary-count-item">
-                            <span class="summary-count-number">8</span>
+                                                        <span class="summary-count-number">{{ totalAlertsCount$ | async }}</span>
                             <span class="summary-count-label">Total</span>
                         </div>
                     </div>
@@ -71,18 +71,18 @@
                 <div class="summary-body">
                     <div class="summary-counts-wrapper">
                         <div class="summary-count-item">
-                            <span class="summary-count-number unread">2</span>
+                                                        <span class="summary-count-number unread">{{ unreadRemindersCount$ | async }}</span>
                             <span class="summary-count-label">Unread</span>
                         </div>
                         <div class="summary-count-item">
-                            <span class="summary-count-number">5</span>
+                                                        <span class="summary-count-number">{{ totalRemindersCount$ | async }}</span>
                             <span class="summary-count-label">Total</span>
                         </div>
                     </div>
                 </div>
             </a>
 
-                        <a *ngIf="isResident" routerLink="/follow-ups" class="summary-card-item follow-ups" title="View Follow-ups">
+                                    <a *ngIf="isResident" routerLink="/follow-ups-list" class="summary-card-item follow-ups" title="View Follow-ups">
                 <div class="summary-header">
                     <span class="summary-label">Follow-ups</span>
                     <i data-feather="check-square" class="summary-icon"></i>
@@ -90,11 +90,11 @@
                 <div class="summary-body">
                     <div class="summary-counts-wrapper">
                         <div class="summary-count-item">
-                            <span class="summary-count-number unread">3</span>
+                                                        <span class="summary-count-number unread">{{ unreadFollowUpsCount$ | async }}</span>
                             <span class="summary-count-label">Unread</span>
                         </div>
                         <div class="summary-count-item">
-                            <span class="summary-count-number">7</span>
+                                                        <span class="summary-count-number">{{ totalFollowUpsCount$ | async }}</span>
                             <span class="summary-count-label">Total</span>
                         </div>
                     </div>
@@ -199,7 +199,7 @@
             </div>
         </a>
     </div>
-    <a routerLink="/follow-ups" class="card-link" title="View Follow-up Tracker">
+        <a [routerLink]="isResident ? '/follow-ups-list' : '/follow-ups'" class="card-link" title="View Follow-up Tracker">
         <div class="card follow-up-card">
             <div class="card-body">
                 <h3>Follow-up Tracker</h3>

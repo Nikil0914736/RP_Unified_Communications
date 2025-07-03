@@ -9,7 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CreateBroadcastComponent } from './create-broadcast/create-broadcast.component';
 import { SettingsComponent } from './settings/settings.component';
-import { FollowUpsComponent } from './follow-ups/follow-ups.component';
+import { SendFollowUpComponent } from './send-follow-up/send-follow-up.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CreateReminderComponent } from './create-reminder/create-reminder.component';
@@ -22,6 +22,7 @@ import { AlertComponent } from './alert/alert.component';
 import { PopoverComponent } from './popover/popover.component';
 import { FeatherIconComponent } from './shared/feather-icon/feather-icon.component';
 import { RemindersListComponent } from './reminders-list/reminders-list.component';
+import { FollowUpsListComponent } from './follow-ups-list/follow-ups-list.component';
 
 
 @NgModule({
@@ -31,10 +32,10 @@ import { RemindersListComponent } from './reminders-list/reminders-list.componen
     DashboardComponent,
     CreateBroadcastComponent,
     SettingsComponent,
-    FollowUpsComponent,
+    SendFollowUpComponent,
     InboxComponent,
     NotificationsComponent,
-        CreateReminderComponent,
+    CreateReminderComponent,
     BroadcastsListComponent,
     FooterComponent,
     HeaderComponent,
@@ -44,6 +45,7 @@ import { RemindersListComponent } from './reminders-list/reminders-list.componen
     PopoverComponent,
     FeatherIconComponent,
     RemindersListComponent,
+    FollowUpsListComponent,
 
   ],
   imports: [

@@ -1,0 +1,32 @@
+<app-header [title]="'Follow-ups'"></app-header>
+
+<main class="main-content">
+  <div class="follow-ups-container">
+    <div *ngIf="(followUps$ | async) as followUps" class="notification-container">
+      <ul *ngIf="followUps.length > 0; else noFollowUps" class="notification-list-redesigned">
+        <li *ngFor="let followUp of followUps" class="notification-item-redesigned" [class.unread]="!followUp.isRead">
+          <div class="notification-icon follow-up">
+            <app-feather-icon icon="check-square"></app-feather-icon>
+          </div>
+          <div class="notification-details">
+            <p>{{ followUp.title }}</p>
+            <small>{{ followUp.subtitle }}</small>
+          </div>
+          <div class="notification-time">
+            <span>{{ followUp.date }}</span>
+            <span>{{ followUp.time }}</span>
+          </div>
+        </li>
+      </ul>
+      <ng-template #noFollowUps>
+        <div class="empty-state">
+          <app-feather-icon icon="check-square" class="empty-state-icon"></app-feather-icon>
+          <h2>No Follow-ups</h2>
+          <p>You have no pending follow-ups.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

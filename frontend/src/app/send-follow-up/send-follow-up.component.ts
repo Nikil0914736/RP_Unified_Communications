@@ -11,11 +11,11 @@ interface FollowUp {
 }
 
 @Component({
-  selector: 'app-follow-ups',
-  templateUrl: './follow-ups.component.html',
-  styleUrls: ['./follow-ups.component.css']
+  selector: 'app-send-follow-up',
+  templateUrl: './send-follow-up.component.html',
+  styleUrls: ['./send-follow-up.component.css']
 })
-export class FollowUpsComponent implements OnInit, AfterViewInit {
+export class SendFollowUpComponent implements OnInit, AfterViewInit {
 
   followUps: FollowUp[] = [
     { id: 1, name: 'John Smith', photoUrl: 'https://i.pravatar.cc/150?img=1', lastContact: '2 days ago' },
@@ -29,7 +29,7 @@ export class FollowUpsComponent implements OnInit, AfterViewInit {
   constructor(private titleService: Title) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Follow-ups | Unified Communications');
+        this.titleService.setTitle('Send Follow-up | Unified Communications');
   }
 
   ngAfterViewInit(): void {

@@ -5,9 +5,11 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { generateColor } from '../utils/color-generator';
 
+export type NotificationType = 'call' | 'message' | 'reminder' | 'broadcast' | 'follow-up';
+
 export interface Notification {
   id?: string; // Optional because not all notifications have an ID
-  type: 'call' | 'message' | 'reminder' | 'broadcast';
+  type: NotificationType;
   icon: string;
   title: string;
   subtitle: string;
@@ -29,6 +31,13 @@ export class NotificationService {
   public totalBroadcastCount$: Observable<number>;
   public unreadAllNotificationCount$: Observable<number>;
   public totalAllNotificationCount$: Observable<number>;
+
+  public unreadAlertsCount$: Observable<number>;
+  public totalAlertsCount$: Observable<number>;
+  public unreadRemindersCount$: Observable<number>;
+  public totalRemindersCount$: Observable<number>;
+  public unreadFollowUpsCount$: Observable<number>;
+  public totalFollowUpsCount$: Observable<number>;
 
   constructor(
     private signalRService: SignalRService,
@@ -84,6 +93,21 @@ export class NotificationService {
       map(broadcasts => broadcasts.length)
     );
 
+    // Alerts Counts
+    const alerts$ = this.notifications$.pipe(map(n => n.filter(item => item.type === 'call')), shareReplay(1));
+    this.unreadAlertsCount$ = alerts$.pipe(map(items => items.filter(item => !item.isRead).length));
+    this.totalAlertsCount$ = alerts$.pipe(map(items => items.length));
+
+    // Reminders Counts
+    const reminders$ = this.notifications$.pipe(map(n => n.filter(item => item.type === 'reminder')), shareReplay(1));
+    this.unreadRemindersCount$ = reminders$.pipe(map(items => items.filter(item => !item.isRead).length));
+    this.totalRemindersCount$ = reminders$.pipe(map(items => items.length));
+
+    // Follow-ups Counts
+    const followUps$ = this.notifications$.pipe(map(n => n.filter(item => item.type === 'follow-up')), shareReplay(1));
+    this.unreadFollowUpsCount$ = followUps$.pipe(map(items => items.filter(item => !item.isRead).length));
+    this.totalFollowUpsCount$ = followUps$.pipe(map(items => items.length));
+
 
 
     this.unreadAllNotificationCount$ = this.notifications$.pipe(
@@ -100,6 +124,8 @@ export class NotificationService {
   public markBroadcastAsRead(id: string): void {
     this.signalRService.markMessageAsRead(id);
   }
+
+
 
   private mapBroadcastsToNotifications(messages: BroadcastMessage[]): Notification[] {
     return messages.map(msg => {

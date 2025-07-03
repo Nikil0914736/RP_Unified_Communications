@@ -32,7 +32,11 @@
         </div>
         <span>Broadcasts</span>
     </a>
-    <a routerLink="/follow-ups" routerLinkActive="active" class="nav-item" title="Go to Follow-ups">
+    <a *ngIf="isLeasingConsultant" routerLink="/follow-ups" routerLinkActive="active" class="nav-item" title="Send a Follow-up">
+        <i data-feather="check-square"></i>
+        <span>Send Follow-up</span>
+    </a>
+    <a *ngIf="isResident" routerLink="/follow-ups-list" routerLinkActive="active" class="nav-item" title="View Follow-ups">
         <i data-feather="check-square"></i>
         <span>Follow-ups</span>
     </a>
