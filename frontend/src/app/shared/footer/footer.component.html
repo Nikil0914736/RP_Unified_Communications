@@ -11,7 +11,11 @@
         <i data-feather="inbox"></i>
         <span>Inbox</span>
     </a>
-    <a routerLink="/reminders" routerLinkActive="active" class="nav-item" title="Go to Reminders">
+        <a *ngIf="isLeasingConsultant" routerLink="/reminders" routerLinkActive="active" class="nav-item" title="Create a new Reminder">
+        <i data-feather="calendar"></i>
+        <span>Create Reminder</span>
+    </a>
+    <a *ngIf="isResident" routerLink="/reminders-list" routerLinkActive="active" class="nav-item" title="View Reminders">
         <i data-feather="calendar"></i>
         <span>Reminders</span>
     </a>

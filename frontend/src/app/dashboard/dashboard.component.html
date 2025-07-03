@@ -25,7 +25,7 @@
                 </div>
             </a>
 
-            <a *ngIf="isResident" routerLink="/broadcasts" class="summary-card-item broadcasts" title="View Broadcasts">
+            <a *ngIf="isResident" [routerLink]="['/notifications']" [queryParams]="{ tab: 'broadcast' }" class="summary-card-item broadcasts" title="View Broadcasts">
                 <div class="summary-header">
                     <span class="summary-label">Broadcasts</span>
                     <i data-feather="radio" class="summary-icon"></i>
@@ -63,7 +63,7 @@
                 </div>
             </a>
 
-            <a routerLink="/reminders" class="summary-card-item reminders" title="View Reminders">
+                        <a *ngIf="isResident" [routerLink]="['/notifications']" [queryParams]="{ tab: 'reminder' }" class="summary-card-item reminders" title="View Reminders">
                 <div class="summary-header">
                     <span class="summary-label">Reminders</span>
                     <i data-feather="calendar" class="summary-icon"></i>
@@ -82,7 +82,7 @@
                 </div>
             </a>
 
-            <a routerLink="/follow-ups" class="summary-card-item follow-ups" title="View Follow-ups">
+                        <a *ngIf="isResident" routerLink="/follow-ups" class="summary-card-item follow-ups" title="View Follow-ups">
                 <div class="summary-header">
                     <span class="summary-label">Follow-ups</span>
                     <i data-feather="check-square" class="summary-icon"></i>
@@ -120,12 +120,12 @@
                 <span>Start Call</span>
             </div>
         </a>
-        <a routerLink="/reminders" class="card-link" title="Schedule a Reminder">
+                                <a *ngIf="isResident" routerLink="/reminders-list" class="card-link" title="View Reminders">
             <div class="action-item">
                 <div class="action-icon schedule">
                     <i data-feather="calendar"></i>
                 </div>
-                <span>Schedule</span>
+                <span>Reminders</span>
             </div>
         </a>
         <a class="card-link" title="More Actions">
@@ -168,7 +168,7 @@
                 </a>
             </li>
             <li class="activity-item">
-                <a routerLink="/notifications" class="card-link" title="View Alert">
+                                <a [routerLink]="['/notifications']" [queryParams]="{ tab: 'alerts' }" class="card-link" title="View Alert">
                     <div class="activity-icon alert">
                         <i data-feather="alert-triangle" width="24" height="24"></i>
                     </div>
@@ -183,7 +183,7 @@
     </div>
 
     <div class="dashboard-grid">
-        <a routerLink="/reminders" class="card-link" title="View Upcoming Reminders">
+                        <a *ngIf="isResident" routerLink="/reminders-list" class="card-link" title="View Upcoming Reminders">
             <div class="card reminders-card">
                 <h3>Upcoming Reminders</h3>
                 <p>Meeting with Product Team</p>

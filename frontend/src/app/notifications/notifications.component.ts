@@ -45,9 +45,11 @@ export class NotificationsComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const tab = params.tab;
       if (tab === 'alerts') {
-        // For now, we can map 'alerts' to a specific filter or just default to all
-        // Since there's no 'alert' type yet, we'll use 'call' as a placeholder
         this.setFilter('call');
+      } else if (tab === 'broadcast') {
+        this.setFilter('broadcast');
+      } else if (tab === 'reminder') {
+        this.setFilter('reminder');
       } else {
         this.setFilter('all');
       }

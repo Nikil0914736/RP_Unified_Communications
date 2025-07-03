@@ -12,11 +12,12 @@ import { RegistrationComponent } from './registration/registration.component';
 import { FollowUpsComponent } from './follow-ups/follow-ups.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { ReminderComponent } from './reminder/reminder.component';
+import { CreateReminderComponent } from './create-reminder/create-reminder.component';
 import { BroadcastsListComponent } from './broadcasts-list/broadcasts-list.component';
+import { RemindersListComponent } from './reminders-list/reminders-list.component';
 
 const routes: Routes = [
-  { path: 'reminders', component: ReminderComponent, canActivate: [AuthGuard] },
+  { path: 'reminders', component: CreateReminderComponent, canActivate: [AuthGuard] },
   { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
   { path: 'inbox', component: InboxComponent, canActivate: [AuthGuard] },
   { path: 'follow-ups', component: FollowUpsComponent, canActivate: [AuthGuard] },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'broadcast', component: CreateBroadcastComponent, canActivate: [AuthGuard, LeasingConsultantGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'broadcasts', component: BroadcastsListComponent, canActivate: [AuthGuard, ResidentGuard] },
+  { path: 'reminders-list', component: RemindersListComponent, canActivate: [AuthGuard, ResidentGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

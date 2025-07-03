@@ -1,0 +1,32 @@
+<app-header [title]="'Reminders'"></app-header>
+
+<main class="main-content">
+  <div class="reminders-container">
+    <div *ngIf="(reminders$ | async) as reminders" class="notification-container">
+      <ul *ngIf="reminders.length > 0; else noReminders" class="notification-list-redesigned">
+        <li *ngFor="let reminder of reminders" class="notification-item-redesigned" [class.unread]="!reminder.isRead">
+          <div class="notification-icon reminder">
+            <app-feather-icon [icon]="reminder.icon"></app-feather-icon>
+          </div>
+          <div class="notification-details">
+            <p>{{ reminder.title }}</p>
+            <small>{{ reminder.subtitle }}</small>
+          </div>
+          <div class="notification-time">
+            <span>{{ reminder.date }}</span>
+            <span>{{ reminder.time }}</span>
+          </div>
+        </li>
+      </ul>
+      <ng-template #noReminders>
+        <div class="empty-state">
+          <app-feather-icon icon="calendar" class="empty-state-icon"></app-feather-icon>
+          <h2>No Reminders</h2>
+          <p>You have no upcoming reminders.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

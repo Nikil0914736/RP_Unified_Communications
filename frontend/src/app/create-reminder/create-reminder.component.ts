@@ -4,11 +4,11 @@ import { Title } from '@angular/platform-browser';
 declare var feather: any;
 
 @Component({
-  selector: 'app-reminder',
-  templateUrl: './reminder.component.html',
-  styleUrls: ['./reminder.component.css']
+  selector: 'app-create-reminder',
+  templateUrl: './create-reminder.component.html',
+  styleUrls: ['./create-reminder.component.css']
 })
-export class ReminderComponent implements OnInit, AfterViewInit {
+export class CreateReminderComponent implements OnInit, AfterViewInit {
 
   constructor(private titleService: Title) { }
 
