@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ConfirmationModalComponent } from './shared/confirmation-modal/confirmation-modal.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CreateBroadcastComponent } from './create-broadcast/create-broadcast.component';
@@ -30,6 +31,7 @@ import { FollowUpsListComponent } from './follow-ups-list/follow-ups-list.compon
 @NgModule({
   declarations: [
     AppComponent,
+    ConfirmationModalComponent,
     LoginComponent,
     DashboardComponent,
     CreateBroadcastComponent,

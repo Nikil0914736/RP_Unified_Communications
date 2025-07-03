@@ -1,5 +1,12 @@
 <app-header [title]="'Send Follow-up'"></app-header>
 
+<app-confirmation-modal
+  *ngIf="showConfirmationModal"
+  [title]="confirmationTitle"
+  [buttons]="confirmationButtons"
+  (selection)="handleConfirmation($event)">
+</app-confirmation-modal>
+
 <main class="main-content">
 
         <div class="card search-card">
@@ -23,16 +30,37 @@
 
         <div *ngIf="!loading && !error">
             <div *ngIf="searchPerformed && results.length > 0">
-                <h4>Found {{ results.length }} {{ results.length === 1 ? 'result' : 'results' }}</h4>
+                <h4>List of Residents Residing in 'Reilly Summit' Community ({{ results.length }})</h4>
                 <ul class="results-list">
                     <li *ngFor="let result of results" class="result-item">
-                        <div class="result-avatar" [style.background-color]="getUserColor(result.name)">
-                            {{ getInitials(result.name) }}
-                        </div>
-                        <div class="result-details">
+                        <ng-container *ngIf="!hasImageError(result.name); else fallbackAvatar">
+                            <img [src]="'https://i.pravatar.cc/40?u=' + result.name" (error)="onImageError(result.name)" class="result-avatar" alt="Resident Avatar">
+                        </ng-container>
+                        <ng-template #fallbackAvatar>
+                            <div class="result-avatar-initials" [style.background-color]="getUserColor(result.name)">
+                                {{ getInitials(result.name) }}
+                            </div>
+                        </ng-template>
+                        <div class="result-content">
                             <p class="result-name">{{ result.name }}</p>
-                            <p class="result-info">Unit: {{ result.unit }} &bull; Lease End: {{ result.leaseEndDate | date }}</p>
+                            <p class="result-info">
+                                Unit {{ result.unit }}, Residing Since {{ getResidingSinceDate(result) | date:'MM/dd/yyyy' }} - Now - Renewal Expiring in {{ calculateDaysUntilExpiry(result.leaseEndDate) }} days
+                            </p>
                         </div>
+                        <div class="result-actions">
+                            <div class="ellipsis-menu-container">
+                                <button class="ellipsis-btn" (click)="toggleMenu(result, $event)">
+                                    <i data-feather="more-vertical" class="ellipsis-icon"></i>
+                                </button>
+                                <div class="dropdown-menu" *ngIf="openMenuFor === result.name">
+                                    <a class="dropdown-item" (click)="sendNewOffer(result)">Send New Offers</a>
+                                    <a class="dropdown-item" (click)="sendReminder(result)">Send Reminder</a>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="follow-up-btn">
+                            <i data-feather="repeat" class="follow-up-icon"></i>
+                        </button>
                     </li>
                 </ul>
             </div>

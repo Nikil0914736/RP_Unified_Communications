@@ -1,0 +1,11 @@
+<div class="modal-overlay" (click)="onSelect(null)">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="onSelect(null)">&times;</button>
+    <h3 class="modal-title">{{ title }}</h3>
+    <div class="modal-actions">
+      <button *ngFor="let buttonText of buttons" (click)="onSelect(buttonText)" [ngClass]="getButtonClass(buttonText)">
+        {{ buttonText }}
+      </button>
+    </div>
+  </div>
+</div>
