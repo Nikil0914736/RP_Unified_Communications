@@ -62,5 +62,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.RenewalController",
+    "Method": "getExpiringRenewals",
+    "RelativePath": "api/Renewal/GetExpiringRenewals",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "payload",
+        "Type": "backend.Controllers.RequestPayload",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

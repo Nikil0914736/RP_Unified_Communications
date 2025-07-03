@@ -128,6 +128,37 @@
           }
         }
       }
+    },
+    "/api/Renewal/GetExpiringRenewals": {
+      "post": {
+        "tags": [
+          "Renewal"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPayload"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPayload"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -176,6 +207,16 @@
             "nullable": true
           },
           "broadcastId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RequestPayload": {
+        "type": "object",
+        "properties": {
+          "value": {
             "type": "string",
             "nullable": true
           }
