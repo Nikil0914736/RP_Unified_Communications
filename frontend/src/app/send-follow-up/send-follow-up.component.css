@@ -4,93 +4,183 @@
     height: 100%;
 }
 
-
-
 .main-content {
     flex: 1;
     overflow-y: auto;
     padding: 20px;
-    scroll-padding-top: 80px;
-    scroll-padding-bottom: 75px;
 }
 
-.search-bar-container {
-    display: flex;
-    align-items: center;
-    background-color: #f0f2f5;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-}
-
-.search-bar-container i {
-    color: #8e8e93;
-    margin-right: 10px;
-}
-
-.search-input {
-    border: none;
-    background: none;
-    outline: none;
-    width: 100%;
-    font-size: 16px;
-}
-
-.photo-widget-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.photo-widget {
+.card {
     background-color: #fff;
     border-radius: 12px;
+    margin-bottom: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    text-align: center;
+    padding: 20px;
 }
 
-.photo-widget img {
+.card:last-child {
+    margin-bottom: 0;
+}
+
+.search-input-container {
+    margin-bottom: 15px;
+}
+
+.form-control {
     width: 100%;
-    height: 120px;
-    object-fit: cover;
-}
-
-.widget-info {
     padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
 }
 
-.widget-info strong {
-    display: block;
-    font-size: 14px;
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    min-width: 100px;
+}
+
+.btn-primary {
+    background-color: #17a2b8;
+    color: white;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #138496;
+}
+
+.btn-primary:disabled {
+    background-color: #a9d4ff;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background-color: #e5e5ea;
+    color: #000;
+}
+
+.btn-secondary:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.api-response.error {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    color: #c62828;
+}
+
+.results-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.result-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
     font-weight: 600;
-    margin-bottom: 4px;
+    flex-shrink: 0;
 }
 
-.widget-info small {
-    font-size: 12px;
+.result-details {
+    flex-grow: 1;
+}
+
+.result-name {
+    font-weight: 600;
+    margin: 0 0 4px !important;
+}
+
+.result-info {
+    font-size: 0.9em;
+    color: #8e8e93;
+    margin: 0 !important;
+}
+
+.result-item:last-child {
+    margin-bottom: 0;
+}
+
+.result-item p {
+    margin: 0 0 5px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 20px 0;
     color: #8e8e93;
 }
 
 /* Dark Mode */
-:host-context(.dark-mode) .search-bar-container {
+:host-context(.dark-mode) .card {
     background-color: #2c2c2e;
 }
 
-:host-context(.dark-mode) .search-input {
-    color: #fff;
-}
-
-:host-context(.dark-mode) .photo-widget {
+:host-context(.dark-mode) .form-control {
     background-color: #2c2c2e;
-}
-
-:host-context(.dark-mode) .widget-info strong {
+    border-color: #3a3a3c;
     color: #fff;
 }
 
-:host-context(.dark-mode) .widget-info small {
+:host-context(.dark-mode) .btn-secondary {
+    background-color: #3a3a3c;
+    color: #fff;
+}
+
+:host-context(.dark-mode) .btn-secondary:disabled {
+    opacity: 0.5;
+}
+
+:host-context(.dark-mode) .btn-primary:disabled {
+    opacity: 0.5;
+}
+
+:host-context(.dark-mode) .btn-primary:hover {
+    background-color: #138496;
+}
+
+:host-context(.dark-mode) .api-response.error {
+    background-color: #3e2723;
+    border-color: #4e342e;
+    color: #ef9a9a;
+}
+
+:host-context(.dark-mode) .result-item {
+    border-color: #3a3a3c;
+}
+
+:host-context(.dark-mode) .result-info {
     color: #8e8e93;
 }
 
-
+:host-context(.dark-mode) .empty-state {
+    color: #8e8e93;
+}

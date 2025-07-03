@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
@@ -10,15 +11,17 @@ export class LeasingConsultantGuard implements CanActivate {
         private authService: AuthService
     ) { }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        const currentUser = this.authService.currentUserValue;
-        if (currentUser && currentUser.role.toLowerCase() === 'leasing consultant') {
-            // Logged in and has leasing consultant role, so return true
-            return true;
-        }
-
-        // Not a leasing consultant, so redirect to the dashboard
-        this.router.navigate(['/dashboard']);
-        return false;
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+        return this.authService.currentUser.pipe(
+            take(1),
+            map(user => {
+                if (user && user.role.toLowerCase() === 'leasing consultant') {
+                    return true;
+                }
+                return this.router.createUrlTree(['/dashboard']);
+            })
+        );
     }
 }

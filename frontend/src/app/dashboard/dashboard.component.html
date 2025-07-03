@@ -82,7 +82,7 @@
                 </div>
             </a>
 
-                                    <a *ngIf="isResident" routerLink="/follow-ups-list" class="summary-card-item follow-ups" title="View Follow-ups">
+                                    <a *ngIf="!isResident && !isLeasingConsultant" routerLink="/follow-ups-list" class="summary-card-item follow-ups" title="View Follow-ups">
                 <div class="summary-header">
                     <span class="summary-label">Follow-ups</span>
                     <i data-feather="check-square" class="summary-icon"></i>
@@ -199,7 +199,7 @@
             </div>
         </a>
     </div>
-        <a [routerLink]="isResident ? '/follow-ups-list' : '/follow-ups'" class="card-link" title="View Follow-up Tracker">
+        <a *ngIf="!isResident && !isLeasingConsultant" [routerLink]="isResident ? '/follow-ups-list' : '/follow-ups'" class="card-link" title="View Follow-up Tracker">
         <div class="card follow-up-card">
             <div class="card-body">
                 <h3>Follow-up Tracker</h3>

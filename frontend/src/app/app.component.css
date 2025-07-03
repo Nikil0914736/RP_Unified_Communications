@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+:host(:not(.dark-mode)) {
+    border: 1px solid #d1d1d6;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}

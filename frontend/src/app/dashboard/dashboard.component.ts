@@ -15,6 +15,7 @@ declare var feather: any;
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   isResident = false;
+  isLeasingConsultant = false;
   unreadAllNotificationCount$!: Observable<number>;
   totalAllNotificationCount$!: Observable<number>;
   unreadBroadcastCount$: Observable<number>;
@@ -53,6 +54,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.authService.currentUser.subscribe(user => {
       this.isResident = user && user.role.toLowerCase() === 'resident';
+      this.isLeasingConsultant = user && user.role.toLowerCase() === 'leasing consultant';
       // Use setTimeout to ensure the view has updated from the *ngIf
       setTimeout(() => this.replaceIcons(), 0);
     });
