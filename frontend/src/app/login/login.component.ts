@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   currentTime: string;
   private timeSubscription: Subscription;
 
-  model: any = { username: '', password: '', role: 'resident' };
+  model: any = { username: '', password: 'password', role: 'resident' };
   loading = false;
   error = '';
   private errorTimeout: any;
@@ -45,15 +45,11 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onRoleChange(): void {
     this.model.username = '';
-    this.model.password = '';
     this.error = '';
 
     if (this.loginForm && this.loginForm.controls) {
       if (this.loginForm.controls.username) {
         this.loginForm.controls.username.reset('');
-      }
-      if (this.loginForm.controls.password) {
-        this.loginForm.controls.password.reset('');
       }
     }
   }
