@@ -20,7 +20,7 @@ export class FollowUpsListComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle('Follow-ups | Unified Communications');
 
-    this.notificationService.start();
+
 
     this.followUps$ = this.notificationService.notifications$.pipe(
       map(notifications => notifications.filter(n => n.type === 'follow-up'))

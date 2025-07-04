@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 
 import { AuthService } from '../services/auth.service';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { ReminderService } from '../services/reminder.service';
 import { PopoverService } from '../services/popover.service';
 import { generateColor } from '../utils/color-generator';
@@ -205,15 +205,19 @@ export class RemindersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle('Reminders | Unified Communications');
-    if (this.authService.currentUserValue) {
-      this.reminderService.startConnection(); // Ensure connection is active
-      this.reminders$ = this.reminderService.reminders$.pipe(
-        map(reminders => reminders.map(r => this.toDisplayReminder(r)))
-      );
-    } else {
-      this.error = 'You must be logged in to view reminders.';
-      this.reminders$ = of([]);
-    }
+    this.reminders$ = this.authService.currentUser.pipe(
+      switchMap(user => {
+        if (user) {
+          this.error = null;
+          return this.reminderService.reminders$.pipe(
+            map(reminders => reminders.map(r => this.toDisplayReminder(r)))
+          );
+        } else {
+          this.error = 'You must be logged in to view reminders.';
+          return of([]);
+        }
+      })
+    );
   }
 
   showReminder(reminder: DisplayReminder): void {

@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.titleService.setTitle('Dashboard | Unified Communications');
 
-    this.notificationService.start();
+
     this.unreadAllNotificationCount$ = this.notificationService.unreadAllNotificationCount$;
     this.totalAllNotificationCount$ = this.notificationService.totalAllNotificationCount$;
 

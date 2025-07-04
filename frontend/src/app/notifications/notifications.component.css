@@ -116,17 +116,8 @@
     background-color: #d9e8ff; /* A light blue */
 }
 
-.notification-item-redesigned.unread::before {
-    content: '';
-    position: absolute;
-    left: -15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #007aff;
-}
+
+
 
 .notification-item-redesigned.unread::before {
     content: '';
@@ -137,7 +128,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #007aff;
+    background-color: #ff3b30;
 }
 
 .notification-item-redesigned.unread .notification-details p {
@@ -166,10 +157,10 @@
     flex-shrink: 0;
 }
 
-.notification-icon.call { background-color: #34c759; }
+.notification-icon.call { background: linear-gradient(135deg, #ff3b30, #ff8c30); }
 .notification-icon.message { background-color: #007aff; }
-.notification-icon.reminder { background-color: #ff9500; }
-.notification-icon.broadcast { background-color: #5856d6; }
+.notification-icon.reminder { background: linear-gradient(135deg, #ff9500, #ffcc00); }
+.notification-icon.broadcast { background: linear-gradient(135deg, #007aff, #00a2ff); }
 
 
 .notification-icon.broadcast span {
@@ -253,7 +244,7 @@
 }
 
 :host-context(.dark-mode) .notification-item-redesigned.unread::before {
-    background-color: #0A84FF;
+    background-color: #ff3b30;
 }
 
 :host-context(.dark-mode) .notification-details p {

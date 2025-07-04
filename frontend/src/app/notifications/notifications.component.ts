@@ -21,6 +21,7 @@ export class NotificationsComponent implements OnInit {
   filteredNotifications$: Observable<Notification[]>;
   unreadAllNotificationCount$: Observable<number>;
   unreadBroadcastCount$: Observable<number>;
+  unreadRemindersCount$: Observable<number>;
   selectedNotificationId: string | null = null;
   private subscriptions = new Subscription();
 
@@ -37,6 +38,7 @@ export class NotificationsComponent implements OnInit {
 
     this.unreadAllNotificationCount$ = this.notificationService.unreadAllNotificationCount$;
     this.unreadBroadcastCount$ = this.notificationService.unreadBroadcastCount$;
+    this.unreadRemindersCount$ = this.notificationService.unreadRemindersCount$;
 
     this.authService.currentUser.subscribe(user => {
       this.isResident = user && user.role.toLowerCase() === 'resident';
@@ -71,23 +73,35 @@ export class NotificationsComponent implements OnInit {
   showPopover(notification: Notification): void {
     this.selectedNotificationId = notification.id;
     setTimeout(() => { this.selectedNotificationId = null; }, 300);
-    if (notification.type === 'broadcast' && !notification.isRead && notification.id) {
-      const currentUser = this.authService.currentUserValue;
-      if (currentUser && currentUser.username) {
-        this.authService.markBroadcastAsRead(currentUser.username, notification.id).subscribe(() => {
-          this.notificationService.markBroadcastAsRead(notification.id);
-        });
+
+    if (!notification.isRead && notification.id) {
+      if (notification.type === 'broadcast') {
+        const currentUser = this.authService.currentUserValue;
+        if (currentUser && currentUser.username) {
+          this.authService.markBroadcastAsRead(currentUser.username, notification.id).subscribe(() => {
+            this.notificationService.markBroadcastAsRead(notification.id);
+          });
+        }
+      } else if (notification.type === 'reminder') {
+        this.notificationService.markReminderAsRead(notification.id);
       }
     }
 
-    if (notification.type === 'broadcast') {
-        this.popoverService.show({
-            title: notification.title,
-            content: notification.content,
-            from: notification.from,
-            date: notification.date,
-            time: notification.time
-        });
+    if (notification.type === 'broadcast' || notification.type === 'reminder') {
+      this.popoverService.show({
+        title: notification.title,
+        content: notification.content,
+        from: notification.from,
+        date: notification.date,
+        time: notification.time
+      });
     }
+  }
+
+  getIconStyle(notification: Notification): { [key: string]: any } {
+    if ((this.filter === 'broadcast' || this.filter === 'reminder') && notification.color) {
+      return { background: notification.color };
+    }
+    return {};
   }
 }

@@ -1,8 +1,8 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 import { Reminder } from '../reminders-list/reminders-list.component';
@@ -16,19 +16,21 @@ export class ReminderService {
   public reminders$: Observable<Reminder[]> = this.remindersSubject.asObservable();
   public unreadCount$: Observable<number>;
 
-  constructor(private http: HttpClient, private injector: Injector) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     this.unreadCount$ = this.reminders$.pipe(
       map(reminders => reminders.filter(r => !r.isRead).length)
     );
+
+    this.authService.currentUser.subscribe(currentUser => {
+      if (currentUser && (!this.hubConnection || this.hubConnection.state !== signalR.HubConnectionState.Connected)) {
+        this.startConnection(currentUser);
+      } else if (!currentUser && this.hubConnection) {
+        this.stopConnection();
+      }
+    });
   }
 
-  public startConnection(): void {
-    const authService = this.injector.get(AuthService);
-    const currentUser = authService.currentUserValue;
-    if (!currentUser || this.hubConnection?.state === signalR.HubConnectionState.Connected) {
-      return;
-    }
-
+  private startConnection(currentUser: any): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.apiUrl}/reminderhub?username=${currentUser.username}`, {
         accessTokenFactory: () => currentUser.token
@@ -52,14 +54,12 @@ export class ReminderService {
   }
 
   public markAsRead(reminderId: string): Observable<any> {
-    const authService = this.injector.get(AuthService);
-    const currentUser = authService.currentUserValue;
+    const currentUser = this.authService.currentUserValue;
     if (!currentUser) {
       console.error('ReminderService: markAsRead called but user is not logged in.');
-      return new Observable(observer => observer.error('User not logged in'));
+      return of(null);
     }
     const payload = { username: currentUser.username, reminderId };
-    console.log('ReminderService: Sending POST to /api/auth/mark-reminder-as-read with payload:', payload);
     return this.http.post(`${environment.apiUrl}/api/auth/mark-reminder-as-read`, payload);
   }
 
@@ -74,10 +74,13 @@ export class ReminderService {
     this.remindersSubject.next(updatedReminders);
   }
 
-  public stopConnection(): void {
+  private stopConnection(): void {
     if (this.hubConnection) {
       this.hubConnection.stop()
-        .then(() => console.log('Reminder Hub connection stopped'))
+        .then(() => {
+          console.log('Reminder Hub connection stopped');
+          this.remindersSubject.next([]); // Clear reminders on logout
+        })
         .catch(err => console.error('Error while stopping reminder hub connection: ' + err));
     }
   }

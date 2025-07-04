@@ -28,9 +28,12 @@
       "Password": "password",
       "Role": "resident",
       "ReadBroadcastIds": [
-        "a22acf3c-97aa-4d4e-8d4a-8018bfca8542"
+        "a22acf3c-97aa-4d4e-8d4a-8018bfca8542",
+        "f4f2e1b1-4c6e-4a8a-9f44-caf4cefa2d93"
       ],
-      "ReadReminderIds": []
+      "ReadReminderIds": [
+        "d668c52d-96fc-4057-8629-50ea2bba1b15"
+      ]
     },
     {
       "Id": "01fc6f28-d55b-4e3d-b183-23c74a1e2385",
@@ -39,10 +42,12 @@
       "Password": "password",
       "Role": "resident",
       "ReadBroadcastIds": [
-        "a22acf3c-97aa-4d4e-8d4a-8018bfca8542"
+        "a22acf3c-97aa-4d4e-8d4a-8018bfca8542",
+        "f5af259b-1b39-4a9f-b7b0-a3d15bd4bad4"
       ],
       "ReadReminderIds": [
-        "b7f66f4c-5d21-4184-b8a7-3afc52cdca27"
+        "b7f66f4c-5d21-4184-b8a7-3afc52cdca27",
+        "96513f63-f3dc-4a7f-99d0-facf05ff57f1"
       ]
     }
   ]
