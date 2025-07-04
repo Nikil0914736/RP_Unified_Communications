@@ -1,0 +1,17 @@
+<div *ngIf="modalData" class="modal-overlay" (click)="close()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Follow-up Message</h3>
+      <button class="close-btn" (click)="close()" title="Close modal">
+        <app-feather-icon icon="x"></app-feather-icon>
+      </button>
+    </div>
+    <div class="modal-body">
+      <textarea [(ngModel)]="followUpMessage" placeholder="Write your message here..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="close()">Cancel</button>
+      <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>

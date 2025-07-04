@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { PopoverService } from '../services/popover.service';
+import { PopoverService, PopoverAction } from '../services/popover.service';
+import { ToastService } from '../services/toast.service';
 import { AuthService } from '../services/auth.service';
 import { Notification, NotificationService } from '../services/notification.service';
 import { Observable } from 'rxjs';
@@ -31,7 +32,8 @@ export class NotificationsComponent implements OnInit {
     private notificationService: NotificationService,
     private popoverService: PopoverService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -93,13 +95,57 @@ export class NotificationsComponent implements OnInit {
       }
     }
 
-    if (notification.type === 'broadcast' || notification.type === 'reminder' || notification.type === 'offer') {
+    if (notification.type === 'broadcast' || notification.type === 'reminder') {
       this.popoverService.show({
         title: notification.title,
         content: notification.content,
         from: notification.from,
         date: notification.date,
         time: notification.time
+      });
+    } else if (notification.type === 'offer') {
+      const actions: PopoverAction[] = [
+        {
+          text: 'Accepted the Offer',
+          style: 'primary',
+          action: () => {
+            this.toastService.show('You have accepted the offer.', 'success');
+            this.popoverService.hide();
+          }
+        },
+        {
+          text: 'Declined',
+          style: 'destructive',
+          action: () => {
+            this.toastService.show('You have declined the offer.', 'error');
+            this.popoverService.hide();
+          }
+        },
+        {
+          text: 'Provide More Offers',
+          style: 'secondary',
+          action: () => {
+            this.toastService.show('Your request for more offers has been sent.', 'info');
+            this.popoverService.hide();
+          }
+        },
+        {
+          text: 'Contact Leasing Contact',
+          style: 'contact',
+          action: () => {
+            this.toastService.show('A leasing contact will be in touch with you shortly.', 'info');
+            this.popoverService.hide();
+          }
+        }
+      ];
+
+      this.popoverService.show({
+        title: notification.title,
+        content: notification.content,
+        from: notification.from,
+        date: notification.date,
+        time: notification.time,
+        actions
       });
     }
   }

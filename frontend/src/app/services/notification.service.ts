@@ -156,13 +156,56 @@ export class NotificationService {
     }
   }
 
-  public markOfferAsRead(id: string): void {
+  public markOfferAsRead(guid: string): Observable<any> {
     const currentUser = this.authService.currentUserValue;
-    if (currentUser && currentUser.username && id) {
-      this.followUpService.markOfferAsRead(currentUser.username, id).subscribe(() => {
-        this.authService.addReadOfferIdLocally(id);
-      });
+    if (currentUser && currentUser.username && guid) {
+      return this.followUpService.markOfferAsRead(currentUser.username, guid).pipe(
+        switchMap(() => {
+          this.authService.addReadOfferIdLocally(guid);
+          return of(null);
+        })
+      );
     }
+    return of(null);
+  }
+
+  private getDisplayText(offer: Offer): string {
+    switch (offer.selectedType) {
+      case 'Yes':
+        return 'Property adviser has sent New Renewal Offers for 12 and 24 Months';
+      case 'Only for 12 Months':
+        return 'Property adviser has sent New Renewal Offers 12 Months';
+      case 'Only for 24 Months':
+        return 'Property adviser has sent New Renewal Offers 24 Months';
+      case 'No':
+        return 'Property adviser has acknowledged your decision to not renew';
+      default:
+        return offer.selectedType;
+    }
+  }
+
+  private getOfferBody(offer: Offer): string {
+    const downloadLink = '<a href="javascript:void(0);" class="download-link">Download Link</a>';
+    let listItems = '';
+
+    switch (offer.selectedType) {
+      case 'Yes':
+        listItems = `
+          <li>Renewal @ 12 Months - Per $1500 Per Month with Tax benefits - ${downloadLink}</li>
+          <li>Renewal @ 24 Months - Per $2800 Per Month with Tax benefits - ${downloadLink}</li>
+        `;
+        break;
+      case 'Only for 12 Months':
+        listItems = `<li>Renewal @ 12 Months - Per $1500 Per Month with Tax benefits - ${downloadLink}</li>`;
+        break;
+      case 'Only for 24 Months':
+        listItems = `<li>Renewal @ 24 Months - Per $2800 Per Month with Tax benefits - ${downloadLink}</li>`;
+        break;
+      default:
+        return 'No further details available.';
+    }
+
+    return `<ul style="margin: 0; padding-left: 20px;">${listItems}</ul>`;
   }
 
   private mapOffersToNotifications(offers: Offer[]): Notification[] {
@@ -170,31 +213,18 @@ export class NotificationService {
     const readOfferIds = new Set(currentUser?.readOfferIds || []);
 
     return offers.map(offer => {
-      const timestamp = new Date(offer.dateTime);
-      const nameParts = (offer.sendUserFullName || '').split(' ').filter(n => n);
-      let initials = '';
-      if (nameParts.length >= 3) {
-        initials = nameParts.slice(0, 3).map(name => name.charAt(0)).join('');
-      } else if (nameParts.length > 1) {
-        initials = `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`;
-      } else if (nameParts.length === 1) {
-        initials = nameParts[0].charAt(0);
-      }
-
       return {
         id: offer.guid,
         type: 'offer' as const,
-        icon: 'inbox',
-        title: `Offer: ${offer.selectedType}`,
+        icon: 'bell',
+        title: this.getDisplayText(offer),
         subtitle: `From: ${offer.sendUserFullName}`,
-        content: `Details for this offer are available in the inbox.`,
-        date: timestamp.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        time: timestamp.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
+        content: this.getOfferBody(offer),
+        date: new Date(offer.dateTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        time: new Date(offer.dateTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
         from: offer.sendUserFullName,
-        initials: initials.toUpperCase(),
-        color: generateColor(initials.toUpperCase()),
         isRead: readOfferIds.has(offer.guid),
-        timestamp
+        timestamp: new Date(offer.dateTime)
       };
     });
   }
