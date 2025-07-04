@@ -1,25 +1,36 @@
 <app-header [title]="'Inbox'"></app-header>
 
 <main class="main-content">
-    <div class="card">
-        <ul *ngIf="messages.length > 0; else noMessages" class="notification-list">
-            <li *ngFor="let message of messages" class="notification-item" [class.unread]="message.isRead === false" [title]="'View message from ' + message.from">
-                <i data-feather="mail"></i>
-                <div class="notification-content">
-                    <strong>{{ message.from }}</strong>
-                    <p>{{ message.subject }}</p>
-                    <small>{{ message.time }}</small>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <div *ngIf="(offers$ | async) as offers; else loadingOffers" class="notification-container">
+        <ul *ngIf="offers.length > 0; else noOffers" class="notification-list-redesigned">
+            <li *ngFor="let offer of offers" class="notification-item-redesigned" [class.unread]="!offer.isRead" (click)="showOffer(offer)">
+                <div class="notification-icon offer" [style.backgroundColor]="offer.color">
+                    <span>{{ offer.initials }}</span>
+                </div>
+                <div class="notification-details">
+                    <p>New Offer: {{ offer.selectedType }}</p>
+                    <small>From: {{ offer.sendUserFullName || offer.sendUserEmail }}</small>
+                </div>
+                <div class="notification-time">
+                    <span>{{ offer.displayDate }}</span>
+                    <span>{{ offer.displayTime }}</span>
                 </div>
             </li>
         </ul>
-        <ng-template #noMessages>
+        <ng-template #noOffers>
             <div class="empty-state">
                 <app-feather-icon icon="inbox" class="empty-state-icon"></app-feather-icon>
-                <h2>No Messages</h2>
-                <p>Your inbox is currently empty.</p>
+                <h2>Your Inbox is Empty</h2>
+                <p>New offers will appear here.</p>
             </div>
         </ng-template>
     </div>
+
+    <ng-template #loadingOffers>
+        <div class="loading-indicator">Loading offers...</div>
+    </ng-template>
 </main>
 
 <app-footer></app-footer>

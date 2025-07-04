@@ -15,6 +15,15 @@ export class AuthService {
     const currentUserString = localStorage.getItem('currentUser');
     this.currentUserSubject = new BehaviorSubject<any>(currentUserString ? JSON.parse(currentUserString) : null);
     this.currentUser = this.currentUserSubject.asObservable();
+
+    if (this.currentUserValue) {
+      this.refreshUserProfile(this.currentUserValue.username).subscribe({
+        error: err => {
+          console.error('Failed to refresh user profile, logging out.', err);
+          this.logout();
+        }
+      });
+    }
   }
 
   public get currentUserValue(): any {
@@ -52,6 +61,31 @@ export class AuthService {
 
   markReminderAsRead(username: string, reminderId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/mark-reminder-as-read`, { username, reminderId }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  addReadOfferIdLocally(offerId: string): void {
+    const currentUser = this.currentUserValue;
+    if (currentUser && currentUser.readOfferIds && !currentUser.readOfferIds.includes(offerId)) {
+      const updatedUser = {
+        ...currentUser,
+        readOfferIds: [...currentUser.readOfferIds, offerId]
+      };
+      this.currentUserSubject.next(updatedUser);
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    }
+  }
+
+  refreshUserProfile(username: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user/${username}`).pipe(
+      tap(userFromServer => {
+        const currentUser = this.currentUserValue;
+        // Preserve the token from the existing session
+        const updatedUser = { ...userFromServer, token: currentUser.token };
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+        this.currentUserSubject.next(updatedUser);
+      }),
       catchError(this.handleError)
     );
   }

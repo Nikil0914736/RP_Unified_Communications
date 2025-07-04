@@ -17,11 +17,12 @@ import { map } from 'rxjs/operators';
 })
 export class NotificationsComponent implements OnInit {
   isResident = false;
-  filter: 'all' | 'call' | 'reminder' | 'broadcast' = 'all';
+  filter: 'all' | 'call' | 'reminder' | 'broadcast' | 'offer' = 'all';
   filteredNotifications$: Observable<Notification[]>;
   unreadAllNotificationCount$: Observable<number>;
   unreadBroadcastCount$: Observable<number>;
   unreadRemindersCount$: Observable<number>;
+  unreadOffersCount$: Observable<number>;
   selectedNotificationId: string | null = null;
   private subscriptions = new Subscription();
 
@@ -39,6 +40,7 @@ export class NotificationsComponent implements OnInit {
     this.unreadAllNotificationCount$ = this.notificationService.unreadAllNotificationCount$;
     this.unreadBroadcastCount$ = this.notificationService.unreadBroadcastCount$;
     this.unreadRemindersCount$ = this.notificationService.unreadRemindersCount$;
+    this.unreadOffersCount$ = this.notificationService.unreadOffersCount$;
 
     this.authService.currentUser.subscribe(user => {
       this.isResident = user && user.role.toLowerCase() === 'resident';
@@ -52,13 +54,15 @@ export class NotificationsComponent implements OnInit {
         this.setFilter('broadcast');
       } else if (tab === 'reminder') {
         this.setFilter('reminder');
+      } else if (tab === 'offer') {
+        this.setFilter('offer');
       } else {
         this.setFilter('all');
       }
     });
   }
 
-  setFilter(filter: 'all' | 'call' | 'reminder' | 'broadcast'): void {
+  setFilter(filter: 'all' | 'call' | 'reminder' | 'broadcast' | 'offer'): void {
     this.filter = filter;
     this.filteredNotifications$ = this.notificationService.notifications$.pipe(
       map(notifications => {
@@ -84,10 +88,12 @@ export class NotificationsComponent implements OnInit {
         }
       } else if (notification.type === 'reminder') {
         this.notificationService.markReminderAsRead(notification.id);
+      } else if (notification.type === 'offer') {
+        this.notificationService.markOfferAsRead(notification.id);
       }
     }
 
-    if (notification.type === 'broadcast' || notification.type === 'reminder') {
+    if (notification.type === 'broadcast' || notification.type === 'reminder' || notification.type === 'offer') {
       this.popoverService.show({
         title: notification.title,
         content: notification.content,
@@ -99,7 +105,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   getIconStyle(notification: Notification): { [key: string]: any } {
-    if ((this.filter === 'broadcast' || this.filter === 'reminder') && notification.color) {
+    if ((this.filter === 'broadcast' || this.filter === 'reminder' || this.filter === 'offer') && notification.color) {
       return { background: notification.color };
     }
     return {};

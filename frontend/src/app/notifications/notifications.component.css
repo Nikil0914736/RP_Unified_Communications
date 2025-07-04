@@ -160,6 +160,7 @@
 .notification-icon.call { background: linear-gradient(135deg, #ff3b30, #ff8c30); }
 .notification-icon.message { background-color: #007aff; }
 .notification-icon.reminder { background: linear-gradient(135deg, #ff9500, #ffcc00); }
+.notification-icon.offer { background: linear-gradient(135deg, #5656d7, #8a56d7); /* Standard notification gradient */ }
 .notification-icon.broadcast { background: linear-gradient(135deg, #007aff, #00a2ff); }
 
 

@@ -8,7 +8,10 @@
         <span>Notifications</span>
     </a>
     <a routerLink="/inbox" routerLinkActive="active" class="nav-item" title="Go to Inbox">
-        <i data-feather="inbox"></i>
+        <div class="icon-wrapper">
+            <i data-feather="inbox"></i>
+            <span class="badge" *ngIf="(unreadOffersCount$ | async) > 0">{{ unreadOffersCount$ | async }}</span>
+        </div>
         <span>Inbox</span>
     </a>
         <a *ngIf="isLeasingConsultant" routerLink="/reminders" routerLinkActive="active" class="nav-item" title="Create a new Reminder">

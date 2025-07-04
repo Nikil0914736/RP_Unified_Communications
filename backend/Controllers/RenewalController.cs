@@ -4,20 +4,30 @@ using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using System.Text;
 using System.Text.Json;
+using static backend.Controllers.RenewalController;
+
+using Microsoft.AspNetCore.SignalR;
+using backend.Models;
 
 namespace backend.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class RenewalController : ControllerBase
-    {
-        [HttpPost("GetExpiringRenewals")]
-        public IActionResult getExpiringRenewals([FromBody] RequestPayload payload)
-        {
+	[ApiController]
+	[Route("api/[controller]")]
+	public class RenewalController : ControllerBase
+	{
+		private readonly IHubContext<OfferHub> _offerHubContext;
+
+		public RenewalController(IHubContext<OfferHub> offerHubContext)
+		{
+			_offerHubContext = offerHubContext;
+		}
+		[HttpPost("GetExpiringRenewals")]
+		public IActionResult getExpiringRenewals([FromBody] RequestPayload payload)
+		{
 			if (string.IsNullOrEmpty(payload?.Value))
-            {
-                return Ok(new {});
-            }
+			{
+				return Ok(new { });
+			}
 
 			var result = "";
 			try
@@ -70,6 +80,7 @@ namespace backend.Controllers
 		{
 			public string SelectedType { get; set; }
 			public string SendUserEmail { get; set; }
+			public string SendUserFullName { get; set; }
 			public DateTime DateTime { get; set; }
 			public string UserEmail { get; set; }
 		}
@@ -95,6 +106,7 @@ namespace backend.Controllers
 					Guid = Guid.NewGuid(), // Generate GUID on the backend
 					SelectedType = offerDetails.SelectedType,
 					SendUserEmail = offerDetails.SendUserEmail,
+					SendUserFullName = offerDetails.SendUserFullName,
 					DateTime = offerDetails.DateTime,
 					UserEmail = offerDetails.UserEmail
 				};
@@ -117,6 +129,9 @@ namespace backend.Controllers
 				var newJson = System.Text.Json.JsonSerializer.Serialize(offers, new JsonSerializerOptions { WriteIndented = true });
 				await System.IO.File.WriteAllTextAsync(filePath, newJson);
 
+				Console.WriteLine($"RenewalController: Attempting to send 'ReceiveOffer' to group {offerDetails.UserEmail}.");
+				await _offerHubContext.Clients.Group(offerDetails.UserEmail).SendAsync("ReceiveOffer", offerRecord);
+
 				return Ok(new { message = "New offer saved successfully." });
 			}
 			catch (Exception ex)
@@ -126,6 +141,66 @@ namespace backend.Controllers
 				return StatusCode(500, "An internal server error occurred.");
 			}
 		}
+
+
+		[HttpGet("GetOffers")]
+		public async Task<IActionResult> GetOffers([FromQuery] string email)
+		{
+			if (string.IsNullOrEmpty(email))
+			{
+				return BadRequest("Email parameter is required.");
+			}
+
+			var filePath = Path.Combine(Directory.GetCurrentDirectory(), "offers.json");
+
+			if (!System.IO.File.Exists(filePath))
+			{
+				return Ok(new List<OfferRecord>()); // Return an empty list if the file doesn't exist
+			}
+
+			try
+			{
+				var json = await System.IO.File.ReadAllTextAsync(filePath);
+				if (string.IsNullOrWhiteSpace(json))
+				{
+					return Ok(new List<OfferRecord>()); // Return an empty list if the file is empty
+				}
+
+				var allOffers = System.Text.Json.JsonSerializer.Deserialize<List<OfferRecord>>(json);
+
+				// Filter the offers for the specified email, ignoring case
+				var userOffers = allOffers
+					.Where(o => o.UserEmail.Equals(email, StringComparison.OrdinalIgnoreCase))
+					.ToList();
+
+				// Enrich offers with sender's full name if it's missing
+				var usersFilePath = Path.Combine(Directory.GetCurrentDirectory(), "users.json");
+				if (System.IO.File.Exists(usersFilePath))
+				{
+					var usersJson = await System.IO.File.ReadAllTextAsync(usersFilePath);
+					var userData = System.Text.Json.JsonSerializer.Deserialize<UserData>(usersJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+					var userLookup = userData.Users.ToDictionary(u => u.Username, u => u.FullName, StringComparer.OrdinalIgnoreCase);
+
+					foreach (var offer in userOffers)
+					{
+						if (string.IsNullOrWhiteSpace(offer.SendUserFullName) && userLookup.TryGetValue(offer.SendUserEmail, out var fullName))
+						{
+							offer.SendUserFullName = fullName;
+						}
+					}
+				}
+
+				return Ok(userOffers);
+			}
+			catch (Exception ex)
+			{
+				// Log the exception for debugging
+				Console.WriteLine($"Error reading or deserializing offers.json: {ex.Message}");
+				return StatusCode(500, "An internal server error occurred while fetching offers.");
+			}
+		}
+
+
 
 		private string GetAuthenticationTokenForClient(string uri, string clientName, string clientSecret, string entityId)
 		{
@@ -169,8 +244,13 @@ namespace backend.Controllers
 		}
 	}
 
-    public class RequestPayload
-    {
-        public string Value { get; set; }
-    }
+	public class RequestPayload
+	{
+		public string Value { get; set; }
+	}
+
+	public class MarkAsReadRequest
+	{
+		public Guid OfferId { get; set; }
+	}
 }

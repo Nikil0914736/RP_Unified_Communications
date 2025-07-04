@@ -7,10 +7,10 @@
     </div>
 
     <div class="filter-tabs">
-                <button class="tab-item" [class.active]="filter === 'all'" (click)="setFilter('all')" title="Filter by All">All<span class="badge" *ngIf="(unreadAllNotificationCount$ | async) > 0">{{ unreadAllNotificationCount$ | async }}</span></button>
+        <button class="tab-item" [class.active]="filter === 'all'" (click)="setFilter('all')" title="Filter by All">All<span class="badge" *ngIf="(unreadAllNotificationCount$ | async) > 0">{{ unreadAllNotificationCount$ | async }}</span></button>
         <button class="tab-item" [class.active]="filter === 'call'" (click)="setFilter('call')" title="Filter by Alerts">Alerts</button>
-                <button *ngIf="isResident" class="tab-item" [class.active]="filter === 'reminder'" (click)="setFilter('reminder')" title="Filter by Reminders">Reminders<span class="badge" *ngIf="(unreadRemindersCount$ | async) > 0">{{ unreadRemindersCount$ | async }}</span></button>
-                <button *ngIf="isResident" class="tab-item" [class.active]="filter === 'broadcast'" (click)="setFilter('broadcast')" title="Filter by Broadcasts">Broadcasts<span class="badge" *ngIf="(unreadBroadcastCount$ | async) > 0">{{ unreadBroadcastCount$ | async }}</span></button>
+        <button *ngIf="isResident" class="tab-item" [class.active]="filter === 'reminder'" (click)="setFilter('reminder')" title="Filter by Reminders">Reminders<span class="badge" *ngIf="(unreadRemindersCount$ | async) > 0">{{ unreadRemindersCount$ | async }}</span></button>
+        <button *ngIf="isResident" class="tab-item" [class.active]="filter === 'broadcast'" (click)="setFilter('broadcast')" title="Filter by Broadcasts">Broadcasts<span class="badge" *ngIf="(unreadBroadcastCount$ | async) > 0">{{ unreadBroadcastCount$ | async }}</span></button>
     </div>
 
 
@@ -18,7 +18,7 @@
     <div *ngIf="(filteredNotifications$ | async) as notifications" class="notification-container">
         <div *ngIf="notifications.length > 0; else noNotifications">
             <ul class="notification-list-redesigned">
-                                                        <li *ngFor="let notification of notifications" class="notification-item-redesigned" [class.clickable]="notification.type === 'broadcast' || notification.type === 'reminder'" [class.unread]="!notification.isRead" [class.selected]="notification.id === selectedNotificationId" (click)="showPopover(notification)" [title]="notification.title">
+                                                        <li *ngFor="let notification of notifications" class="notification-item-redesigned" [class.clickable]="notification.type === 'broadcast' || notification.type === 'reminder' || notification.type === 'offer'" [class.unread]="!notification.isRead" [class.selected]="notification.id === selectedNotificationId" (click)="showPopover(notification)" [title]="notification.title">
                     <div class="notification-icon" [ngClass]="notification.type" [ngStyle]="getIconStyle(notification)">
                         <ng-container [ngSwitch]="notification.type">
                             <ng-container *ngSwitchCase="'broadcast'">
@@ -33,6 +33,12 @@
                                     <app-feather-icon [icon]="notification.icon"></app-feather-icon>
                                 </ng-template>
                             </ng-container>
+                            <ng-container *ngSwitchCase="'offer'">
+                                <span *ngIf="filter === 'offer'; else inboxIcon">{{ notification.initials }}</span>
+                                <ng-template #inboxIcon>
+                                    <app-feather-icon icon="bell"></app-feather-icon>
+                                </ng-template>
+                            </ng-container>
                             <ng-container *ngSwitchDefault>
                                 <app-feather-icon [icon]="notification.icon"></app-feather-icon>
                             </ng-container>
@@ -43,7 +49,7 @@
                         <small>{{ notification.subtitle }}</small>
                     </div>
                     <div class="notification-time">
-                        <ng-container *ngIf="notification.type === 'broadcast' || notification.type === 'reminder'; else singleLineTime">
+                        <ng-container *ngIf="notification.type === 'broadcast' || notification.type === 'reminder' || notification.type === 'offer'; else singleLineTime">
                             <span>{{ notification.date }}</span>
                             <span>{{ notification.time }}</span>
                         </ng-container>

@@ -125,7 +125,7 @@ public class AuthController : ControllerBase
             u.Password == loginDto.Password &&
             u.Role.Equals(loginDto.Role, StringComparison.OrdinalIgnoreCase));
 
-                if (user == null)
+        if (user == null)
         {
             return Unauthorized(new { message = "Invalid credentials" });
         }
@@ -134,6 +134,24 @@ public class AuthController : ControllerBase
         if (user.Id == Guid.Empty)
         {
             user.Id = Guid.NewGuid();
+            needsSave = true;
+        }
+
+        if (user.ReadBroadcastIds == null)
+        {
+            user.ReadBroadcastIds = new List<string>();
+            needsSave = true;
+        }
+
+        if (user.ReadReminderIds == null)
+        {
+            user.ReadReminderIds = new List<string>();
+            needsSave = true;
+        }
+
+        if (user.ReadOfferIds == null)
+        {
+            user.ReadOfferIds = new List<string>();
             needsSave = true;
         }
 
@@ -173,6 +191,8 @@ public class AuthController : ControllerBase
         {
             return NotFound(new { message = "User not found." });
         }
+
+        if (userToUpdate.ReadBroadcastIds == null) userToUpdate.ReadBroadcastIds = new List<string>();
 
         if (!userToUpdate.ReadBroadcastIds.Contains(markAsReadDto.BroadcastId))
         {
@@ -222,6 +242,8 @@ public class AuthController : ControllerBase
 
             _logger.LogInformation("MarkReminderAsRead: User {Username} found.", userToUpdate.Username);
 
+            if (userToUpdate.ReadReminderIds == null) userToUpdate.ReadReminderIds = new List<string>();
+
             if (!userToUpdate.ReadReminderIds.Contains(markAsReadDto.ReminderId))
             {
                 _logger.LogInformation("MarkReminderAsRead: ReminderId {ReminderId} not in user's read list. Adding it.", markAsReadDto.ReminderId);
@@ -243,5 +265,86 @@ public class AuthController : ControllerBase
             _logger.LogError(ex, "MarkReminderAsRead: An unexpected error occurred.");
             return StatusCode(500, "An internal server error occurred.");
         }
+    }
+
+    [HttpPost("mark-offer-as-read")]
+    public async Task<IActionResult> MarkOfferAsRead([FromBody] MarkOfferAsReadDto markAsReadDto)
+    {
+        if (markAsReadDto == null || string.IsNullOrWhiteSpace(markAsReadDto.Username) || string.IsNullOrWhiteSpace(markAsReadDto.OfferId))
+        {
+            return BadRequest(new { message = "Invalid data provided." });
+        }
+
+        var userData = new UserData();
+        if (!System.IO.File.Exists(_usersFilePath))
+        {
+            return NotFound(new { message = "User data file not found." });
+        }
+
+        var jsonData = await System.IO.File.ReadAllTextAsync(_usersFilePath);
+        var deserializedData = JsonSerializer.Deserialize<UserData>(jsonData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        if (deserializedData?.Users != null)
+        {
+            userData = deserializedData;
+        }
+
+        var userToUpdate = userData.Users.FirstOrDefault(u => u.Username.Equals(markAsReadDto.Username, StringComparison.OrdinalIgnoreCase));
+
+        if (userToUpdate == null)
+        {
+            return NotFound(new { message = "User not found." });
+        }
+
+        if (userToUpdate.ReadOfferIds == null) userToUpdate.ReadOfferIds = new List<string>();
+
+        if (!userToUpdate.ReadOfferIds.Contains(markAsReadDto.OfferId))
+        {
+            userToUpdate.ReadOfferIds.Add(markAsReadDto.OfferId);
+
+            var newJsonData = JsonSerializer.Serialize(userData, new JsonSerializerOptions { WriteIndented = true });
+            await System.IO.File.WriteAllTextAsync(_usersFilePath, newJsonData);
+        }
+
+        return Ok(new { message = "Offer marked as read." });
+    }
+
+    [HttpGet("user/{username}")]
+    public async Task<IActionResult> GetUserProfile(string username)
+    {
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            return BadRequest(new { message = "Username is required." });
+        }
+
+        var userData = new UserData();
+        if (!System.IO.File.Exists(_usersFilePath))
+        {
+            return NotFound(new { message = "User data file not found." });
+        }
+
+        var jsonData = await System.IO.File.ReadAllTextAsync(_usersFilePath);
+        var deserializedData = JsonSerializer.Deserialize<UserData>(jsonData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        if (deserializedData?.Users != null)
+        {
+            userData = deserializedData;
+        }
+
+        var user = userData.Users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+        if (user == null)
+        {
+            return NotFound(new { message = "User not found." });
+        }
+
+        return Ok(new
+        {
+            user.Id,
+            user.FullName,
+            user.Username,
+            user.Role,
+            user.ReadBroadcastIds,
+            user.ReadReminderIds,
+            user.ReadOfferIds
+        });
     }
 }

@@ -6,8 +6,10 @@ import { map, shareReplay, switchMap, distinctUntilChanged } from 'rxjs/operator
 import { generateColor } from '../utils/color-generator';
 import { ReminderService } from './reminder.service';
 import { Reminder } from '../reminders-list/reminders-list.component';
+import { FollowUpService } from './follow-up.service';
+import { Offer } from '../inbox/inbox.component';
 
-export type NotificationType = 'call' | 'message' | 'reminder' | 'broadcast' | 'follow-up';
+export type NotificationType = 'call' | 'message' | 'reminder' | 'broadcast' | 'follow-up' | 'offer';
 
 export interface Notification {
   id?: string; // Optional because not all notifications have an ID
@@ -39,13 +41,16 @@ export class NotificationService {
   public totalAlertsCount$: Observable<number>;
   public unreadRemindersCount$: Observable<number>;
   public totalRemindersCount$: Observable<number>;
+  public unreadOffersCount$: Observable<number>;
+  public totalOffersCount$: Observable<number>;
   public unreadFollowUpsCount$: Observable<number>;
   public totalFollowUpsCount$: Observable<number>;
 
   constructor(
     private signalRService: SignalRService,
     private authService: AuthService,
-    private reminderService: ReminderService
+    private reminderService: ReminderService,
+    private followUpService: FollowUpService
   ) {
     this.authService.currentUser.pipe(
       distinctUntilChanged((prev, curr) => prev?.username === curr?.username)
@@ -65,14 +70,18 @@ export class NotificationService {
       map(reminders => this.mapRemindersToNotifications(reminders))
     );
 
+    const offerNotifications$ = this.followUpService.offers$.pipe(
+      map(offers => this.mapOffersToNotifications(offers))
+    );
+
     const allNotifications$ = this.authService.currentUser.pipe(
       switchMap(user => {
         if (!user) {
           return of([]);
         }
-        return combineLatest([broadcastNotifications$, reminderNotifications$]).pipe(
-          map(([broadcasts, reminders]) => {
-            return [...broadcasts, ...reminders].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+        return combineLatest([broadcastNotifications$, reminderNotifications$, offerNotifications$]).pipe(
+          map(([broadcasts, reminders, offers]) => {
+            return [...broadcasts, ...reminders, ...offers].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
           })
         );
       }),
@@ -115,6 +124,10 @@ export class NotificationService {
     this.unreadRemindersCount$ = reminders$.pipe(map(items => items.filter(item => !item.isRead).length));
     this.totalRemindersCount$ = reminders$.pipe(map(items => items.length));
 
+    const offers$ = this.notifications$.pipe(map(n => n.filter(item => item.type === 'offer')), shareReplay(1));
+    this.unreadOffersCount$ = offers$.pipe(map(items => items.filter(item => !item.isRead).length));
+    this.totalOffersCount$ = offers$.pipe(map(items => items.length));
+
     const followUps$ = this.notifications$.pipe(map(n => n.filter(item => item.type === 'follow-up')), shareReplay(1));
     this.unreadFollowUpsCount$ = followUps$.pipe(map(items => items.filter(item => !item.isRead).length));
     this.totalFollowUpsCount$ = followUps$.pipe(map(items => items.length));
@@ -141,6 +154,49 @@ export class NotificationService {
         this.reminderService.setReminderAsReadLocally(id);
       });
     }
+  }
+
+  public markOfferAsRead(id: string): void {
+    const currentUser = this.authService.currentUserValue;
+    if (currentUser && currentUser.username && id) {
+      this.followUpService.markOfferAsRead(currentUser.username, id).subscribe(() => {
+        this.authService.addReadOfferIdLocally(id);
+      });
+    }
+  }
+
+  private mapOffersToNotifications(offers: Offer[]): Notification[] {
+    const currentUser = this.authService.currentUserValue;
+    const readOfferIds = new Set(currentUser?.readOfferIds || []);
+
+    return offers.map(offer => {
+      const timestamp = new Date(offer.dateTime);
+      const nameParts = (offer.sendUserFullName || '').split(' ').filter(n => n);
+      let initials = '';
+      if (nameParts.length >= 3) {
+        initials = nameParts.slice(0, 3).map(name => name.charAt(0)).join('');
+      } else if (nameParts.length > 1) {
+        initials = `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`;
+      } else if (nameParts.length === 1) {
+        initials = nameParts[0].charAt(0);
+      }
+
+      return {
+        id: offer.guid,
+        type: 'offer' as const,
+        icon: 'inbox',
+        title: `Offer: ${offer.selectedType}`,
+        subtitle: `From: ${offer.sendUserFullName}`,
+        content: `Details for this offer are available in the inbox.`,
+        date: timestamp.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        time: timestamp.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
+        from: offer.sendUserFullName,
+        initials: initials.toUpperCase(),
+        color: generateColor(initials.toUpperCase()),
+        isRead: readOfferIds.has(offer.guid),
+        timestamp
+      };
+    });
   }
 
   private mapBroadcastsToNotifications(messages: BroadcastMessage[]): Notification[] {

@@ -49,6 +49,22 @@
   },
   {
     "ContainingType": "backend.Controllers.AuthController",
+    "Method": "MarkOfferAsRead",
+    "RelativePath": "api/Auth/mark-offer-as-read",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "markAsReadDto",
+        "Type": "backend.Models.MarkOfferAsReadDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.AuthController",
     "Method": "MarkReminderAsRead",
     "RelativePath": "api/Auth/mark-reminder-as-read",
     "HttpMethod": "POST",
@@ -74,6 +90,22 @@
       {
         "Name": "registrationDto",
         "Type": "backend.Models.UserRegistrationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.AuthController",
+    "Method": "GetUserProfile",
+    "RelativePath": "api/Auth/user/{username}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "username",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -133,6 +165,22 @@
         "Name": "payload",
         "Type": "backend.Controllers.RequestPayload",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.RenewalController",
+    "Method": "GetOffers",
+    "RelativePath": "api/Renewal/GetOffers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -160,6 +160,59 @@
         }
       }
     },
+    "/api/Auth/mark-offer-as-read": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkOfferAsReadDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkOfferAsReadDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkOfferAsReadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/user/{username}": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Reminder/Send": {
       "post": {
         "tags": [
@@ -285,6 +338,27 @@
           }
         }
       }
+    },
+    "/api/Renewal/GetOffers": {
+      "get": {
+        "tags": [
+          "Renewal"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -339,6 +413,20 @@
         },
         "additionalProperties": false
       },
+      "MarkOfferAsReadDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "offerId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MarkReminderAsReadDto": {
         "type": "object",
         "properties": {
@@ -361,6 +449,10 @@
             "nullable": true
           },
           "sendUserEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "sendUserFullName": {
             "type": "string",
             "nullable": true
           },

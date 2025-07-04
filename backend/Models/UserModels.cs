@@ -12,6 +12,7 @@ public class User
     public string Role { get; set; } = string.Empty;
     public List<string> ReadBroadcastIds { get; set; } = new List<string>();
     public List<string> ReadReminderIds { get; set; } = new List<string>();
+    public List<string> ReadOfferIds { get; set; } = new List<string>();
 }
 
 public class UserRegistrationDto
@@ -65,6 +66,14 @@ public class MarkReminderAsReadDto
     public string Username { get; set; } = string.Empty;
     [JsonPropertyName("reminderId")]
     public string ReminderId { get; set; } = string.Empty;
+}
+
+public class MarkOfferAsReadDto
+{
+    [JsonPropertyName("username")]
+    public string Username { get; set; } = string.Empty;
+    [JsonPropertyName("offerId")]
+    public string OfferId { get; set; } = string.Empty;
 }
 
 public class BroadcastMessage

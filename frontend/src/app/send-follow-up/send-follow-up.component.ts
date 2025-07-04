@@ -194,6 +194,7 @@ export class SendFollowUpComponent implements OnInit, AfterViewInit {
     const offerDetails = {
         selectedType: selection,
         sendUserEmail: currentUser.username,
+        sendUserFullName: currentUser.fullName,
         dateTime: new Date().toISOString(),
         userEmail: this.selectedResident.email
     };

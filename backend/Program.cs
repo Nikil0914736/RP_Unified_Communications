@@ -46,5 +46,6 @@ app.MapControllers();
 
 app.MapHub<BroadcastHub>("/broadcast");
 app.MapHub<ReminderHub>("/reminderhub");
+app.MapHub<OfferHub>("/offerhub");
 
 app.Run();
