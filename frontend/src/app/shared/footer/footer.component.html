@@ -4,7 +4,10 @@
         <span>Home</span>
     </a>
     <a routerLink="/notifications" routerLinkActive="active" class="nav-item" title="Go to Notifications">
-        <i data-feather="bell"></i>
+        <div class="icon-wrapper">
+            <i data-feather="bell"></i>
+            <span class="badge" *ngIf="(unreadAllNotificationCount$ | async) > 0">{{ unreadAllNotificationCount$ | async }}</span>
+        </div>
         <span>Notifications</span>
     </a>
     <a routerLink="/inbox" routerLinkActive="active" class="nav-item" title="Go to Inbox">

@@ -18,6 +18,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
   unreadBroadcastCount$: Observable<number>;
   unreadRemindersCount$: Observable<number>;
   unreadOffersCount$: Observable<number>;
+  unreadAllNotificationCount$: Observable<number>;
 
   constructor(
     private authService: AuthService,
@@ -35,6 +36,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
     this.unreadBroadcastCount$ = this.notificationService.unreadBroadcastCount$;
     this.unreadRemindersCount$ = this.reminderService.unreadCount$;
     this.unreadOffersCount$ = this.followUpService.unreadCount$;
+    this.unreadAllNotificationCount$ = this.notificationService.unreadAllNotificationCount$;
   }
 
   ngAfterViewInit(): void {

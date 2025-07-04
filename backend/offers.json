@@ -22,5 +22,13 @@
     "SendUserFullName": "Leasing Consultant User",
     "DateTime": "2025-07-04T02:35:11.28Z",
     "UserEmail": "bethany.gross@realpage.com"
+  },
+  {
+    "Guid": "42459940-5252-4de6-8491-62a0d301ddb8",
+    "SelectedType": "Only for 12 Months",
+    "SendUserEmail": "leasingconsultant@relapge.com",
+    "SendUserFullName": "Leasing Consultant User",
+    "DateTime": "2025-07-04T03:34:44.863Z",
+    "UserEmail": "bethany.gross@realpage.com"
   }
 ]
