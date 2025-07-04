@@ -5,7 +5,8 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { FollowUpService } from '../services/follow-up.service';
-import { PopoverService } from '../services/popover.service';
+import { PopoverService, PopoverAction } from '../services/popover.service';
+import { ToastService } from '../services/toast.service';
 import { generateColor } from '../utils/color-generator';
 
 declare var feather: any;
@@ -31,6 +32,7 @@ export interface DisplayOffer extends Offer {
   color: string;
   displayDate: string;
   displayTime: string;
+  displayText: string;
   isRead?: boolean;
 }
 
@@ -46,9 +48,10 @@ export class InboxComponent implements OnInit, AfterViewInit {
 
   constructor(
     private titleService: Title,
-    private authService: AuthService,
     private followUpService: FollowUpService,
-    private popoverService: PopoverService
+    private authService: AuthService,
+    private popoverService: PopoverService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -80,23 +83,59 @@ export class InboxComponent implements OnInit, AfterViewInit {
       if (currentUser) {
         this.followUpService.markOfferAsRead(currentUser.username, offer.guid).subscribe({
           next: () => {
-            this.authService.addReadOfferIdLocally(offer.guid);
+            // The auth service now handles local state updates immutably
           },
-          error: (err) => console.error('Failed to mark offer as read:', err)
+          error: (err) => console.error('Failed to mark offer as read', err)
         });
       }
     }
 
+    const actions: PopoverAction[] = [
+      {
+        text: 'Accepted the Offer',
+        style: 'primary',
+        action: () => {
+          this.toastService.show('You have accepted the offer.', 'success');
+          this.popoverService.hide();
+        }
+      },
+      {
+        text: 'Declined',
+        style: 'destructive',
+        action: () => {
+          this.toastService.show('You have declined the offer.', 'error');
+          this.popoverService.hide();
+        }
+      },
+      {
+        text: 'Provide More Offers',
+        style: 'secondary',
+        action: () => {
+          this.toastService.show('Your request for more offers has been sent.', 'info');
+          this.popoverService.hide();
+        }
+      },
+      {
+        text: 'Contact Leasing Contact',
+        style: 'contact',
+        action: () => {
+          this.toastService.show('A leasing contact will be in touch with you shortly.', 'info');
+          this.popoverService.hide();
+        }
+      }
+    ];
+
     this.popoverService.show({
-      title: 'New Offer',
-      content: `You have received a new offer: ${offer.selectedType}`,
+      title: offer.displayText,
+      content: this.getDisplayBody(offer),
       from: offer.sendUserFullName,
       date: offer.displayDate,
-      time: offer.displayTime
+      time: offer.displayTime,
+      actions
     });
   }
 
-  private toDisplayOffer(offer: Offer): Omit<DisplayOffer, 'isRead'> {
+  private toDisplayOffer(offer: Offer): Omit<DisplayOffer, 'isRead' | 'displayText'> & { displayText: string } {
     const timestamp = new Date(offer.dateTime);
     const nameParts = (offer.sendUserFullName || '').split(' ').filter(n => n);
     let initials = '';
@@ -113,7 +152,47 @@ export class InboxComponent implements OnInit, AfterViewInit {
       initials: initials.toUpperCase(),
       color: generateColor(initials.toUpperCase()),
       displayDate: timestamp.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      displayTime: timestamp.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+      displayTime: timestamp.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
+      displayText: this.getDisplayText(offer)
     };
+  }
+
+  private getDisplayBody(offer: Offer): string {
+    const downloadLink = '<a href="javascript:void(0);" class="download-link">Download Link</a>';
+    let listItems = '';
+
+    switch (offer.selectedType) {
+      case 'Yes':
+        listItems = `
+          <li>Renewal @ 12 Months - Per $1500 Per Month with Tax benefits - ${downloadLink}</li>
+          <li>Renewal @ 24 Months - Per $2800 Per Month with Tax benefits - ${downloadLink}</li>
+        `;
+        break;
+      case 'Only for 12 Months':
+        listItems = `<li>Renewal @ 12 Months - Per $1500 Per Month with Tax benefits - ${downloadLink}</li>`;
+        break;
+      case 'Only for 24 Months':
+        listItems = `<li>Renewal @ 24 Months - Per $2800 Per Month with Tax benefits - ${downloadLink}</li>`;
+        break;
+      default:
+        return 'No further details available.';
+    }
+
+    return `<ul style="margin: 0; padding-left: 20px;">${listItems}</ul>`;
+  }
+
+  private getDisplayText(offer: Offer): string {
+    switch (offer.selectedType) {
+      case 'Yes':
+        return 'Property adviser has sent New Renewal Offers for 12 and 24 Months';
+      case 'Only for 12 Months':
+        return 'Property adviser has sent New Renewal Offers 12 Months';
+      case 'Only for 24 Months':
+        return 'Property adviser has sent New Renewal Offers 24 Months';
+      case 'No':
+        return 'Property adviser has acknowledged your decision to not renew';
+      default:
+        return offer.selectedType;
+    }
   }
 }

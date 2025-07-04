@@ -11,7 +11,12 @@
       </div>
     </div>
     <div class="popover-content">
-            <div class="popover-text" [innerHTML]="formattedContent"></div>
+      <div class="popover-text" [innerHTML]="formattedContent"></div>
+    </div>
+    <div *ngIf="popoverData.actions && popoverData.actions.length > 0" class="popover-footer">
+      <button *ngFor="let action of popoverData.actions" (click)="action.action()" class="action-btn" [ngClass]="action.style || 'secondary'">
+        {{ action.text }}
+      </button>
     </div>
         <button class="close-btn" (click)="close()" title="Close popover">
       <i data-feather="x"></i>

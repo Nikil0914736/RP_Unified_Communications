@@ -8,6 +8,18 @@ body {
     align-items: center;
     min-height: 100vh;
     color: #1c1c1e;
+    --ion-color-light-shade: #d7d8da;
+    --ion-color-light-tint: #f5f6f9;
+
+    /* Download link styles */
+    .download-link {
+        color: #007aff;
+        text-decoration: underline;
+    }
+
+    .dark-mode .download-link {
+        color: #FFFFFF; /* White for max contrast */
+    }
 }
 
 /* Dark Mode */

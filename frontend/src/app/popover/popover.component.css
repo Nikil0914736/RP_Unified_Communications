@@ -61,14 +61,9 @@
   overflow-y: auto;
 }
 
-.popover-text a {
-    color: #007aff;
-    text-decoration: none;
-}
 
-.popover-text a:hover {
-    text-decoration: underline;
-}
+
+
 
 .close-btn {
   position: absolute;
@@ -105,9 +100,7 @@
   border-bottom-color: #3a3a3c;
 }
 
-:host-context(.dark-mode) .popover-text a {
-    color: #0A84FF;
-}
+
 
 :host-context(.dark-mode) .close-btn {
   color: #8e8e93;
@@ -116,6 +109,75 @@
 :host-context(.dark-mode) .close-btn:hover {
   color: #fff;
   background-color: #4a4a4c;
+}
+
+
+.popover-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #e5e5ea;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  background-color: #f9f9f9;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.action-btn:active {
+    transform: scale(0.98);
+}
+
+.action-btn.primary {
+  background-color: #34c759; /* Green for accept */
+  color: #fff;
+}
+
+.action-btn.secondary {
+  background-color: #007aff; /* Blue for standard action */
+  color: #fff;
+}
+
+.action-btn.destructive {
+  background-color: #ff3b30;
+  color: #fff;
+}
+
+.action-btn.contact {
+  background-color: #8e8e93; /* Neutral grey for contact */
+  color: #fff;
+}
+
+/* Dark Mode */
+:host-context(.dark-mode) .popover-footer {
+  border-top-color: #3a3a3c;
+  background-color: #1c1c1e;
+}
+
+:host-context(.dark-mode) .action-btn.primary {
+  background-color: #30d158; /* Brighter green for dark mode */
+}
+
+:host-context(.dark-mode) .action-btn.secondary {
+  background-color: #0A84FF; /* Brighter blue for dark mode */
+  color: #fff;
+}
+
+:host-context(.dark-mode) .action-btn.destructive {
+  background-color: #ff453a;
+}
+
+:host-context(.dark-mode) .action-btn.contact {
+  background-color: #48484a; /* Darker grey for dark mode */
+  color: #fff;
 }
 
 @keyframes popover-slide-up {

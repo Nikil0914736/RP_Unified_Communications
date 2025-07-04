@@ -1,0 +1,8 @@
+<div *ngIf="toast" class="toast-container" [ngClass]="toast.type">
+  <div class="toast-icon">
+    <app-feather-icon [icon]="getIcon()"></app-feather-icon>
+  </div>
+  <div class="toast-message">
+    {{ toast.message }}
+  </div>
+</div>

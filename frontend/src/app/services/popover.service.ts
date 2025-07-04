@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+export interface PopoverAction {
+  text: string;
+  style?: 'primary' | 'secondary' | 'destructive' | 'contact';
+  action: () => void;
+}
+
 export interface PopoverData {
   title: string;
   content: string;
   from: string;
   date: string;
   time: string;
+  actions?: PopoverAction[];
 }
 
 @Injectable({

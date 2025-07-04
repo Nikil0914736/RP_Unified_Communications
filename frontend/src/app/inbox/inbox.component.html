@@ -10,7 +10,7 @@
                     <span>{{ offer.initials }}</span>
                 </div>
                 <div class="notification-details">
-                    <p>New Offer: {{ offer.selectedType }}</p>
+                    <p class="notification-title">{{ offer.displayText }}</p>
                     <small>From: {{ offer.sendUserFullName || offer.sendUserEmail }}</small>
                 </div>
                 <div class="notification-time">

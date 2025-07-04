@@ -22,6 +22,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { RegistrationComponent } from './registration/registration.component';
 import { AlertComponent } from './alert/alert.component';
 import { PopoverComponent } from './popover/popover.component';
+import { ToastComponent } from './toast/toast.component';
 import { FeatherIconComponent } from './shared/feather-icon/feather-icon.component';
 import { RemindersListComponent } from './reminders-list/reminders-list.component';
 import { FollowUpsListComponent } from './follow-ups-list/follow-ups-list.component';
@@ -40,6 +41,8 @@ import { FollowUpsListComponent } from './follow-ups-list/follow-ups-list.compon
     InboxComponent,
     NotificationsComponent,
     CreateReminderComponent,
+    PopoverComponent,
+    ToastComponent,
     BroadcastsListComponent,
     FooterComponent,
     HeaderComponent,

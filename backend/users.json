@@ -26,11 +26,17 @@
       "Username": "bethany.gross@realpage.com",
       "Password": "password",
       "Role": "resident",
-      "ReadBroadcastIds": [],
-      "ReadReminderIds": [],
+      "ReadBroadcastIds": [
+        "f4f2e1b1-4c6e-4a8a-9f44-caf4cefa2d93"
+      ],
+      "ReadReminderIds": [
+        "d668c52d-96fc-4057-8629-50ea2bba1b15"
+      ],
       "ReadOfferIds": [
         "0a977859-09e2-4c21-978f-68d902abb5e2",
-        "1309426c-78e6-4dd2-ad6d-931d39691b00"
+        "1309426c-78e6-4dd2-ad6d-931d39691b00",
+        "fdddc78a-8d10-464e-b92f-58110c24c2b2",
+        "42459940-5252-4de6-8491-62a0d301ddb8"
       ]
     },
     {
