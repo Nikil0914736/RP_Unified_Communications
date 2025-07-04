@@ -12,6 +12,7 @@ declare var feather: any;
 export class PopoverComponent implements OnInit, OnDestroy {
     popoverData: PopoverData | null = null;
   formattedContent: string | null = null;
+  activeTabIndex = 0;
   private subscription: Subscription;
 
   constructor(private popoverService: PopoverService) { }
@@ -19,6 +20,7 @@ export class PopoverComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.popoverService.getPopoverData().subscribe(data => {
       this.popoverData = data;
+      this.activeTabIndex = 0; // Reset active tab
       if (data) {
         const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
         this.formattedContent = data.content
@@ -46,5 +48,9 @@ export class PopoverComponent implements OnInit, OnDestroy {
     if (this.popoverData) {
       this.close();
     }
+  }
+
+  selectTab(index: number): void {
+    this.activeTabIndex = index;
   }
 }

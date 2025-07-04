@@ -15,6 +15,62 @@
     </div>
     <div class="popover-content">
       <div class="popover-text" [innerHTML]="formattedContent"></div>
+
+      <!-- Tabbed Billing Details -->
+      <div *ngIf="popoverData.billingTabs && popoverData.billingTabs.length > 0" class="billing-details-container">
+        <h4>Schedule Billing Details</h4>
+        <div class="billing-tabs-header">
+          <button *ngFor="let tab of popoverData.billingTabs; let i = index"
+                  [class.active]="i === activeTabIndex"
+                  (click)="selectTab(i)">
+            {{ tab.title }}
+          </button>
+        </div>
+
+        <div *ngFor="let tab of popoverData.billingTabs; let i = index">
+          <div *ngIf="i === activeTabIndex" class="billing-table-wrapper">
+            <table class="billing-table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of tab.details">
+                  <td>{{ detail.month }}</td>
+                  <td>{{ detail.amount }}</td>
+                  <td>{{ detail.status }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fallback for non-tabbed billing details -->
+      <div *ngIf="popoverData.billingDetails && !popoverData.billingTabs" class="billing-details-container">
+        <h4>Schedule Billing Details</h4>
+        <div class="billing-table-wrapper">
+          <table class="billing-table">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detail of popoverData.billingDetails">
+                <td>{{ detail.month }}</td>
+                <td>{{ detail.amount }}</td>
+                <td>{{ detail.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <div *ngIf="popoverData.actions && popoverData.actions.length > 0" class="popover-footer">
       <button *ngFor="let action of popoverData.actions" (click)="action.action()" class="action-btn" [ngClass]="action.style || 'secondary'">

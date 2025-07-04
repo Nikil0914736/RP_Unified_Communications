@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { FollowUpService } from '../services/follow-up.service';
-import { PopoverService, PopoverAction } from '../services/popover.service';
+import { PopoverService, PopoverAction, BillingDetail, BillingTab, PopoverData } from '../services/popover.service';
 import { ToastService } from '../services/toast.service';
 import { generateColor } from '../utils/color-generator';
 
@@ -82,9 +82,7 @@ export class InboxComponent implements OnInit, AfterViewInit {
       const currentUser = this.authService.currentUserValue;
       if (currentUser) {
         this.followUpService.markOfferAsRead(currentUser.username, offer.guid).subscribe({
-          next: () => {
-            // The auth service now handles local state updates immutably
-          },
+          next: () => {},
           error: (err) => console.error('Failed to mark offer as read', err)
         });
       }
@@ -125,7 +123,7 @@ export class InboxComponent implements OnInit, AfterViewInit {
       }
     ];
 
-    this.popoverService.show({
+    const popoverData: PopoverData = {
       title: offer.displayText,
       content: this.getDisplayBody(offer),
       from: offer.sendUserFullName,
@@ -133,7 +131,38 @@ export class InboxComponent implements OnInit, AfterViewInit {
       time: offer.displayTime,
       actions,
       showFollowUpIcon: true
-    });
+    };
+
+    if (offer.selectedType === 'Yes') {
+      const tabs: BillingTab[] = [
+        {
+          title: '12 Months',
+          details: Array.from({ length: 12 }, (_, i) => ({
+            month: new Date(2024, i).toLocaleString('default', { month: 'long', year: 'numeric' }),
+            amount: '$1500.00',
+            status: i < 3 ? 'Paid' : (i === 3 ? 'Pending' : 'Upcoming')
+          }))
+        },
+        {
+          title: '24 Months',
+          details: Array.from({ length: 24 }, (_, i) => ({
+            month: new Date(2024, i).toLocaleString('default', { month: 'long', year: 'numeric' }),
+            amount: '$1350.00',
+            status: i < 3 ? 'Paid' : (i === 3 ? 'Pending' : 'Upcoming')
+          }))
+        }
+      ];
+      popoverData.billingTabs = tabs;
+    } else if (offer.selectedType === 'Only for 12 Months' || offer.selectedType === 'Only for 24 Months') {
+      const months = offer.selectedType === 'Only for 12 Months' ? 12 : 24;
+      popoverData.billingDetails = Array.from({ length: months }, (_, i) => ({
+        month: new Date(2024, i).toLocaleString('default', { month: 'long', year: 'numeric' }),
+        amount: months === 12 ? '$1500.00' : '$1400.00',
+        status: i < 3 ? 'Paid' : (i === 3 ? 'Pending' : 'Upcoming')
+      }));
+    }
+
+    this.popoverService.show(popoverData);
   }
 
   private toDisplayOffer(offer: Offer): Omit<DisplayOffer, 'isRead' | 'displayText'> & { displayText: string } {

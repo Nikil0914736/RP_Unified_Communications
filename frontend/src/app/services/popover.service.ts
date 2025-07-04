@@ -7,6 +7,17 @@ export interface PopoverAction {
   action: () => void;
 }
 
+export interface BillingDetail {
+  month: string;
+  amount: string;
+  status: string;
+}
+
+export interface BillingTab {
+  title: string;
+  details: BillingDetail[];
+}
+
 export interface PopoverData {
   title: string;
   content: string;
@@ -15,6 +26,8 @@ export interface PopoverData {
   time: string;
   actions?: PopoverAction[];
   showFollowUpIcon?: boolean;
+  billingDetails?: BillingDetail[];
+  billingTabs?: BillingTab[];
 }
 
 @Injectable({

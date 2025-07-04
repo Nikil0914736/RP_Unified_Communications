@@ -4,8 +4,14 @@
 
 ## Recent Features & Enhancements
 
+-   **Real-time Reminders**: A complete, end-to-end reminders system has been implemented, allowing for the creation and real-time delivery of reminders to residents.
+    -   **Read/Unread Functionality**: Reminders can be marked as read, which instantly updates their visual state and the unread counts throughout the application.
+    -   **Interactive Pop-up**: Clicking on a reminder opens a pop-up with the full message details.
+    -   **Unread Count Badges**: The footer, dashboard, and notifications page all display badges with the number of unread reminders.
+
 -   **Broadcasts Module**: A complete, end-to-end broadcast system has been implemented, allowing Leasing Consultants to send messages that are received in real-time by all Residents.
 -   **Unread Count Badges**: The footer navigation and the notification filter tabs now display red badges to indicate the number of unread items, ensuring users never miss an update.
+-   **Interactive Offer Popover**: Offers now open in a detailed popover that includes a full, bulleted list of renewal details and a set of action buttons ("Accept," "Decline," etc.). This popover also features a sophisticated billing schedule display, with a tabbed interface for different billing periods (e.g., 12 vs. 24 months), providing users with a clear and comprehensive overview of their payment schedule.
 -   **UI & UX Refinements**:
     -   **Themed Scrollbar**: A custom, dark-themed scrollbar has been added for a more polished and immersive dark mode experience.
     -   **Header Role Display**: The user's role (e.g., "Resident") is now displayed in the header for better context.
@@ -13,6 +19,10 @@
 -   **State Management & Bug Fixes**:
     -   Resolved a critical bug where notification data was not being cleared on logout.
     -   Fixed an issue where marking a message as read did not persist correctly.
+
+-   **Inbox Popover Enhancements**:
+    -   **Scheduled Billing Details**: The inbox message popover now includes a "Schedule Billing Details" section, which displays monthly billing information in a clean, scrollable table.
+    -   **Tabbed Billing View**: For offers that include both 12 and 24-month renewal options, the billing details are organized into tabs for easy comparison.
 
 ## Features
 
@@ -33,7 +43,7 @@
 -   **Unified Notification Center**: Broadcast messages are seamlessly integrated into the main "Notifications" page, creating a single, unified feed for all alerts and communications.
 -   **Role-Based Views**: The notification system is role-aware. **Residents** see all notifications, including broadcasts, while **Leasing Consultants** have access to broadcast creation tools.
 -   **Live Dashboard Count**: The dashboard summary features a notification count that updates in real-time as new messages arrive, tailored to the logged-in user's role.
--   **Interactive Message Popover**: A polished, reusable popover component allows users to view the full content of broadcast messages. It features a modern design, smooth animations, and is closable via the Escape key or an overlay click.
+-   **Interactive Message Popover**: A polished, reusable popover component allows users to view the full content of broadcast and inbox messages. It features a modern design, smooth animations, and is closable via the Escape key or an overlay click. For inbox messages related to renewal offers, it now includes a "Schedule Billing Details" section, which can display information in a single table or a tabbed view for 12 and 24-month options.
 
 ### Main Modules
 -   **Dashboard**: A central hub that provides a high-level summary of all recent activity, including a live, role-aware notification count.
