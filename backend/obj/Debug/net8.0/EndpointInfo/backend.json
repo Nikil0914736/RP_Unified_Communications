@@ -254,6 +254,37 @@
           }
         }
       }
+    },
+    "/api/Renewal/NewOffer": {
+      "post": {
+        "tags": [
+          "Renewal"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOfferDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOfferDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOfferDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -316,6 +347,28 @@
             "nullable": true
           },
           "reminderId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NewOfferDto": {
+        "type": "object",
+        "properties": {
+          "selectedType": {
+            "type": "string",
+            "nullable": true
+          },
+          "sendUserEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userEmail": {
             "type": "string",
             "nullable": true
           }

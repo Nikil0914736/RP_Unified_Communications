@@ -136,5 +136,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.RenewalController",
+    "Method": "SendNewOffer",
+    "RelativePath": "api/Renewal/NewOffer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "offerDetails",
+        "Type": "backend.Controllers.RenewalController\u002BNewOfferDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

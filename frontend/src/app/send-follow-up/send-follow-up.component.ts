@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { generateColor } from '../utils/color-generator';
 import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
+import { FollowUpService } from '../services/follow-up.service';
 
 
 declare var feather: any;
@@ -41,7 +42,8 @@ export class SendFollowUpComponent implements OnInit, AfterViewInit {
     private elementRef: ElementRef,
     private cdRef: ChangeDetectorRef,
     private alertService: AlertService,
-    private authService: AuthService
+    private authService: AuthService,
+    private followUpService: FollowUpService
   ) { }
 
   ngOnInit(): void {
@@ -179,14 +181,37 @@ export class SendFollowUpComponent implements OnInit, AfterViewInit {
 
     handleConfirmation(selection: string | null): void {
     this.showConfirmationModal = false;
-    if (!selection) {
-      return; // Modal was closed via overlay
+    if (!selection || !this.selectedResident) {
+      return; // Modal was closed or no resident was selected
     }
-    if (this.selectedResident) {
-      console.log(`Action for ${this.selectedResident.name}: ${selection}`);
-      // Placeholder for future implementation based on selection
+
+    const currentUser = this.authService.currentUserValue;
+    if (!currentUser) {
+        this.alertService.error('You must be logged in to send an offer.');
+        return;
     }
+
+    const offerDetails = {
+        selectedType: selection,
+        sendUserEmail: currentUser.username,
+        dateTime: new Date().toISOString(),
+        userEmail: this.selectedResident.email
+    };
+
+    this.followUpService.sendNewOffer(offerDetails).subscribe({
+        next: () => {
+            this.alertService.success('New offer sent successfully!');
+            this.openMenuFor = null; // Close the menu
+        },
+        error: (err) => {
+            console.error('Error sending new offer:', err);
+            this.alertService.error('Failed to send new offer. Please try again.');
+            this.openMenuFor = null; // Close the menu
+        }
+    });
   }
+
+
 
       sendReminder(result: RenewalResult): void {
     const currentUser = this.authService.currentUserValue;

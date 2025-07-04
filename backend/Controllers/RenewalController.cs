@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using System.Text;
+using System.Text.Json;
 
 namespace backend.Controllers
 {
@@ -62,6 +63,68 @@ namespace backend.Controllers
 			}
 
 			return Ok(result);
+		}
+
+		// DTO to represent the incoming data from the frontend
+		public class NewOfferDto
+		{
+			public string SelectedType { get; set; }
+			public string SendUserEmail { get; set; }
+			public DateTime DateTime { get; set; }
+			public string UserEmail { get; set; }
+		}
+
+		// This represents the structure of the object we'll save to the JSON file
+		public class OfferRecord : NewOfferDto
+		{
+			public Guid Guid { get; set; }
+		}
+
+		[HttpPost("NewOffer")]
+		public async Task<IActionResult> SendNewOffer([FromBody] NewOfferDto offerDetails)
+		{
+			if (offerDetails == null)
+			{
+				return BadRequest("Offer details cannot be null.");
+			}
+
+			try
+			{
+				var offerRecord = new OfferRecord
+				{
+					Guid = Guid.NewGuid(), // Generate GUID on the backend
+					SelectedType = offerDetails.SelectedType,
+					SendUserEmail = offerDetails.SendUserEmail,
+					DateTime = offerDetails.DateTime,
+					UserEmail = offerDetails.UserEmail
+				};
+
+				var filePath = Path.Combine(Directory.GetCurrentDirectory(), "offers.json");
+
+				List<OfferRecord> offers = new List<OfferRecord>();
+
+				if (System.IO.File.Exists(filePath))
+				{
+					var existingJson = await System.IO.File.ReadAllTextAsync(filePath);
+					if (!string.IsNullOrWhiteSpace(existingJson))
+					{
+						offers = System.Text.Json.JsonSerializer.Deserialize<List<OfferRecord>>(existingJson);
+					}
+				}
+
+				offers.Add(offerRecord);
+
+				var newJson = System.Text.Json.JsonSerializer.Serialize(offers, new JsonSerializerOptions { WriteIndented = true });
+				await System.IO.File.WriteAllTextAsync(filePath, newJson);
+
+				return Ok(new { message = "New offer saved successfully." });
+			}
+			catch (Exception ex)
+			{
+				// Log the exception (e.g., using a logging framework)
+				Console.WriteLine($"Error saving new offer: {ex.Message}");
+				return StatusCode(500, "An internal server error occurred.");
+			}
 		}
 
 		private string GetAuthenticationTokenForClient(string uri, string clientName, string clientSecret, string entityId)

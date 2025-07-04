@@ -1,0 +1,23 @@
+[
+  {
+    "Guid": "9e720ac1-37bc-4323-a4c7-7fe5364d72b4",
+    "SelectedType": "Yes",
+    "SendUserEmail": "leasingconsultant@relapge.com",
+    "DateTime": "2025-07-04T01:00:56.102Z",
+    "UserEmail": "bethany.gross@realpage.com"
+  },
+  {
+    "Guid": "fce1990c-f7f6-41e3-a225-c45407f7231a",
+    "SelectedType": "Only for 12 Months",
+    "SendUserEmail": "leasingconsultant@relapge.com",
+    "DateTime": "2025-07-04T01:01:40.062Z",
+    "UserEmail": "bethany.gross@realpage.com"
+  },
+  {
+    "Guid": "2b198a23-2b31-4b2f-b9a5-0bafb9c6a1c2",
+    "SelectedType": "Only for 12 Months",
+    "SendUserEmail": "leasingconsultant@relapge.com",
+    "DateTime": "2025-07-04T01:01:57.582Z",
+    "UserEmail": "heather.watson@realpage.com"
+  }
+]
