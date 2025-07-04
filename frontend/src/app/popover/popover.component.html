@@ -9,6 +9,9 @@
           <span>{{ popoverData.date }} at {{ popoverData.time }}</span>
         </div>
       </div>
+      <div *ngIf="popoverData.showFollowUpIcon" class="follow-up-icon-container" title="This is a follow-up">
+        <app-feather-icon icon="repeat"></app-feather-icon>
+      </div>
     </div>
     <div class="popover-content">
       <div class="popover-text" [innerHTML]="formattedContent"></div>

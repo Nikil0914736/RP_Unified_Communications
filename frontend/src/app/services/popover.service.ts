@@ -14,6 +14,7 @@ export interface PopoverData {
   date: string;
   time: string;
   actions?: PopoverAction[];
+  showFollowUpIcon?: boolean;
 }
 
 @Injectable({

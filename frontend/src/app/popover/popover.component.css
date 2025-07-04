@@ -28,6 +28,7 @@
   padding: 15px 20px;
   background: linear-gradient(to bottom, #fff, #f7f7f7);
   border-bottom: 1px solid #e5e5ea;
+  position: relative;
 }
 
 .popover-header-details {
@@ -93,6 +94,28 @@
 :host-context(.dark-mode) .popover-container {
   background-color: #2c2c2e;
   color: #fff;
+}
+
+
+.follow-up-icon-container {
+  position: absolute;
+  bottom: 12px;
+  right: 20px;
+  color: #8e8e93; /* Neutral grey */
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.follow-up-icon-container:hover {
+  color: #007aff; /* Primary action color on hover */
+}
+
+:host-context(.dark-mode) .follow-up-icon-container {
+  color: #8e8e93;
+}
+
+:host-context(.dark-mode) .follow-up-icon-container:hover {
+  color: #0A84FF; /* Brighter blue for dark mode */
 }
 
 :host-context(.dark-mode) .popover-header {

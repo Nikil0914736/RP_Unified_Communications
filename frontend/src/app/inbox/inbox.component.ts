@@ -131,7 +131,8 @@ export class InboxComponent implements OnInit, AfterViewInit {
       from: offer.sendUserFullName,
       date: offer.displayDate,
       time: offer.displayTime,
-      actions
+      actions,
+      showFollowUpIcon: true
     });
   }
 

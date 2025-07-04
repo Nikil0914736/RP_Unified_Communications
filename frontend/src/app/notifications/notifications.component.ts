@@ -145,7 +145,8 @@ export class NotificationsComponent implements OnInit {
         from: notification.from,
         date: notification.date,
         time: notification.time,
-        actions
+        actions,
+        showFollowUpIcon: true
       });
     }
   }
